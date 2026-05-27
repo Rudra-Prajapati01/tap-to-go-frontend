@@ -65,7 +65,7 @@ const CardShowcase = () => {
             Build stunning digital profiles,
             social links, QR cards, lead capture
             forms, and professional networking
-            experiences with Tap To Go.
+            experiences with Jio Tap.
           </p>
 
           <div
@@ -193,7 +193,7 @@ const CardShowcase = () => {
                   text-[#0f172a]
                 "
               >
-                Rudra Prajapati
+                Jio Tap
               </h3>
 
               <p

@@ -187,7 +187,7 @@ const Hero = () => {
           }}
         >
           Share your contact details instantly with NFC and QR technology.
-          Modern networking made simple, beautiful, and powerful with Tap To Go.
+          Modern networking made simple, beautiful, and powerful with Jio Tap.
         </p>
 
         {/* BUTTONS */}
@@ -436,7 +436,7 @@ const Hero = () => {
                   "0 14px 35px rgba(97,85,166,0.35)",
               }}
             >
-              R
+              J
             </div>
 
             <h2
@@ -452,7 +452,7 @@ const Hero = () => {
                 fontWeight: "800",
               }}
             >
-              Rudra
+              Jio Tap
             </h2>
 
             <p

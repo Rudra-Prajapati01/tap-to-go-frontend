@@ -99,7 +99,7 @@ const Navbar = () => {
               "0 8px 25px rgba(97,85,166,0.35)",
           }}
         >
-          T
+          J
         </div>
 
         <h1
@@ -119,7 +119,7 @@ const Navbar = () => {
             whiteSpace: "nowrap",
           }}
         >
-          Tap To Go
+          Jio Tap
         </h1>
 
       </div>

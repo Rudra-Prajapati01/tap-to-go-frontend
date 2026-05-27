@@ -147,7 +147,7 @@ const DashboardLayout = ({ children }) => {
         {/* Logo */}
         <div style={styles.sidebarLogo}>
           <LotusIcon size={38} />
-          <span style={styles.brandName}>Tap To Go</span>
+          <span style={styles.brandName}>Jio Tap</span>
         </div>
 
         {/* Nav */}
@@ -234,7 +234,7 @@ const DashboardLayout = ({ children }) => {
           </button>
 
           {/* Avatar */}
-          <div style={styles.avatar}>T</div>
+          <div style={styles.avatar}>J</div>
         </div>
 
         {/* Page content */}
