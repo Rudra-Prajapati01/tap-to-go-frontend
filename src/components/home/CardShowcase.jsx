@@ -203,7 +203,7 @@ const CardShowcase = () => {
                   mt-1
                 "
               >
-                Full Stack Developer
+                Jio Tap
               </p>
 
               <p
