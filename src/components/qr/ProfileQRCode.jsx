@@ -1,21 +1,15 @@
-import { QRCodeCanvas }
-from "qrcode.react";
+import { QRCodeCanvas } from "qrcode.react";
 
 export default function ProfileQRCode({
-
   uniqueId,
-
 }) {
 
   if (!uniqueId) {
-
     return null;
-
   }
 
   const profileUrl =
-
-    `https://tap-to-go-nine.vercel.app/u/${uniqueId}`;
+    `https://jiotap.com/u/${uniqueId}`;
 
   return (
 
