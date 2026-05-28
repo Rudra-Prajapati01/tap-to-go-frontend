@@ -25,6 +25,9 @@ import ProductAndServices
 import ProductDetails
   from "../pages/ProductDetails";
 
+import Analytics
+  from "../components/analytics/Analytics";
+
 const AppRoutes = () => {
   return (
     <BrowserRouter>
@@ -92,6 +95,17 @@ const AppRoutes = () => {
             <ProtectedRoute>
               <DashboardLayout>
                 <ProductAndServices />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/dashboard/analytics"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <Analytics />
               </DashboardLayout>
             </ProtectedRoute>
           }

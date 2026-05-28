@@ -1,120 +1,38 @@
-import {
-  Home,
-  User,
-  Bell,
-  BarChart3,
-  Settings,
-  QrCode,
-  Package,
-  Users,
-  Menu,
-  X,
-} from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-import {
-  NavLink,
-  useNavigate,
-} from "react-router-dom";
+const Navbar = () => {
 
-import {
-  useEffect,
-  useState,
-} from "react";
+  const navigate = useNavigate();
 
-const DashboardLayout = ({
-  children,
-}) => {
-
-  const navigate =
-    useNavigate();
-
-  const [mobileMenu,
-    setMobileMenu] =
+  const [isMobile, setIsMobile] =
     useState(false);
-
-  const [notifications] =
-    useState([
-      {
-        id: 1,
-        text:
-          "New lead received 🚀",
-      },
-    ]);
 
   useEffect(() => {
 
-    const closeMenu = () => {
+    setIsMobile(
+      window.innerWidth < 768
+    );
 
-      if (
-        window.innerWidth > 900
-      ) {
-        setMobileMenu(false);
-      }
+    const handleResize = () => {
+
+      setIsMobile(
+        window.innerWidth < 768
+      );
     };
 
     window.addEventListener(
       "resize",
-      closeMenu
+      handleResize
     );
 
     return () =>
       window.removeEventListener(
         "resize",
-        closeMenu
+        handleResize
       );
 
   }, []);
-
-  const navItems = [
-
-    {
-      name: "Home",
-      icon: Home,
-      path: "/dashboard",
-    },
-
-    {
-      name: "Profile",
-      icon: User,
-      path:
-        "/dashboard/profile",
-    },
-
-    {
-      name: "Products",
-      icon: Package,
-      path:
-        "/dashboard/products-services",
-    },
-
-    {
-      name: "Leads",
-      icon: Users,
-      path:
-        "/dashboard/leads",
-    },
-
-    {
-      name: "QR",
-      icon: QrCode,
-      path:
-        "/dashboard/activate-tag",
-    },
-
-    {
-      name: "Analytics",
-      icon: BarChart3,
-      path:
-        "/dashboard/analytics",
-    },
-
-    {
-      name: "Settings",
-      icon: Settings,
-      path:
-        "/dashboard/settings",
-    },
-  ];
 
   return (
 
@@ -125,554 +43,235 @@ const DashboardLayout = ({
           box-sizing:border-box;
         }
 
-        body{
-          margin:0;
-          background:#faf7ff;
-          font-family:
-            Inter,
-            sans-serif;
-        }
-
-        .jt-layout{
-          display:flex;
-          min-height:100vh;
-        }
-
-        /* SIDEBAR */
-
-        .jt-sidebar{
-          width:260px;
-          background:
-            rgba(255,255,255,0.92);
-
-          backdrop-filter:
-            blur(18px);
-
-          border-right:
-            1px solid #eee;
-
-          padding:24px 18px;
-
-          position:fixed;
-          left:0;
-          top:0;
-          bottom:0;
-          z-index:999;
+        .jio-navbar{
           transition:0.3s;
         }
 
-        .jt-logo{
-          display:flex;
-          align-items:center;
-          gap:12px;
-          margin-bottom:40px;
-        }
-
-        .jt-logo-icon{
-          width:44px;
-          height:44px;
-          border-radius:16px;
-
-          background:
-            linear-gradient(
-              135deg,
-              #7c3aed,
-              #9333ea
-            );
-
-          display:flex;
-          align-items:center;
-          justify-content:center;
-          color:#fff;
-          font-size:20px;
-          font-weight:800;
-
-          box-shadow:
-            0 12px 28px
-            rgba(124,58,237,0.25);
-        }
-
-        .jt-logo-text{
-          font-size:30px;
-          font-weight:800;
-          color:#7c3aed;
-        }
-
-        .jt-nav{
-          display:flex;
-          flex-direction:column;
-          gap:10px;
-        }
-
-        .jt-link{
-          height:58px;
-          border-radius:18px;
-          display:flex;
-          align-items:center;
-          gap:14px;
-          padding:0 18px;
-          text-decoration:none;
-          color:#64748b;
-          font-weight:700;
-          transition:0.25s;
-        }
-
-        .jt-link:hover{
-          background:#f5f3ff;
-          color:#7c3aed;
-          transform:translateX(4px);
-        }
-
-        .jt-link.active{
-          background:
-            linear-gradient(
-              135deg,
-              #ede9fe,
-              #f3e8ff
-            );
-
-          color:#7c3aed;
-        }
-
-        .jt-link svg{
-          width:22px;
-          height:22px;
-        }
-
-        /* MAIN */
-
-        .jt-main{
-          flex:1;
-          margin-left:260px;
-          min-height:100vh;
-        }
-
-        /* TOPBAR */
-
-        .jt-topbar{
-          height:84px;
-          background:
-            rgba(255,255,255,0.82);
-
-          backdrop-filter:
-            blur(18px);
-
-          border-bottom:
-            1px solid #eee;
-
-          display:flex;
-          align-items:center;
-          justify-content:flex-end;
-
-          padding:0 28px;
-
-          position:sticky;
-          top:0;
-          z-index:100;
-        }
-
-        .jt-top-actions{
-          display:flex;
-          align-items:center;
-          gap:16px;
-        }
-
-        .jt-notify{
-          width:52px;
-          height:52px;
-          border-radius:16px;
-          border:none;
-          background:#fff;
-          position:relative;
-          cursor:pointer;
-          color:#7c3aed;
-
-          display:flex;
-          align-items:center;
-          justify-content:center;
-
-          box-shadow:
-            0 8px 20px
-            rgba(15,23,42,0.06);
-        }
-
-        .jt-badge{
-          position:absolute;
-          top:8px;
-          right:8px;
-
-          width:18px;
-          height:18px;
-
-          border-radius:50%;
-
-          background:#ef4444;
-          color:#fff;
-
-          font-size:11px;
-          font-weight:700;
-
+        .nav-btn{
+          transition:0.3s;
           display:flex;
           align-items:center;
           justify-content:center;
         }
 
-        .jt-avatar{
-          width:52px;
-          height:52px;
-          border-radius:18px;
-
-          background:
-            linear-gradient(
-              135deg,
-              #7c3aed,
-              #9333ea
-            );
-
-          color:#fff;
-          font-weight:800;
-
-          display:flex;
-          align-items:center;
-          justify-content:center;
-
-          box-shadow:
-            0 10px 28px
-            rgba(124,58,237,0.25);
+        .nav-btn:hover{
+          transform:translateY(-2px);
         }
 
-        .jt-content{
-          padding:28px;
+        .nav-links span{
+          transition:0.3s;
         }
 
-        /* MOBILE TOPBAR */
-
-        .jt-mobile-top{
-          display:none;
+        .nav-links span:hover{
+          color:#6155A6 !important;
         }
-
-        /* MOBILE NAV */
-
-        .jt-mobile-nav{
-          display:none;
-        }
-
-        /* RESPONSIVE */
 
         @media (max-width: 900px){
 
-          .jt-sidebar{
-            left:
-              ${mobileMenu
-                ? "0"
-                : "-280px"};
+          .nav-links{
+            display:none !important;
           }
 
-          .jt-main{
-            margin-left:0;
+        }
+
+        @media (max-width: 768px){
+
+          .jio-navbar{
+            height:64px !important;
+            padding:0 14px !important;
           }
 
-          .jt-topbar{
-            display:none;
+          .logo-text{
+            font-size:18px !important;
           }
 
-          .jt-mobile-top{
-            height:74px;
-            background:#fff;
-            padding:0 18px;
-
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-
-            position:sticky;
-            top:0;
-            z-index:999;
-
-            border-bottom:
-              1px solid #eee;
+          .nav-buttons{
+            gap:8px !important;
           }
 
-          .jt-mobile-left{
-            display:flex;
-            align-items:center;
-            gap:14px;
+          .nav-btn{
+            padding:10px 14px !important;
+            font-size:12px !important;
+            border-radius:12px !important;
           }
 
-          .jt-menu-btn{
-            width:46px;
-            height:46px;
-            border:none;
-            border-radius:16px;
-            background:#fff;
-            color:#111827;
-            cursor:pointer;
+        }
 
-            box-shadow:
-              0 8px 20px
-              rgba(15,23,42,0.08);
+        @media (max-width: 480px){
+
+          .jio-navbar{
+            padding:0 10px !important;
           }
 
-          .jt-mobile-nav{
-            position:fixed;
-            bottom:18px;
-            left:50%;
-            transform:translateX(-50%);
-
-            width:92%;
-            height:78px;
-
-            background:
-              rgba(255,255,255,0.95);
-
-            backdrop-filter:
-              blur(20px);
-
-            border-radius:28px;
-
-            display:flex;
-            align-items:center;
-            justify-content:space-around;
-
-            z-index:999;
-
-            box-shadow:
-              0 20px 40px
-              rgba(15,23,42,0.12);
+          .logo-text{
+            font-size:16px !important;
           }
 
-          .jt-mobile-link{
-            width:54px;
-            height:54px;
-
-            border-radius:18px;
-
-            display:flex;
-            align-items:center;
-            justify-content:center;
-
-            color:#64748b;
-
-            transition:0.25s;
-          }
-
-          .jt-mobile-link.active{
-            background:
-              linear-gradient(
-                135deg,
-                #ede9fe,
-                #f3e8ff
-              );
-
-            color:#7c3aed;
-          }
-
-          .jt-content{
-            padding:
-              18px 14px 110px;
+          .nav-btn{
+            padding:9px 12px !important;
+            font-size:11px !important;
           }
 
         }
 
       `}</style>
 
-      <div className="jt-layout">
+      <nav
+        className="jio-navbar"
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "74px",
+          padding: "0 24px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          background: "rgba(255,255,255,0.88)",
+          backdropFilter: "blur(18px)",
+          WebkitBackdropFilter: "blur(18px)",
+          borderBottom:
+            "1px solid rgba(97,85,166,0.08)",
+          zIndex: 1000,
+        }}
+      >
 
-        {/* SIDEBAR */}
+        {/* LOGO */}
 
-        <aside className="jt-sidebar">
+        <div
+          onClick={() => navigate("/")}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            cursor: "pointer",
+            flexShrink: 0,
+            minWidth: 0,
+          }}
+        >
 
-          <div className="jt-logo">
+          <h1
+            className="logo-text"
+            style={{
+              fontSize:
+                isMobile
+                  ? "20px"
+                  : "24px",
 
-            <div className="jt-logo-icon">
-              ⚡
-            </div>
-
-            <div className="jt-logo-text">
-              Jio Tap
-            </div>
-
-          </div>
-
-          <div className="jt-nav">
-
-            {navItems.map(
-              (item) => {
-
-                const Icon =
-                  item.icon;
-
-                return (
-
-                  <NavLink
-                    key={item.name}
-                    to={item.path}
-                    className={({
-                      isActive,
-                    }) =>
-
-                      isActive
-                        ? "jt-link active"
-                        : "jt-link"
-                    }
-                  >
-
-                    <Icon />
-
-                    <span>
-                      {item.name}
-                    </span>
-
-                  </NavLink>
-                );
-              }
-            )}
-
-          </div>
-
-        </aside>
-
-        {/* MAIN */}
-
-        <main className="jt-main">
-
-          {/* DESKTOP TOPBAR */}
-
-          <div className="jt-topbar">
-
-            <div className="jt-top-actions">
-
-              <button
-                className="jt-notify"
-              >
-
-                <Bell size={22} />
-
-                <div className="jt-badge">
-                  {
-                    notifications.length
-                  }
-                </div>
-
-              </button>
-
-              <div className="jt-avatar">
-                J
-              </div>
-
-            </div>
-
-          </div>
-
-          {/* MOBILE TOPBAR */}
-
-          <div className="jt-mobile-top">
-
-            <div className="jt-mobile-left">
-
-              <button
-                className="jt-menu-btn"
-                onClick={() =>
-                  setMobileMenu(
-                    !mobileMenu
-                  )
-                }
-              >
-
-                {mobileMenu
-                  ? <X />
-                  : <Menu />
-                }
-
-              </button>
-
-            </div>
-
-            <div
-              style={{
-                display:"flex",
-                alignItems:"center",
-                gap:"12px",
-              }}
-            >
-
-              <button
-                className="jt-notify"
-                style={{
-                  width:"46px",
-                  height:"46px",
-                }}
-              >
-
-                <Bell size={20} />
-
-                <div className="jt-badge">
-                  {
-                    notifications.length
-                  }
-                </div>
-
-              </button>
-
-              <div
-                className="jt-avatar"
-                style={{
-                  width:"46px",
-                  height:"46px",
-                }}
-              >
-                J
-              </div>
-
-            </div>
-
-          </div>
-
-          {/* CONTENT */}
-
-          <div className="jt-content">
-            {children}
-          </div>
-
-        </main>
-
-        {/* MOBILE BOTTOM NAV */}
-
-        <div className="jt-mobile-nav">
-
-          {navItems
-            .slice(0,5)
-            .map((item) => {
-
-              const Icon =
-                item.icon;
-
-              return (
-
-                <NavLink
-                  key={item.name}
-                  to={item.path}
-                  className={({
-                    isActive,
-                  }) =>
-
-                    isActive
-                      ? "jt-mobile-link active"
-                      : "jt-mobile-link"
-                  }
-                >
-
-                  <Icon size={24} />
-
-                </NavLink>
-              );
-            })}
+              fontWeight: "800",
+              color: "#3E3276",
+              fontFamily: "sans-serif",
+              margin: 0,
+              whiteSpace: "nowrap",
+            }}
+          >
+            Jio Tap
+          </h1>
 
         </div>
 
-      </div>
+        {/* NAV LINKS */}
+
+        <div
+          className="nav-links"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "36px",
+          }}
+        >
+
+          {[
+            "Products",
+            "Features",
+            "Teams & Business",
+            "Company",
+          ].map((item) => (
+
+            <span
+              key={item}
+              style={{
+                fontSize: "15px",
+                fontWeight: "600",
+                color: "#555",
+                cursor: "pointer",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {item}
+            </span>
+
+          ))}
+
+        </div>
+
+        {/* BUTTONS */}
+
+        <div
+          className="nav-buttons"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "14px",
+            flexShrink: 0,
+          }}
+        >
+
+          {/* LOGIN */}
+
+          <button
+            className="nav-btn"
+            onClick={() =>
+              navigate("/login")
+            }
+            style={{
+              padding: "12px 24px",
+              borderRadius: "14px",
+              border: "2px solid #6155A6",
+              background: "#fff",
+              color: "#6155A6",
+              fontSize: "14px",
+              fontWeight: "700",
+              cursor: "pointer",
+              whiteSpace: "nowrap",
+            }}
+          >
+            Login
+          </button>
+
+          {/* GET STARTED */}
+
+          <button
+            className="nav-btn"
+            onClick={() =>
+              navigate("/register")
+            }
+            style={{
+              padding: "12px 24px",
+              borderRadius: "14px",
+              border: "none",
+              background:
+                "linear-gradient(135deg,#6155A6,#A685E2)",
+              color: "#fff",
+              fontSize: "14px",
+              fontWeight: "700",
+              cursor: "pointer",
+              boxShadow:
+                "0 10px 28px rgba(97,85,166,0.35)",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {isMobile
+              ? "Start"
+              : "Get Started →"}
+          </button>
+
+        </div>
+
+      </nav>
     </>
   );
 };
 
-export default DashboardLayout;
+export default Navbar;

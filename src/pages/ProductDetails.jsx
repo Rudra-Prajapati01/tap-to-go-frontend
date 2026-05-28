@@ -81,6 +81,13 @@ const ProductDetails = () => {
           {
 
             owner:
+
+              product.owner?._id ||
+
+              product.owner ||
+
+              product.userId?._id ||
+
               product.userId,
 
             ...leadData,
@@ -119,6 +126,7 @@ const ProductDetails = () => {
   if (!product) {
 
     return (
+
       <div
         style={{
           padding: "40px",
@@ -126,6 +134,7 @@ const ProductDetails = () => {
       >
         Loading...
       </div>
+
     );
   }
 
@@ -136,9 +145,12 @@ const ProductDetails = () => {
         style={{
           minHeight: "100vh",
 
-          background: "#f8fafc",
+          background: "#f5f3ff",
 
-          padding: "40px 20px",
+          padding:
+            window.innerWidth < 768
+              ? "20px 14px"
+              : "40px 20px",
         }}
       >
 
@@ -150,14 +162,19 @@ const ProductDetails = () => {
 
             background: "#fff",
 
-            borderRadius: "32px",
+            borderRadius:
+              window.innerWidth < 768
+                ? "24px"
+                : "32px",
 
             overflow: "hidden",
 
             display: "grid",
 
             gridTemplateColumns:
-              "1fr 1fr",
+              window.innerWidth < 768
+                ? "1fr"
+                : "1fr 1fr",
 
             boxShadow:
               "0 20px 60px rgba(15,23,42,0.08)",
@@ -165,11 +182,15 @@ const ProductDetails = () => {
         >
 
           {/* IMAGE */}
+
           <div
             style={{
               background: "#fff",
 
-              padding: "40px",
+              padding:
+                window.innerWidth < 768
+                  ? "24px"
+                  : "40px",
 
               display: "flex",
 
@@ -187,24 +208,36 @@ const ProductDetails = () => {
               style={{
                 width: "100%",
 
-                maxHeight: "600px",
+                maxHeight:
+                  window.innerWidth < 768
+                    ? "280px"
+                    : "600px",
 
                 objectFit: "contain",
+
+                borderRadius: "20px",
               }}
             />
 
           </div>
 
           {/* CONTENT */}
+
           <div
             style={{
-              padding: "50px",
+              padding:
+                window.innerWidth < 768
+                  ? "28px 24px"
+                  : "50px",
 
               display: "flex",
 
               flexDirection: "column",
 
-              gap: "24px",
+              gap:
+                window.innerWidth < 768
+                  ? "20px"
+                  : "24px",
             }}
           >
 
@@ -216,11 +249,13 @@ const ProductDetails = () => {
 
                 width: "fit-content",
 
-                padding: "8px 16px",
+                padding: "10px 18px",
 
                 borderRadius: "999px",
 
                 fontWeight: "700",
+
+                fontSize: "14px",
               }}
             >
               Premium Product
@@ -228,13 +263,20 @@ const ProductDetails = () => {
 
             <h1
               style={{
-                fontSize: "48px",
+                fontSize:
+                  window.innerWidth < 768
+                    ? "38px"
+                    : "54px",
 
                 fontWeight: "900",
 
                 lineHeight: 1.1,
 
                 margin: 0,
+
+                color: "#0f172a",
+
+                wordBreak: "break-word",
               }}
             >
               {product.name}
@@ -242,11 +284,18 @@ const ProductDetails = () => {
 
             <p
               style={{
-                fontSize: "17px",
+                fontSize:
+                  window.innerWidth < 768
+                    ? "17px"
+                    : "18px",
 
                 lineHeight: "1.9",
 
                 color: "#64748b",
+
+                wordBreak: "break-word",
+
+                margin: 0,
               }}
             >
               {product.description}
@@ -254,7 +303,10 @@ const ProductDetails = () => {
 
             <div
               style={{
-                fontSize: "42px",
+                fontSize:
+                  window.innerWidth < 768
+                    ? "34px"
+                    : "46px",
 
                 fontWeight: "900",
 
@@ -274,7 +326,10 @@ const ProductDetails = () => {
               style={{
                 border: "none",
 
-                padding: "18px",
+                padding:
+                  window.innerWidth < 768
+                    ? "16px"
+                    : "18px",
 
                 borderRadius: "18px",
 
@@ -288,6 +343,9 @@ const ProductDetails = () => {
                 fontWeight: "800",
 
                 cursor: "pointer",
+
+                boxShadow:
+                  "0 10px 30px rgba(124,58,237,0.35)",
               }}
             >
               💬 Inquiry Now
@@ -300,6 +358,7 @@ const ProductDetails = () => {
       </div>
 
       {/* LEAD MODAL */}
+
       {
         showLeadModal && (
 
@@ -315,13 +374,15 @@ const ProductDetails = () => {
               height: "100vh",
 
               background:
-                "rgba(0,0,0,0.5)",
+                "rgba(15,23,42,0.55)",
 
               display: "flex",
 
               alignItems: "center",
 
               justifyContent: "center",
+
+              padding: "20px",
 
               zIndex: 999,
             }}
@@ -332,27 +393,37 @@ const ProductDetails = () => {
               onSubmit={handleSubmit}
 
               style={{
-                width: "95%",
+                width: "100%",
 
                 maxWidth: "500px",
 
                 background: "#fff",
 
-                borderRadius: "24px",
+                borderRadius: "28px",
 
-                padding: "30px",
+                padding:
+                  window.innerWidth < 768
+                    ? "24px"
+                    : "30px",
 
                 display: "flex",
 
                 flexDirection: "column",
 
                 gap: "16px",
+
+                boxShadow:
+                  "0 20px 60px rgba(15,23,42,0.2)",
               }}
             >
 
               <h2
                 style={{
                   margin: 0,
+
+                  fontSize: "28px",
+
+                  color: "#0f172a",
                 }}
               >
                 Inquiry for {product.name}
@@ -372,12 +443,16 @@ const ProductDetails = () => {
                 required
 
                 style={{
-                  padding: "14px",
+                  padding: "16px",
 
-                  borderRadius: "12px",
+                  borderRadius: "14px",
 
                   border:
                     "1px solid #e2e8f0",
+
+                  outline: "none",
+
+                  fontSize: "15px",
                 }}
               />
 
@@ -395,12 +470,16 @@ const ProductDetails = () => {
                 required
 
                 style={{
-                  padding: "14px",
+                  padding: "16px",
 
-                  borderRadius: "12px",
+                  borderRadius: "14px",
 
                   border:
                     "1px solid #e2e8f0",
+
+                  outline: "none",
+
+                  fontSize: "15px",
                 }}
               />
 
@@ -418,12 +497,16 @@ const ProductDetails = () => {
                 required
 
                 style={{
-                  padding: "14px",
+                  padding: "16px",
 
-                  borderRadius: "12px",
+                  borderRadius: "14px",
 
                   border:
                     "1px solid #e2e8f0",
+
+                  outline: "none",
+
+                  fontSize: "15px",
                 }}
               />
 
@@ -439,12 +522,16 @@ const ProductDetails = () => {
                 placeholder="Company Name"
 
                 style={{
-                  padding: "14px",
+                  padding: "16px",
 
-                  borderRadius: "12px",
+                  borderRadius: "14px",
 
                   border:
                     "1px solid #e2e8f0",
+
+                  outline: "none",
+
+                  fontSize: "15px",
                 }}
               />
 
@@ -460,12 +547,18 @@ const ProductDetails = () => {
                 placeholder="Message"
 
                 style={{
-                  padding: "14px",
+                  padding: "16px",
 
-                  borderRadius: "12px",
+                  borderRadius: "14px",
 
                   border:
                     "1px solid #e2e8f0",
+
+                  outline: "none",
+
+                  resize: "none",
+
+                  fontSize: "15px",
                 }}
               />
 
@@ -477,7 +570,7 @@ const ProductDetails = () => {
 
                   padding: "16px",
 
-                  borderRadius: "14px",
+                  borderRadius: "16px",
 
                   background:
                     "linear-gradient(135deg,#7c3aed,#a855f7)",
@@ -486,7 +579,12 @@ const ProductDetails = () => {
 
                   fontWeight: "800",
 
+                  fontSize: "15px",
+
                   cursor: "pointer",
+
+                  boxShadow:
+                    "0 10px 30px rgba(124,58,237,0.35)",
                 }}
               >
                 Submit Inquiry
@@ -508,6 +606,10 @@ const ProductDetails = () => {
                   color: "#64748b",
 
                   cursor: "pointer",
+
+                  fontSize: "15px",
+
+                  fontWeight: "600",
                 }}
               >
                 Close

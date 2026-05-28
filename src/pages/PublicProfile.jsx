@@ -22,14 +22,57 @@ const PublicProfile = () => {
   }, [uniqueId]);
 
   const fetchUser = async () => {
+
     try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/users/${uniqueId}`
-      );
+
+      const res =
+        await axios.get(
+
+          `${import.meta.env.VITE_API_URL}/api/users/${uniqueId}`
+        );
+
       setUser(res.data);
+
+      /* TRACK PROFILE VIEW */
+
+      try {
+
+        const alreadyViewed =
+
+          sessionStorage.getItem(
+
+            `profile_view_${res.data._id}`
+          );
+
+        if (!alreadyViewed) {
+
+          await axios.post(
+
+            `${import.meta.env.VITE_API_URL}/api/analytics/profile-view`,
+            {
+              userId: res.data._id,
+            }
+          );
+
+          sessionStorage.setItem(
+
+            `profile_view_${res.data._id}`,
+
+            "true"
+          );
+        }
+
+      } catch (error) {
+
+        console.log(error);
+      }
+
     } catch (error) {
+
       console.log(error);
+
     } finally {
+
       setLoading(false);
     }
   };
@@ -961,7 +1004,6 @@ const PublicProfile = () => {
                 {user.bio && <p className="pp-bio">{user.bio}</p>}
 
                 {/* Socials */}
-                {/* Socials */}
                 {socials.some((s) => user[s.key]) && (
                   <>
 
@@ -993,6 +1035,39 @@ const PublicProfile = () => {
 
                               style={{
                                 background: bg
+                              }}
+
+                              onClick={async () => {
+
+                                try {
+
+                                  console.log(
+                                    "SOCIAL CLICK"
+                                  );
+
+                                  const res =
+                                    await axios.post(
+
+                                      `${import.meta.env.VITE_API_URL}/api/analytics/link-click`,
+                                      {
+                                        userId: user._id,
+                                        platform: key,
+                                      }
+                                    );
+
+                                  console.log(
+                                    "SUCCESS:",
+                                    res.data
+                                  );
+
+                                } catch (error) {
+
+                                  console.log(
+                                    "ERROR:",
+                                    error.response?.data ||
+                                    error.message
+                                  );
+                                }
                               }}
                             >
                               <span>{icon}</span>
@@ -1272,13 +1347,18 @@ const ContactBlock = ({ user, copied, handleCopy, buttonStyle, isCenter }) => (
         </div>
       )}
     </div>
+
     {user.website && (
 
       <a
         href={
+
           user.website.startsWith("http://") ||
+
             user.website.startsWith("https://")
+
             ? user.website
+
             : `https://${user.website}`
         }
 
@@ -1288,9 +1368,80 @@ const ContactBlock = ({ user, copied, handleCopy, buttonStyle, isCenter }) => (
 
         className="pp-website"
 
-        style={buttonStyle}
+        onClick={async () => {
+
+          try {
+
+            await axios.post(
+
+              `${import.meta.env.VITE_API_URL}/api/analytics/link-click`,
+              {
+                userId: user._id,
+                platform: "website",
+              }
+            );
+
+          } catch (error) {
+
+            console.log(error);
+          }
+        }}
+
+        style={{
+
+          display: "flex",
+
+          alignItems: "center",
+
+          gap: "12px",
+
+          width: "100%",
+
+          padding: "18px 20px",
+
+          borderRadius: "18px",
+
+          background: "#ffffff",
+
+          border: "1px solid #e5e7eb",
+
+          textDecoration: "none",
+
+          color: "#111827",
+
+          fontWeight: "700",
+
+          fontSize: "18px",
+
+          wordBreak: "break-word",
+
+          boxShadow:
+            "0 8px 24px rgba(15,23,42,0.06)",
+
+          transition: "0.3s",
+        }}
       >
-        🌐 Visit My Website →
+
+        <span
+          style={{
+            fontSize: "22px",
+          }}
+        >
+          🌐
+        </span>
+
+        <span
+          style={{
+            flex: 1,
+          }}
+        >
+          Visit My Website
+        </span>
+
+        <span>
+          →
+        </span>
+
       </a>
     )}
   </div>

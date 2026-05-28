@@ -1,15 +1,60 @@
-import { QRCodeCanvas } from "qrcode.react";
+import {
+  useEffect,
+} from "react";
+
+import axios from "axios";
+
+import {
+  QRCodeCanvas,
+} from "qrcode.react";
 
 export default function ProfileQRCode({
+
   uniqueId,
+  userId,
+
 }) {
 
   if (!uniqueId) {
+
     return null;
   }
 
   const profileUrl =
     `https://jiotap.com/u/${uniqueId}`;
+
+  /* ───────────────────────────── */
+  /* TRACK QR SCAN */
+  /* ───────────────────────────── */
+
+  useEffect(() => {
+
+    const trackQR =
+    async () => {
+
+      try {
+
+        if (!userId) return;
+
+        await axios.post(
+
+          `${import.meta.env.VITE_API_URL}/api/analytics/qr-scan`,
+          {
+            userId,
+          }
+        );
+
+      } catch (error) {
+
+        console.log(error);
+      }
+    };
+
+    trackQR();
+
+  }, []);
+
+  /* ───────────────────────────── */
 
   return (
 

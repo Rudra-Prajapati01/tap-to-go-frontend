@@ -966,7 +966,13 @@ export default function EditProfile() {
                     {Icons.qr}
                     <span style={{ fontSize: "12px", color: "#64748b", fontWeight: "600" }}>Public Profile QR</span>
                   </div>
-                  <ProfileQRCode uniqueId={storedUser?.uniqueId} />
+                  <ProfileQRCode
+
+                    uniqueId={storedUser?.uniqueId}
+
+                    userId={storedUser?._id}
+
+                  />
                 </div>
               </div>
             </div>
@@ -1014,7 +1020,13 @@ export default function EditProfile() {
                 {Icons.qr}
                 <span style={{ fontSize: "12px", color: "#64748b", fontWeight: "600" }}>Public Profile QR</span>
               </div>
-              <ProfileQRCode uniqueId={storedUser?.uniqueId} />
+              <ProfileQRCode
+
+                uniqueId={storedUser?.uniqueId}
+
+                userId={storedUser?._id}
+
+              />
             </div>
 
           </div>
