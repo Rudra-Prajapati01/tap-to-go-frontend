@@ -1,314 +1,678 @@
-import { useNavigate } from "react-router-dom";
+import {
+  Home,
+  User,
+  Bell,
+  BarChart3,
+  Settings,
+  QrCode,
+  Package,
+  Users,
+  Menu,
+  X,
+} from "lucide-react";
 
-const Navbar = () => {
+import {
+  NavLink,
+  useNavigate,
+} from "react-router-dom";
 
-  const navigate = useNavigate();
+import {
+  useEffect,
+  useState,
+} from "react";
 
-  const isMobile =
-    window.innerWidth < 768;
+const DashboardLayout = ({
+  children,
+}) => {
+
+  const navigate =
+    useNavigate();
+
+  const [mobileMenu,
+    setMobileMenu] =
+    useState(false);
+
+  const [notifications] =
+    useState([
+      {
+        id: 1,
+        text:
+          "New lead received 🚀",
+      },
+    ]);
+
+  useEffect(() => {
+
+    const closeMenu = () => {
+
+      if (
+        window.innerWidth > 900
+      ) {
+        setMobileMenu(false);
+      }
+    };
+
+    window.addEventListener(
+      "resize",
+      closeMenu
+    );
+
+    return () =>
+      window.removeEventListener(
+        "resize",
+        closeMenu
+      );
+
+  }, []);
+
+  const navItems = [
+
+    {
+      name: "Home",
+      icon: Home,
+      path: "/dashboard",
+    },
+
+    {
+      name: "Profile",
+      icon: User,
+      path:
+        "/dashboard/profile",
+    },
+
+    {
+      name: "Products",
+      icon: Package,
+      path:
+        "/dashboard/products-services",
+    },
+
+    {
+      name: "Leads",
+      icon: Users,
+      path:
+        "/dashboard/leads",
+    },
+
+    {
+      name: "QR",
+      icon: QrCode,
+      path:
+        "/dashboard/activate-tag",
+    },
+
+    {
+      name: "Analytics",
+      icon: BarChart3,
+      path:
+        "/dashboard/analytics",
+    },
+
+    {
+      name: "Settings",
+      icon: Settings,
+      path:
+        "/dashboard/settings",
+    },
+  ];
 
   return (
 
-    <nav
-      style={{
-        position: "fixed",
+    <>
+      <style>{`
 
-        top: 0,
+        *{
+          box-sizing:border-box;
+        }
 
-        left: 0,
+        body{
+          margin:0;
+          background:#faf7ff;
+          font-family:
+            Inter,
+            sans-serif;
+        }
 
-        width: "100%",
+        .jt-layout{
+          display:flex;
+          min-height:100vh;
+        }
 
-        height: isMobile
-          ? "68px"
-          : "74px",
+        /* SIDEBAR */
 
-        padding: isMobile
-          ? "0 20px"
-          : "0 6%",
+        .jt-sidebar{
+          width:260px;
+          background:
+            rgba(255,255,255,0.92);
 
-        display: "flex",
+          backdrop-filter:
+            blur(18px);
 
-        alignItems: "center",
+          border-right:
+            1px solid #eee;
 
-        justifyContent: "space-between",
+          padding:24px 18px;
 
-        background:
-          "rgba(255,255,255,0.88)",
+          position:fixed;
+          left:0;
+          top:0;
+          bottom:0;
+          z-index:999;
+          transition:0.3s;
+        }
 
-        backdropFilter:
-          "blur(18px)",
+        .jt-logo{
+          display:flex;
+          align-items:center;
+          gap:12px;
+          margin-bottom:40px;
+        }
 
-        borderBottom:
-          "1px solid rgba(97,85,166,0.08)",
+        .jt-logo-icon{
+          width:44px;
+          height:44px;
+          border-radius:16px;
 
-        zIndex: 999,
+          background:
+            linear-gradient(
+              135deg,
+              #7c3aed,
+              #9333ea
+            );
 
-        boxSizing: "border-box",
-      }}
-    >
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          color:#fff;
+          font-size:20px;
+          font-weight:800;
 
-      {/* LOGO */}
+          box-shadow:
+            0 12px 28px
+            rgba(124,58,237,0.25);
+        }
 
-      <div
-        style={{
-          display: "flex",
+        .jt-logo-text{
+          font-size:30px;
+          font-weight:800;
+          color:#7c3aed;
+        }
 
-          alignItems: "center",
+        .jt-nav{
+          display:flex;
+          flex-direction:column;
+          gap:10px;
+        }
 
-          gap: isMobile
-            ? "10px"
-            : "12px",
+        .jt-link{
+          height:58px;
+          border-radius:18px;
+          display:flex;
+          align-items:center;
+          gap:14px;
+          padding:0 18px;
+          text-decoration:none;
+          color:#64748b;
+          font-weight:700;
+          transition:0.25s;
+        }
 
-          cursor: "pointer",
+        .jt-link:hover{
+          background:#f5f3ff;
+          color:#7c3aed;
+          transform:translateX(4px);
+        }
 
-          flexShrink: 0,
-        }}
-      >
+        .jt-link.active{
+          background:
+            linear-gradient(
+              135deg,
+              #ede9fe,
+              #f3e8ff
+            );
 
-        <div
-          style={{
-            width: isMobile
-              ? "38px"
-              : "42px",
+          color:#7c3aed;
+        }
 
-            height: isMobile
-              ? "38px"
-              : "42px",
+        .jt-link svg{
+          width:22px;
+          height:22px;
+        }
 
-            borderRadius: "14px",
+        /* MAIN */
+
+        .jt-main{
+          flex:1;
+          margin-left:260px;
+          min-height:100vh;
+        }
+
+        /* TOPBAR */
+
+        .jt-topbar{
+          height:84px;
+          background:
+            rgba(255,255,255,0.82);
+
+          backdrop-filter:
+            blur(18px);
+
+          border-bottom:
+            1px solid #eee;
+
+          display:flex;
+          align-items:center;
+          justify-content:flex-end;
+
+          padding:0 28px;
+
+          position:sticky;
+          top:0;
+          z-index:100;
+        }
+
+        .jt-top-actions{
+          display:flex;
+          align-items:center;
+          gap:16px;
+        }
+
+        .jt-notify{
+          width:52px;
+          height:52px;
+          border-radius:16px;
+          border:none;
+          background:#fff;
+          position:relative;
+          cursor:pointer;
+          color:#7c3aed;
+
+          display:flex;
+          align-items:center;
+          justify-content:center;
+
+          box-shadow:
+            0 8px 20px
+            rgba(15,23,42,0.06);
+        }
+
+        .jt-badge{
+          position:absolute;
+          top:8px;
+          right:8px;
+
+          width:18px;
+          height:18px;
+
+          border-radius:50%;
+
+          background:#ef4444;
+          color:#fff;
+
+          font-size:11px;
+          font-weight:700;
+
+          display:flex;
+          align-items:center;
+          justify-content:center;
+        }
+
+        .jt-avatar{
+          width:52px;
+          height:52px;
+          border-radius:18px;
+
+          background:
+            linear-gradient(
+              135deg,
+              #7c3aed,
+              #9333ea
+            );
+
+          color:#fff;
+          font-weight:800;
+
+          display:flex;
+          align-items:center;
+          justify-content:center;
+
+          box-shadow:
+            0 10px 28px
+            rgba(124,58,237,0.25);
+        }
+
+        .jt-content{
+          padding:28px;
+        }
+
+        /* MOBILE TOPBAR */
+
+        .jt-mobile-top{
+          display:none;
+        }
+
+        /* MOBILE NAV */
+
+        .jt-mobile-nav{
+          display:none;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px){
+
+          .jt-sidebar{
+            left:
+              ${mobileMenu
+                ? "0"
+                : "-280px"};
+          }
+
+          .jt-main{
+            margin-left:0;
+          }
+
+          .jt-topbar{
+            display:none;
+          }
+
+          .jt-mobile-top{
+            height:74px;
+            background:#fff;
+            padding:0 18px;
+
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+
+            position:sticky;
+            top:0;
+            z-index:999;
+
+            border-bottom:
+              1px solid #eee;
+          }
+
+          .jt-mobile-left{
+            display:flex;
+            align-items:center;
+            gap:14px;
+          }
+
+          .jt-menu-btn{
+            width:46px;
+            height:46px;
+            border:none;
+            border-radius:16px;
+            background:#fff;
+            color:#111827;
+            cursor:pointer;
+
+            box-shadow:
+              0 8px 20px
+              rgba(15,23,42,0.08);
+          }
+
+          .jt-mobile-nav{
+            position:fixed;
+            bottom:18px;
+            left:50%;
+            transform:translateX(-50%);
+
+            width:92%;
+            height:78px;
 
             background:
-              "linear-gradient(135deg,#6155A6,#A685E2)",
+              rgba(255,255,255,0.95);
 
-            display: "flex",
+            backdrop-filter:
+              blur(20px);
 
-            alignItems: "center",
+            border-radius:28px;
 
-            justifyContent: "center",
+            display:flex;
+            align-items:center;
+            justify-content:space-around;
 
-            color: "#fff",
+            z-index:999;
 
-            fontWeight: "800",
+            box-shadow:
+              0 20px 40px
+              rgba(15,23,42,0.12);
+          }
 
-            fontSize: isMobile
-              ? "18px"
-              : "20px",
+          .jt-mobile-link{
+            width:54px;
+            height:54px;
 
-            boxShadow:
-              "0 8px 25px rgba(97,85,166,0.35)",
-          }}
-        >
-          J
-        </div>
+            border-radius:18px;
 
-        <h1
-          style={{
-            fontSize: isMobile
-              ? "18px"
-              : "24px",
+            display:flex;
+            align-items:center;
+            justify-content:center;
 
-            fontWeight: "800",
+            color:#64748b;
 
-            color: "#3E3276",
+            transition:0.25s;
+          }
 
-            fontFamily: "sans-serif",
+          .jt-mobile-link.active{
+            background:
+              linear-gradient(
+                135deg,
+                #ede9fe,
+                #f3e8ff
+              );
 
-            margin: 0,
+            color:#7c3aed;
+          }
 
-            whiteSpace: "nowrap",
-          }}
-        >
-          Jio Tap
-        </h1>
+          .jt-content{
+            padding:
+              18px 14px 110px;
+          }
 
-      </div>
+        }
 
-      {/* NAV LINKS */}
+      `}</style>
 
-      {!isMobile && (
+      <div className="jt-layout">
 
-        <div
-          style={{
-            display: "flex",
+        {/* SIDEBAR */}
 
-            alignItems: "center",
+        <aside className="jt-sidebar">
 
-            gap: "36px",
-          }}
-        >
+          <div className="jt-logo">
 
-          {[
-            "Products",
-            "Features",
-            "Teams & Business",
-            "Company",
-          ].map((item) => (
+            <div className="jt-logo-icon">
+              ⚡
+            </div>
 
-            <span
-              key={item}
+            <div className="jt-logo-text">
+              Jio Tap
+            </div>
 
+          </div>
+
+          <div className="jt-nav">
+
+            {navItems.map(
+              (item) => {
+
+                const Icon =
+                  item.icon;
+
+                return (
+
+                  <NavLink
+                    key={item.name}
+                    to={item.path}
+                    className={({
+                      isActive,
+                    }) =>
+
+                      isActive
+                        ? "jt-link active"
+                        : "jt-link"
+                    }
+                  >
+
+                    <Icon />
+
+                    <span>
+                      {item.name}
+                    </span>
+
+                  </NavLink>
+                );
+              }
+            )}
+
+          </div>
+
+        </aside>
+
+        {/* MAIN */}
+
+        <main className="jt-main">
+
+          {/* DESKTOP TOPBAR */}
+
+          <div className="jt-topbar">
+
+            <div className="jt-top-actions">
+
+              <button
+                className="jt-notify"
+              >
+
+                <Bell size={22} />
+
+                <div className="jt-badge">
+                  {
+                    notifications.length
+                  }
+                </div>
+
+              </button>
+
+              <div className="jt-avatar">
+                J
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* MOBILE TOPBAR */}
+
+          <div className="jt-mobile-top">
+
+            <div className="jt-mobile-left">
+
+              <button
+                className="jt-menu-btn"
+                onClick={() =>
+                  setMobileMenu(
+                    !mobileMenu
+                  )
+                }
+              >
+
+                {mobileMenu
+                  ? <X />
+                  : <Menu />
+                }
+
+              </button>
+
+            </div>
+
+            <div
               style={{
-                fontSize: "15px",
-
-                fontWeight: "600",
-
-                color: "#555",
-
-                cursor: "pointer",
-
-                transition: "0.3s",
-              }}
-
-              onMouseEnter={(e) => {
-
-                e.target.style.color =
-                  "#6155A6";
-              }}
-
-              onMouseLeave={(e) => {
-
-                e.target.style.color =
-                  "#555";
+                display:"flex",
+                alignItems:"center",
+                gap:"12px",
               }}
             >
-              {item}
-            </span>
 
-          ))}
+              <button
+                className="jt-notify"
+                style={{
+                  width:"46px",
+                  height:"46px",
+                }}
+              >
+
+                <Bell size={20} />
+
+                <div className="jt-badge">
+                  {
+                    notifications.length
+                  }
+                </div>
+
+              </button>
+
+              <div
+                className="jt-avatar"
+                style={{
+                  width:"46px",
+                  height:"46px",
+                }}
+              >
+                J
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* CONTENT */}
+
+          <div className="jt-content">
+            {children}
+          </div>
+
+        </main>
+
+        {/* MOBILE BOTTOM NAV */}
+
+        <div className="jt-mobile-nav">
+
+          {navItems
+            .slice(0,5)
+            .map((item) => {
+
+              const Icon =
+                item.icon;
+
+              return (
+
+                <NavLink
+                  key={item.name}
+                  to={item.path}
+                  className={({
+                    isActive,
+                  }) =>
+
+                    isActive
+                      ? "jt-mobile-link active"
+                      : "jt-mobile-link"
+                  }
+                >
+
+                  <Icon size={24} />
+
+                </NavLink>
+              );
+            })}
 
         </div>
-      )}
-
-      {/* BUTTONS */}
-
-      <div
-        style={{
-          display: "flex",
-
-          alignItems: "center",
-
-          gap: isMobile
-            ? "10px"
-            : "14px",
-
-          flexShrink: 0,
-        }}
-      >
-
-        {/* LOGIN */}
-
-        <button
-          onClick={() =>
-            navigate("/login")
-          }
-
-          style={{
-            padding: isMobile
-              ? "10px 16px"
-              : "12px 24px",
-
-            borderRadius: "14px",
-
-            border:
-              "2px solid #6155A6",
-
-            background: "#fff",
-
-            color: "#6155A6",
-
-            fontSize: isMobile
-              ? "13px"
-              : "14px",
-
-            fontWeight: "700",
-
-            cursor: "pointer",
-
-            transition: "0.3s",
-
-            whiteSpace: "nowrap",
-          }}
-
-          onMouseEnter={(e) => {
-
-            e.target.style.background =
-              "#6155A6";
-
-            e.target.style.color =
-              "#fff";
-          }}
-
-          onMouseLeave={(e) => {
-
-            e.target.style.background =
-              "#fff";
-
-            e.target.style.color =
-              "#6155A6";
-          }}
-        >
-          Login
-        </button>
-
-        {/* GET STARTED */}
-
-        <button
-          onClick={() =>
-            navigate("/register")
-          }
-
-          style={{
-            padding: isMobile
-              ? "10px 16px"
-              : "12px 24px",
-
-            borderRadius: "14px",
-
-            border: "none",
-
-            background:
-              "linear-gradient(135deg,#6155A6,#A685E2)",
-
-            color: "#fff",
-
-            fontSize: isMobile
-              ? "13px"
-              : "14px",
-
-            fontWeight: "700",
-
-            cursor: "pointer",
-
-            boxShadow:
-              "0 10px 28px rgba(97,85,166,0.35)",
-
-            transition: "0.3s",
-
-            whiteSpace: "nowrap",
-          }}
-
-          onMouseEnter={(e) => {
-
-            e.target.style.transform =
-              "translateY(-2px)";
-          }}
-
-          onMouseLeave={(e) => {
-
-            e.target.style.transform =
-              "translateY(0px)";
-          }}
-        >
-          {isMobile
-            ? "Start"
-            : "Get Started →"}
-        </button>
 
       </div>
-
-    </nav>
+    </>
   );
 };
 
-export default Navbar;
+export default DashboardLayout;

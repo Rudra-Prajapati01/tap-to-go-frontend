@@ -12,9 +12,7 @@ const inputStyle = {
   outline: "none",
   fontSize: "14px",
   fontFamily: "inherit",
-
   color: "inherit",
-
   background: "#f8fafc",
   transition: "border-color 0.2s",
 };
@@ -82,7 +80,6 @@ const tabs = [
 const DEFAULT_COVER = "linear-gradient(135deg,#667eea,#764ba2,#f093fb)";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
-/** Returns the correct cover background value (image takes priority). */
 const getCoverBg = (coverImage, coverTheme) => {
   if (coverImage && !coverImage.startsWith("blob:")) return `url(${coverImage}) center/cover no-repeat`;
   if (coverImage && coverImage.startsWith("blob:")) return `url(${coverImage}) center/cover no-repeat`;
@@ -90,7 +87,6 @@ const getCoverBg = (coverImage, coverTheme) => {
   return DEFAULT_COVER;
 };
 
-/** Returns true if a URL is a local blob preview (should not be persisted). */
 const isBlob = (url) => typeof url === "string" && url.startsWith("blob:");
 
 // ── Main Component ───────────────────────────────────────────────────────────
@@ -103,8 +99,8 @@ export default function EditProfile() {
   const [saved, setSaved] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showPreview, setShowPreview] = useState(false);
 
-  // Read user once on mount
   const storedUser = (() => {
     try { return JSON.parse(localStorage.getItem("user")) || {}; }
     catch { return {}; }
@@ -138,10 +134,8 @@ export default function EditProfile() {
     facebook: storedUser.facebook || "",
     twitter: storedUser.twitter || "",
     whatsapp: storedUser.whatsapp || "",
-
     leadCapture: storedUser.leadCapture || {
       enabled: true,
-
       fields: {
         name: true,
         email: true,
@@ -150,7 +144,6 @@ export default function EditProfile() {
         message: false,
       },
     },
-
     theme: {
       profileTheme: storedUser.theme?.profileTheme || "#7c3aed",
       backgroundColor: storedUser.theme?.backgroundColor || "#ffffff",
@@ -160,131 +153,52 @@ export default function EditProfile() {
       fontFamily: storedUser.theme?.fontFamily || "Poppins",
       cardView: storedUser.theme?.cardView || "left",
     },
-
   });
 
-  // Flat setter
   const set = useCallback((k, v) => setForm(f => ({ ...f, [k]: v })), []);
-
-  // Theme setter
   const setTheme = useCallback((k, v) =>
     setForm(f => ({ ...f, theme: { ...f.theme, [k]: v } })), []);
 
-  // ── Upload helper ──────────────────────────────────────────────────────────
   const uploadImage = useCallback(async (file) => {
-
     try {
-
       const formData = new FormData();
-
-      formData.append(
-        "image",
-        file
-      );
-
-      const res = await fetch(
-
-        `${import.meta.env.VITE_API_URL}/api/upload/profile`,
-
-        {
-          method: "POST",
-
-          body: formData,
-        }
-      );
-
-      const data =
-        await res.json();
-
+      formData.append("image", file);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/upload/profile`, {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
       return data?.imageUrl || "";
-
     } catch (err) {
-
-      console.error(
-        "Upload error:",
-        err
-      );
-
+      console.error("Upload error:", err);
       return "";
     }
-
   }, []);
 
-  /**
-   * Generic image field handler:
-   * 1. Shows local blob preview immediately.
-   * 2. Uploads to Cloudinary.
-   * 3. Replaces blob with real URL (or clears on failure).
-   */
-  const handleImageField =
-    useCallback(
+  const handleImageField = useCallback(async (file, fieldName) => {
+    if (!file) return;
+    try {
+      const blobUrl = URL.createObjectURL(file);
+      setForm((f) => ({ ...f, [fieldName]: blobUrl }));
+      const realUrl = await uploadImage(file);
+      if (realUrl) {
+        setForm((f) => ({ ...f, [fieldName]: realUrl }));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [uploadImage]);
 
-      async (
-        file,
-        fieldName
-      ) => {
-
-        if (!file) return;
-
-        try {
-
-          // INSTANT PREVIEW
-          const blobUrl =
-            URL.createObjectURL(file);
-
-          setForm((f) => ({
-
-            ...f,
-
-            [fieldName]:
-              blobUrl,
-
-          }));
-
-
-          // REAL UPLOAD
-          const realUrl =
-            await uploadImage(file);
-
-
-          // SAVE CLOUDINARY URL
-          if (realUrl) {
-
-            setForm((f) => ({
-
-              ...f,
-
-              [fieldName]:
-                realUrl,
-
-            }));
-          }
-
-        } catch (error) {
-
-          console.log(error);
-        }
-
-      },
-
-      [uploadImage]
-    );
-
-  // ── Save handler ───────────────────────────────────────────────────────────
   const handleSave = useCallback(async () => {
     if (loading) return;
     try {
       setLoading(true);
       setError(null);
-
       const user = (() => {
         try { return JSON.parse(localStorage.getItem("user")) || {}; }
         catch { return {}; }
       })();
-
       if (!user?._id) { setError("User not found. Please log in again."); return; }
-
-      // Sanitise: never persist blob URLs
       const sanitised = {
         ...form,
         profileImage: isBlob(form.profileImage) ? storedUser.profileImage || "" : form.profileImage,
@@ -292,16 +206,12 @@ export default function EditProfile() {
         logoImage: isBlob(form.logoImage) ? storedUser.logoImage || "" : form.logoImage,
         name: `${form.firstName || ""} ${form.lastName || ""}`.trim(),
       };
-
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/auth/update-profile/${user._id}`,
         { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(sanitised) }
       );
-
       if (!response.ok) throw new Error(`Server responded with ${response.status}`);
-
       const data = await response.json();
-
       setForm(prev => ({
         ...prev,
         ...data,
@@ -312,7 +222,6 @@ export default function EditProfile() {
         firstName: data.name?.split(" ")[0] || "",
         lastName: data.name?.split(" ").slice(1).join(" ") || "",
       }));
-
       localStorage.setItem("user", JSON.stringify({ ...user, ...data }));
       setSaved(true);
       setTimeout(() => setSaved(false), 2500);
@@ -325,51 +234,23 @@ export default function EditProfile() {
   }, [form, loading, storedUser]);
 
   const downloadVCF = () => {
-
-    const vcf = `BEGIN:VCARD
-VERSION:3.0
-FN:${form.firstName} ${form.lastName}
-ORG:${form.companyName}
-TITLE:${form.jobTitle}
-TEL:${form.phone}
-EMAIL:${form.email}
-URL:${form.website}
-NOTE:${form.bio}
-END:VCARD`;
-
-    const blob = new Blob(
-      [vcf],
-      { type: "text/vcard" }
-    );
-
-    const url =
-      window.URL.createObjectURL(blob);
-
-    const link =
-      document.createElement("a");
-
+    const vcf = `BEGIN:VCARD\nVERSION:3.0\nFN:${form.firstName} ${form.lastName}\nORG:${form.companyName}\nTITLE:${form.jobTitle}\nTEL:${form.phone}\nEMAIL:${form.email}\nURL:${form.website}\nNOTE:${form.bio}\nEND:VCARD`;
+    const blob = new Blob([vcf], { type: "text/vcard" });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
     link.href = url;
-
-    link.download =
-      `${form.firstName || "contact"}.vcf`;
-
+    link.download = `${form.firstName || "contact"}.vcf`;
     document.body.appendChild(link);
-
     link.click();
-
     document.body.removeChild(link);
-
     window.URL.revokeObjectURL(url);
   };
 
-  // ── Derived layout flags ───────────────────────────────────────────────────
   const { theme } = form;
   const isCenter = theme.cardView === "center";
   const isPortrait = theme.cardView === "portrait";
-
   const coverBg = getCoverBg(form.coverImage, form.coverTheme);
 
-  // Dynamic contact pill style
   const pillStyle = {
     background: theme.backgroundColor,
     padding: "9px 12px",
@@ -381,6 +262,7 @@ END:VCARD`;
     gap: "8px",
     border: `1px solid ${theme.buttonColor}30`,
     transition: "all 0.2s",
+    minWidth: 0,
   };
 
   const bioMax = 250;
@@ -389,20 +271,27 @@ END:VCARD`;
   // ── My Card Tab ─────────────────────────────────────────────────────────────
   const myCardTab = (
     <div style={{ display: "flex", flexDirection: "column", gap: "22px" }}>
-
       {/* Cover image */}
       <div>
         <label style={labelStyle}>Cover Image</label>
         <div
           onClick={() => coverRef.current?.click()}
           style={{
-            height: "160px", borderRadius: "18px", cursor: "pointer",
+            height: "140px",
+            borderRadius: "16px",
+            cursor: "pointer",
             background: coverBg,
-            display: "flex", alignItems: "center", justifyContent: "center",
-            position: "relative", overflow: "hidden", transition: "opacity 0.2s",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            position: "relative",
+            overflow: "hidden",
+            transition: "opacity 0.2s",
+            width: "100%",
           }}
         >
-          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.18)", opacity: 0, transition: "opacity 0.2s" }}
+          <div
+            style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.18)", opacity: 0, transition: "opacity 0.2s" }}
             onMouseEnter={e => e.currentTarget.style.opacity = "1"}
             onMouseLeave={e => e.currentTarget.style.opacity = "0"}
           >
@@ -416,14 +305,14 @@ END:VCARD`;
       </div>
 
       {/* Profile photo + Logo + Name row */}
-      <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
+      <div className="media-name-row" style={{ display: "flex", gap: "16px", flexWrap: "wrap", alignItems: "flex-start" }}>
 
         {/* Profile photo */}
         <div style={fieldWrap}>
           <label style={labelStyle}>Profile Photo</label>
           <div
             onClick={() => fileRef.current?.click()}
-            style={{ width: "90px", height: "90px", borderRadius: "16px", overflow: "hidden", cursor: "pointer", position: "relative", flexShrink: 0, border: "3px solid #fff", boxShadow: "0 4px 16px rgba(99,102,241,0.15)", background: "#f3f4f6" }}
+            style={{ width: "82px", height: "82px", borderRadius: "16px", overflow: "hidden", cursor: "pointer", position: "relative", flexShrink: 0, border: "3px solid #fff", boxShadow: "0 4px 16px rgba(99,102,241,0.15)", background: "#f3f4f6" }}
           >
             {form.profileImage
               ? <img src={form.profileImage} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
@@ -440,7 +329,7 @@ END:VCARD`;
           <label style={labelStyle}>Company Logo</label>
           <div
             onClick={() => logoRef.current?.click()}
-            style={{ width: "90px", height: "90px", borderRadius: "16px", cursor: "pointer", border: "2px dashed #c7d2fe", background: "#f5f3ff", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "4px", transition: "border-color 0.2s", position: "relative", overflow: "hidden" }}
+            style={{ width: "82px", height: "82px", borderRadius: "16px", cursor: "pointer", border: "2px dashed #c7d2fe", background: "#f5f3ff", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "4px", transition: "border-color 0.2s", position: "relative", overflow: "hidden", flexShrink: 0 }}
             onMouseEnter={e => e.currentTarget.style.borderColor = "#7c3aed"}
             onMouseLeave={e => e.currentTarget.style.borderColor = "#c7d2fe"}
           >
@@ -457,14 +346,14 @@ END:VCARD`;
         </div>
 
         {/* First + Last Name */}
-        <div style={{ flex: 1, minWidth: "180px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px", alignContent: "start" }}>
+        <div className="name-fields" style={{ flex: 1, minWidth: "160px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", alignContent: "start" }}>
           <Field icon={Icons.user} label="First Name" name="firstName" placeholder="First name" form={form} set={set} />
           <Field icon={Icons.user} label="Last Name" name="lastName" placeholder="Last name" form={form} set={set} />
         </div>
       </div>
 
       {/* Detail grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))", gap: "16px" }}>
+      <div className="detail-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "14px" }}>
         <Field icon={Icons.at} label="Username" name="username" placeholder="yourhandle" form={form} set={set} hint="taplink.cc/yourhandle" />
         <Field icon={Icons.mail} label="Email" name="email" placeholder="you@example.com" type="email" form={form} set={set} />
         <Field icon={Icons.brief} label="Job Title" name="jobTitle" placeholder="e.g. Director" form={form} set={set} />
@@ -473,81 +362,35 @@ END:VCARD`;
       </div>
 
       {/* Bio */}
-      {/* Bio */}
       <div style={fieldWrap}>
-
-        <label style={labelStyle}>
-          Bio
-        </label>
-
+        <label style={labelStyle}>Bio</label>
         <textarea
-
           placeholder="Write something about yourself..."
-
           value={form.bio || ""}
-
-          onChange={(e) =>
-            set("bio", e.target.value)
-          }
-
+          onChange={(e) => set("bio", e.target.value)}
           maxLength={250}
-
           style={{
             width: "100%",
-
-            minHeight: "120px",
-
+            minHeight: "110px",
             padding: "14px",
-
             borderRadius: "14px",
-
             border: "1.5px solid #e2e8f0",
-
             outline: "none",
-
-            resize: "none",
-
+            resize: "vertical",
             fontSize: "14px",
-
             fontFamily: "inherit",
-
             background: "#f8fafc",
-
             color: "inherit",
-
             lineHeight: "1.7",
-
             transition: "0.2s",
+            boxSizing: "border-box",
           }}
-
-          onFocus={(e) =>
-          (e.target.style.borderColor =
-            "#7c3aed")
-          }
-
-          onBlur={(e) =>
-          (e.target.style.borderColor =
-            "#e2e8f0")
-          }
+          onFocus={(e) => (e.target.style.borderColor = "#7c3aed")}
+          onBlur={(e) => (e.target.style.borderColor = "#e2e8f0")}
         />
-
-        <span
-          style={{
-            marginTop: "6px",
-
-            fontSize: "12px",
-
-            color:
-              bioLeft < 20
-                ? "#ef4444"
-                : "#94a3b8",
-
-            textAlign: "right",
-          }}
-        >
+        <span style={{ marginTop: "6px", fontSize: "12px", color: bioLeft < 20 ? "#ef4444" : "#94a3b8", textAlign: "right" }}>
           {bioLeft} characters left
         </span>
-
       </div>
     </div>
   );
@@ -558,25 +401,11 @@ END:VCARD`;
       <p style={{ margin: 0, fontSize: "13px", color: "#64748b" }}>Add your social links to display them on your card.</p>
       {[
         { name: "instagram", label: "Instagram", placeholder: "instagram.com/yourhandle", color: "#E1306C" },
-
         { name: "linkedin", label: "LinkedIn", placeholder: "linkedin.com/in/yourprofile", color: "#0A66C2" },
-
         { name: "github", label: "GitHub", placeholder: "github.com/yourusername", color: "#333333" },
-
         { name: "twitter", label: "Twitter/X", placeholder: "twitter.com/yourhandle", color: "#1DA1F2" },
-
         { name: "youtube", label: "YouTube", placeholder: "youtube.com/@channel", color: "#FF0000" },
-
-        {
-          name: "facebook",
-
-          label: "Facebook",
-
-          placeholder: "facebook.com/yourprofile",
-
-          color: "#1877F2"
-        },
-
+        { name: "facebook", label: "Facebook", placeholder: "facebook.com/yourprofile", color: "#1877F2" },
         { name: "whatsapp", label: "WhatsApp", placeholder: "+91 XXXXX XXXXX", color: "#25D366" },
       ].map(({ name, label, placeholder, color }) => (
         <div key={name} style={fieldWrap}>
@@ -607,11 +436,11 @@ END:VCARD`;
       <Field icon={Icons.building} label="Company Name" name="companyName" placeholder="Your company name" form={form} set={set} />
       <Field icon={Icons.phone} label="Company Contact" name="companyContact" placeholder="+91 XXXXX XXXXX" type="tel" form={form} set={set} />
       <Field icon={Icons.pin} label="Street Address" name="streetAddress" placeholder="Enter street address" form={form} set={set} />
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+      <div className="two-col-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
         <Field icon={Icons.pin} label="City" name="city" placeholder="City" form={form} set={set} />
         <Field icon={Icons.pin} label="State" name="state" placeholder="State" form={form} set={set} />
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+      <div className="two-col-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
         <Field icon={Icons.globe} label="Country" name="country" placeholder="Country" form={form} set={set} />
         <Field icon={Icons.pin} label="Postcode" name="postcode" placeholder="Postcode" form={form} set={set} />
       </div>
@@ -621,17 +450,16 @@ END:VCARD`;
 
   // ── Theme Tab ───────────────────────────────────────────────────────────────
   const themeTab = (
-    <div style={{ display: "flex", flexDirection: "column", gap: "28px" }}>
-
+    <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
       <div>
-        <h3 style={{ margin: 0, fontSize: "20px", fontWeight: "800", color: "#111827" }}>Profile Theme</h3>
-        <p style={{ marginTop: "6px", color: "#6b7280", fontSize: "14px" }}>Customize your digital business card appearance.</p>
+        <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "800", color: "#111827" }}>Profile Theme</h3>
+        <p style={{ marginTop: "6px", color: "#6b7280", fontSize: "14px", margin: "6px 0 0" }}>Customize your digital business card appearance.</p>
       </div>
 
       {/* Cover gradient presets */}
-      <div style={{ border: "1px solid #e5e7eb", borderRadius: "20px", padding: "24px", background: "#fff" }}>
-        <h4 style={{ margin: "0 0 16px", fontSize: "16px", fontWeight: "700", color: "#111827" }}>Cover Gradient</h4>
-        <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+      <div style={{ border: "1px solid #e5e7eb", borderRadius: "18px", padding: "20px", background: "#fff" }}>
+        <h4 style={{ margin: "0 0 16px", fontSize: "15px", fontWeight: "700", color: "#111827" }}>Cover Gradient</h4>
+        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
           {[
             { label: "Ocean", value: "linear-gradient(135deg,#667eea,#764ba2,#f093fb)" },
             { label: "Sunset", value: "linear-gradient(135deg,#f97316,#ec4899,#8b5cf6)" },
@@ -642,15 +470,14 @@ END:VCARD`;
           ].map(({ label, value }) => (
             <button
               key={value}
-              onClick={() => {
-                // Clear any uploaded cover image when picking a gradient
-                setForm(f => ({ ...f, coverTheme: value, coverImage: "" }));
-              }}
+              onClick={() => setForm(f => ({ ...f, coverTheme: value, coverImage: "" }))}
               title={label}
               style={{
-                width: "48px", height: "48px", borderRadius: "12px",
-                background: value, border: form.coverTheme === value && !form.coverImage ? "3px solid #111827" : "3px solid transparent",
+                width: "44px", height: "44px", borderRadius: "12px",
+                background: value,
+                border: form.coverTheme === value && !form.coverImage ? "3px solid #111827" : "3px solid transparent",
                 cursor: "pointer", boxShadow: "0 4px 10px rgba(0,0,0,0.12)", transition: "transform 0.15s",
+                flexShrink: 0,
               }}
               onMouseEnter={e => e.currentTarget.style.transform = "scale(1.1)"}
               onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
@@ -659,19 +486,20 @@ END:VCARD`;
         </div>
       </div>
 
-      {/* Profile accent colour presets */}
-      <div style={{ border: "1px solid #e5e7eb", borderRadius: "20px", padding: "24px", background: "#fff" }}>
-        <h4 style={{ margin: "0 0 16px", fontSize: "16px", fontWeight: "700", color: "#111827" }}>Accent Color</h4>
-        <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+      {/* Accent colour presets */}
+      <div style={{ border: "1px solid #e5e7eb", borderRadius: "18px", padding: "20px", background: "#fff" }}>
+        <h4 style={{ margin: "0 0 16px", fontSize: "15px", fontWeight: "700", color: "#111827" }}>Accent Color</h4>
+        <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
           {["#7c3aed", "#2563eb", "#dc2626", "#ea580c", "#16a34a", "#0891b2", "#db2777", "#000000"].map(color => (
             <button
               key={color}
               onClick={() => setForm(f => ({ ...f, theme: { ...f.theme, profileTheme: color, buttonColor: color } }))}
               style={{
-                width: "48px", height: "48px", borderRadius: "999px",
+                width: "44px", height: "44px", borderRadius: "999px",
                 border: theme.profileTheme === color ? "4px solid #111827" : "3px solid #fff",
                 background: color, cursor: "pointer",
                 boxShadow: "0 4px 12px rgba(0,0,0,0.12)", transition: "transform 0.15s",
+                flexShrink: 0,
               }}
               onMouseEnter={e => e.currentTarget.style.transform = "scale(1.1)"}
               onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
@@ -681,9 +509,9 @@ END:VCARD`;
       </div>
 
       {/* Fine-grained controls */}
-      <div style={{ border: "1px solid #e5e7eb", borderRadius: "20px", padding: "24px", background: "#fff" }}>
-        <h4 style={{ margin: "0 0 24px", fontSize: "16px", fontWeight: "700", color: "#111827" }}>Fine-tune Theme</h4>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))", gap: "24px" }}>
+      <div style={{ border: "1px solid #e5e7eb", borderRadius: "18px", padding: "20px", background: "#fff" }}>
+        <h4 style={{ margin: "0 0 20px", fontSize: "15px", fontWeight: "700", color: "#111827" }}>Fine-tune Theme</h4>
+        <div className="theme-fine-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "20px" }}>
           {[
             { label: "Background Color", key: "backgroundColor" },
             { label: "Button Color", key: "buttonColor" },
@@ -697,13 +525,13 @@ END:VCARD`;
                   type="color"
                   value={theme[key]}
                   onChange={e => setTheme(key, e.target.value)}
-                  style={{ width: "48px", height: "48px", border: "none", borderRadius: "12px", cursor: "pointer", flexShrink: 0 }}
+                  style={{ width: "44px", height: "44px", border: "none", borderRadius: "10px", cursor: "pointer", flexShrink: 0 }}
                 />
                 <input
                   type="text"
                   value={theme[key]}
                   onChange={e => setTheme(key, e.target.value)}
-                  style={{ flex: 1, padding: "10px 12px", borderRadius: "10px", border: "1.5px solid #e2e8f0", fontSize: "13px", fontFamily: "monospace", color: "#1e293b", outline: "none" }}
+                  style={{ flex: 1, minWidth: 0, padding: "10px 12px", borderRadius: "10px", border: "1.5px solid #e2e8f0", fontSize: "13px", fontFamily: "monospace", color: "#1e293b", outline: "none" }}
                   onFocus={e => (e.target.style.borderColor = "#7c3aed")}
                   onBlur={e => (e.target.style.borderColor = "#e2e8f0")}
                 />
@@ -717,7 +545,7 @@ END:VCARD`;
             <select
               value={theme.fontFamily}
               onChange={e => setTheme("fontFamily", e.target.value)}
-              style={{ width: "100%", padding: "14px", borderRadius: "14px", border: "1.5px solid #e5e7eb", fontSize: "14px", fontFamily: "inherit", outline: "none", cursor: "pointer" }}
+              style={{ width: "100%", padding: "12px 14px", borderRadius: "12px", border: "1.5px solid #e5e7eb", fontSize: "14px", fontFamily: "inherit", outline: "none", cursor: "pointer", background: "#f8fafc" }}
             >
               {["Poppins", "Inter", "DM Sans", "Montserrat", "Raleway", "Nunito"].map(f => (
                 <option key={f}>{f}</option>
@@ -728,17 +556,17 @@ END:VCARD`;
           {/* Card layout */}
           <div>
             <label style={labelStyle}>Card Layout</label>
-            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-              {["left", "center", "portrait"].map(view => (
+            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+              {["left", "portrait"].map(view => (
                 <button
                   key={view}
                   onClick={() => setTheme("cardView", view)}
                   style={{
-                    padding: "11px 18px", borderRadius: "12px", border: "none",
+                    padding: "10px 16px", borderRadius: "12px", border: "none",
                     background: theme.cardView === view ? theme.buttonColor : "#e5e7eb",
                     color: theme.cardView === view ? theme.buttonTextColor : "#374151",
                     fontWeight: "700", cursor: "pointer", textTransform: "capitalize",
-                    transition: "all 0.2s",
+                    transition: "all 0.2s", fontSize: "13px",
                   }}
                 >
                   {view}
@@ -753,145 +581,53 @@ END:VCARD`;
 
   // ── Lead Capture Tab ────────────────────────────────────────────────────────
   const leadFieldsList = [
-    {
-      key: "name",
-      label: "Name",
-      checked:
-        form.leadCapture?.fields?.name,
-    },
-
-    {
-      key: "email",
-      label: "Email",
-      checked:
-        form.leadCapture?.fields?.email,
-    },
-
-    {
-      key: "phone",
-      label: "Phone",
-      checked:
-        form.leadCapture?.fields?.phone,
-    },
-
-    {
-      key: "company",
-      label: "Company",
-      checked:
-        form.leadCapture?.fields?.company,
-    },
-
-    {
-      key: "message",
-      label: "Message",
-      checked:
-        form.leadCapture?.fields?.message,
-    },
+    { key: "name", label: "Name", checked: form.leadCapture?.fields?.name },
+    { key: "email", label: "Email", checked: form.leadCapture?.fields?.email },
+    { key: "phone", label: "Phone", checked: form.leadCapture?.fields?.phone },
+    { key: "company", label: "Company", checked: form.leadCapture?.fields?.company },
+    { key: "message", label: "Message", checked: form.leadCapture?.fields?.message },
   ];
 
   const toggleLeadField = (field) => {
-
     setForm((prev) => ({
-
       ...prev,
-
       leadCapture: {
-
         ...prev.leadCapture,
-
-        fields: {
-
-          ...prev.leadCapture.fields,
-
-          [field]:
-            !prev.leadCapture.fields[field],
-        },
+        fields: { ...prev.leadCapture.fields, [field]: !prev.leadCapture.fields[field] },
       },
     }));
   };
 
   const leadTab = (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-
-      <p
-        style={{
-          margin: 0,
-          fontSize: "13px",
-          color: "#64748b",
-        }}
-      >
-        Fields to collect from visitors on your card.
-      </p>
-
-      <div
-        style={{
-          padding: "12px 16px",
-          borderRadius: "12px",
-          background: "#eef2ff",
-          border: "1.5px solid #c7d2fe",
-          fontSize: "13px",
-          color: "#4f46e5",
-        }}
-      >
+      <p style={{ margin: 0, fontSize: "13px", color: "#64748b" }}>Fields to collect from visitors on your card.</p>
+      <div style={{ padding: "12px 16px", borderRadius: "12px", background: "#eef2ff", border: "1.5px solid #c7d2fe", fontSize: "13px", color: "#4f46e5", lineHeight: 1.5 }}>
         Lead capture lets visitors submit their contact info directly from your card page.
       </div>
-
       {leadFieldsList.map((field) => {
-
-        const checked =
-          form.leadCapture?.fields?.[field.key];
-
+        const checked = form.leadCapture?.fields?.[field.key];
         return (
           <label
             key={field.key}
             onClick={() => toggleLeadField(field.key)}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "12px",
-              cursor: "pointer",
-              userSelect: "none",
-            }}
+            style={{ display: "flex", alignItems: "center", gap: "12px", cursor: "pointer", userSelect: "none" }}
           >
-
             <div
               style={{
-                width: "24px",
-                height: "24px",
-                borderRadius: "7px",
+                width: "24px", height: "24px", borderRadius: "7px",
                 border: `2px solid ${checked ? theme.buttonColor : "#cbd5e1"}`,
                 background: checked ? theme.buttonColor : "#fff",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                transition: "0.2s",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                transition: "0.2s", flexShrink: 0,
               }}
             >
               {checked && (
-                <svg
-                  width="12"
-                  height="12"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#fff"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round">
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
               )}
             </div>
-
-            <span
-              style={{
-                fontSize: "14px",
-                color: "#334155",
-                fontWeight: "600",
-              }}
-            >
-              {field.label}
-            </span>
-
+            <span style={{ fontSize: "14px", color: "#334155", fontWeight: "600" }}>{field.label}</span>
           </label>
         );
       })}
@@ -902,22 +638,20 @@ END:VCARD`;
 
   // ── Card Preview ─────────────────────────────────────────────────────────────
   const cardPreview = (
-    <div style={{ borderRadius: "18px", overflow: "hidden", boxShadow: "0 8px 32px rgba(99,102,241,0.1)", border: "1px solid #f1f5f9" }}>
-
+    <div style={{ borderRadius: "16px", overflow: "hidden", boxShadow: "0 8px 32px rgba(99,102,241,0.1)", border: "1px solid #f1f5f9" }}>
       {/* Cover */}
-      <div style={{ height: isPortrait ? "140px" : "110px", background: coverBg, position: "relative", transition: "height 0.3s ease" }}>
+      <div style={{ height: isPortrait ? "130px" : "100px", background: coverBg, position: "relative", transition: "height 0.3s ease" }}>
         {form.logoImage && (
-          <div style={{ position: "absolute", top: "10px", right: "10px", width: "40px", height: "40px", borderRadius: "10px", background: "rgba(255,255,255,0.92)", padding: "4px", boxShadow: "0 2px 8px rgba(0,0,0,0.12)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ position: "absolute", top: "10px", right: "10px", width: "38px", height: "38px", borderRadius: "10px", background: "rgba(255,255,255,0.92)", padding: "4px", boxShadow: "0 2px 8px rgba(0,0,0,0.12)", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <img src={form.logoImage} alt="logo" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
           </div>
         )}
       </div>
-
       {/* Body */}
       <div
         style={{
           background: theme.backgroundColor,
-          padding: isPortrait ? "0 20px 24px" : "0 16px 18px",
+          padding: isPortrait ? "0 16px 20px" : "0 14px 16px",
           color: theme.textColor,
           fontFamily: theme.fontFamily,
           transition: "all 0.3s ease",
@@ -933,7 +667,7 @@ END:VCARD`;
             display: "flex",
             justifyContent: isPortrait ? "center" : "space-between",
             alignItems: "flex-end",
-            marginTop: isPortrait ? "10px" : "18px",
+            marginTop: isPortrait ? "10px" : "16px",
             marginBottom: "10px",
             width: "100%",
           }}
@@ -943,71 +677,65 @@ END:VCARD`;
               src={form.profileImage}
               alt=""
               style={{
-                width: isPortrait ? "80px" : "62px",
-                height: isPortrait ? "80px" : "62px",
-                borderRadius: isPortrait ? "50%" : "14px",
+                width: isPortrait ? "72px" : "56px",
+                height: isPortrait ? "72px" : "56px",
+                borderRadius: isPortrait ? "50%" : "12px",
                 objectFit: "cover",
                 border: "3px solid #fff",
                 boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
                 transition: "all 0.3s ease",
-
               }}
             />
           )}
           {!isPortrait && (
-            <button style={{ marginBottom: "4px", padding: "7px 14px", borderRadius: "10px", background: theme.buttonColor, color: theme.buttonTextColor, fontSize: "12px", fontWeight: "700", border: "none", cursor: "pointer", transition: "all 0.2s", fontFamily: theme.fontFamily }}>
+            <button style={{ marginBottom: "4px", padding: "6px 12px", borderRadius: "10px", background: theme.buttonColor, color: theme.buttonTextColor, fontSize: "11px", fontWeight: "700", border: "none", cursor: "pointer", transition: "all 0.2s", fontFamily: theme.fontFamily }}>
               Connect
             </button>
           )}
         </div>
 
-        {/* Portrait: Connect button below avatar */}
         {isPortrait && (
-          <button style={{ marginBottom: "10px", padding: "8px 22px", borderRadius: "10px", background: theme.buttonColor, color: theme.buttonTextColor, fontSize: "12px", fontWeight: "700", border: "none", cursor: "pointer", fontFamily: theme.fontFamily }}>
+          <button style={{ marginBottom: "10px", padding: "7px 20px", borderRadius: "10px", background: theme.buttonColor, color: theme.buttonTextColor, fontSize: "11px", fontWeight: "700", border: "none", cursor: "pointer", fontFamily: theme.fontFamily }}>
             Connect
           </button>
         )}
 
-        {/* Name + title */}
-        <h2 style={{ margin: "0 0 2px", fontSize: isPortrait ? "20px" : "17px", fontWeight: "800", color: theme.textColor, fontFamily: theme.fontFamily }}>
+        <h2 style={{ margin: "0 0 2px", fontSize: isPortrait ? "18px" : "15px", fontWeight: "800", color: theme.textColor, fontFamily: theme.fontFamily }}>
           {form.firstName} {form.lastName}
         </h2>
-        <p style={{ margin: "0 0 2px", fontSize: "12px", color: theme.profileTheme, fontWeight: "700", fontFamily: theme.fontFamily }}>
+        <p style={{ margin: "0 0 2px", fontSize: "11px", color: theme.profileTheme, fontWeight: "700", fontFamily: theme.fontFamily }}>
           {form.jobTitle}{form.companyName ? ` · ${form.companyName}` : ""}
         </p>
 
-        {/* Location */}
         {(form.city || form.state || form.country) && (
-          <p style={{ margin: "0 0 8px", fontSize: "11px", color: "#94a3b8", display: "flex", alignItems: "center", gap: "3px" }}>
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
+          <p style={{ margin: "0 0 8px", fontSize: "10px", color: "#94a3b8", display: "flex", alignItems: "center", gap: "3px" }}>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
             {[form.city, form.state, form.country].filter(Boolean).join(", ")}
           </p>
         )}
 
-        {/* Bio */}
         {form.bio && (
-          <p style={{ margin: "0 0 10px", fontSize: "12px", color: theme.textColor, lineHeight: 1.5, display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden", fontFamily: theme.fontFamily }}>
+          <p style={{ margin: "0 0 10px", fontSize: "11px", color: theme.textColor, lineHeight: 1.5, display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden", fontFamily: theme.fontFamily }}>
             {form.bio}
           </p>
         )}
 
-        {/* Contact pills */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "7px", width: "100%", alignItems: isCenter || isPortrait ? "center" : "flex-start" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "6px", width: "100%", alignItems: isCenter || isPortrait ? "center" : "flex-start" }}>
           {form.phone && (
-            <div style={pillStyle}>
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={theme.buttonColor} strokeWidth="2" strokeLinecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.7 11.6a19.79 19.79 0 01-3.07-8.67A2 2 0 012.6 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.59a16 16 0 006.5 6.5l.96-.96a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" /></svg>
-              <span style={{ color: theme.textColor }}>{form.phone}</span>
+            <div style={{ ...pillStyle, fontSize: "11px", padding: "7px 10px" }}>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={theme.buttonColor} strokeWidth="2" strokeLinecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.7 11.6a19.79 19.79 0 01-3.07-8.67A2 2 0 012.6 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.59a16 16 0 006.5 6.5l.96-.96a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" /></svg>
+              <span style={{ color: theme.textColor, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{form.phone}</span>
             </div>
           )}
           {form.email && (
-            <div style={pillStyle}>
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={theme.buttonColor} strokeWidth="2" strokeLinecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>
+            <div style={{ ...pillStyle, fontSize: "11px", padding: "7px 10px" }}>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={theme.buttonColor} strokeWidth="2" strokeLinecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>
               <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: theme.textColor }}>{form.email}</span>
             </div>
           )}
           {form.website && (
-            <div style={pillStyle}>
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={theme.buttonColor} strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" /></svg>
+            <div style={{ ...pillStyle, fontSize: "11px", padding: "7px 10px" }}>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={theme.buttonColor} strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" /></svg>
               <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: theme.textColor }}>{form.website}</span>
             </div>
           )}
@@ -1021,25 +749,102 @@ END:VCARD`;
     <>
       <style>{`
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        * { box-sizing: border-box; }
-        @media (max-width: 900px) {
-          .edit-grid { grid-template-columns: 1fr !important; }
-          .preview-sticky { position: static !important; }
-        }
-        @media (max-width: 480px) {
-          .name-row { grid-template-columns: 1fr !important; }
-          .tab-bar button { padding: 12px 12px !important; font-size: 12px !important; }
-        }
-        .tab-bar { scrollbar-width: none; }
+        *, *::before, *::after { box-sizing: border-box; }
+
+        /* ── Tab bar ── */
+        .tab-bar { scrollbar-width: none; -webkit-overflow-scrolling: touch; }
         .tab-bar::-webkit-scrollbar { display: none; }
+
+        /* ── Mobile preview overlay ── */
+        .mobile-preview-overlay {
+          display: none;
+        }
+        .mobile-preview-fab {
+          display: none;
+        }
+
+        /* ── Breakpoints ── */
+
+        /* ≤ 900px — stack columns */
+        @media (max-width: 900px) {
+          .edit-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .preview-col {
+            display: none !important;
+          }
+          .mobile-preview-fab {
+            display: flex !important;
+            position: fixed;
+            bottom: 24px;
+            right: 20px;
+            z-index: 200;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 18px;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 24px rgba(124,58,237,0.35);
+            font-family: inherit;
+          }
+          .mobile-preview-overlay {
+            display: block;
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            background: rgba(15,23,42,0.55);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            overflow-y: auto;
+          }
+          .mobile-preview-sheet {
+            background: #fff;
+            border-radius: 24px 24px 0 0;
+            padding: 20px 16px 40px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-height: 90vh;
+            overflow-y: auto;
+          }
+        }
+
+        /* ≤ 600px — tighten spacing */
+        @media (max-width: 600px) {
+          .page-header h1 { font-size: 22px !important; }
+          .page-padding { padding: 16px 14px !important; }
+          .tab-content-pad { padding: 18px 14px !important; }
+          .name-fields { grid-template-columns: 1fr !important; }
+          .two-col-grid { grid-template-columns: 1fr !important; }
+          .detail-grid { grid-template-columns: 1fr !important; }
+          .theme-fine-grid { grid-template-columns: 1fr !important; }
+          .action-row { flex-direction: column !important; }
+          .action-row button { width: 100% !important; }
+          .media-name-row { flex-direction: column !important; }
+          .media-name-row .name-fields { min-width: 100% !important; }
+          .tab-bar button { padding: 12px 14px !important; font-size: 12px !important; }
+        }
+
+        /* ≤ 380px — extra-small phones */
+        @media (max-width: 380px) {
+          .page-padding { padding: 12px 10px !important; }
+          .tab-content-pad { padding: 14px 10px !important; }
+          .tab-bar button { padding: 11px 10px !important; font-size: 11px !important; }
+        }
       `}</style>
 
-      <main style={{ flex: 1, minWidth: 0, fontFamily: `'${theme.fontFamily}','Segoe UI',sans-serif` }}>
-        <div style={{ padding: "28px 20px" }}>
+      <main style={{ flex: 1, minWidth: 0, maxWidth: "100%", overflowX: "hidden", fontFamily: `'${theme.fontFamily}','Segoe UI',sans-serif` }}>
+        <div className="page-padding" style={{ padding: "28px 20px" }}>
 
           {/* Page Header */}
-          <div style={{ marginBottom: "24px" }}>
-            <h1 style={{ margin: 0, fontSize: "28px", fontWeight: "800", color: "#1e293b", display: "flex", alignItems: "center", gap: "10px" }}>
+          <div className="page-header" style={{ marginBottom: "20px" }}>
+            <h1 style={{ margin: 0, fontSize: "26px", fontWeight: "800", color: "#1e293b", display: "flex", alignItems: "center", gap: "10px" }}>
               {Icons.edit} Edit Profile
             </h1>
             <p style={{ margin: "6px 0 0", color: "#64748b", fontSize: "14px" }}>Manage your digital business card.</p>
@@ -1050,7 +855,7 @@ END:VCARD`;
             <div style={{ marginBottom: "16px", padding: "12px 16px", borderRadius: "12px", background: "#fef2f2", border: "1.5px solid #fecaca", color: "#dc2626", fontSize: "13px", fontWeight: "600", display: "flex", alignItems: "center", gap: "8px" }}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
               {error}
-              <button onClick={() => setError(null)} style={{ marginLeft: "auto", background: "none", border: "none", color: "#dc2626", cursor: "pointer", fontWeight: "700", fontSize: "16px", padding: 0, lineHeight: 1 }}>×</button>
+              <button onClick={() => setError(null)} style={{ marginLeft: "auto", background: "none", border: "none", color: "#dc2626", cursor: "pointer", fontWeight: "700", fontSize: "18px", padding: 0, lineHeight: 1, flexShrink: 0 }}>×</button>
             </div>
           )}
 
@@ -1058,7 +863,7 @@ END:VCARD`;
           <div className="edit-grid" style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: "20px", alignItems: "start" }}>
 
             {/* ── LEFT: Form ── */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "14px", minWidth: 0 }}>
               <div style={{ background: "#fff", borderRadius: "20px", overflow: "hidden", border: "1.5px solid #f1f5f9", boxShadow: "0 2px 16px rgba(99,102,241,0.06)" }}>
 
                 {/* Tabs */}
@@ -1075,6 +880,7 @@ END:VCARD`;
                         color: activeTab === id ? theme.buttonColor : "#64748b",
                         fontWeight: "700", cursor: "pointer", fontFamily: "inherit",
                         fontSize: "13px", whiteSpace: "nowrap", transition: "all 0.15s",
+                        flexShrink: 0,
                       }}
                     >
                       {label}
@@ -1083,81 +889,70 @@ END:VCARD`;
                 </div>
 
                 {/* Tab content */}
-                <div style={{ padding: "24px" }}>{tabContent[activeTab]}</div>
+                <div className="tab-content-pad" style={{ padding: "22px" }}>{tabContent[activeTab]}</div>
               </div>
 
               {/* Action buttons */}
-              <div style={{ display: "flex", gap: "10px" }}>
+              <div className="action-row" style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                 <button
                   onClick={handleSave}
                   disabled={loading}
                   style={{
                     flex: 1,
-
+                    minWidth: "160px",
                     padding: "14px",
-
                     borderRadius: "14px",
-
                     border: "none",
-
                     background: saved
                       ? "#10b981"
                       : loading
                         ? "linear-gradient(135deg,#7c3aedcc,#a855f7cc)"
                         : "linear-gradient(135deg,#7c3aed,#a855f7)",
-
                     color: "#ffffff",
-
                     fontWeight: "700",
-
                     fontSize: "14px",
-
-                    cursor: loading
-                      ? "not-allowed"
-                      : "pointer",
-
+                    cursor: loading ? "not-allowed" : "pointer",
                     fontFamily: "inherit",
-
                     display: "flex",
-
                     alignItems: "center",
-
                     justifyContent: "center",
-
                     gap: "8px",
-
                     boxShadow: saved
                       ? "0 4px 16px rgba(16,185,129,0.25)"
                       : "0 4px 20px rgba(124,58,237,0.28)",
-
                     transition: "all 0.2s",
-
                     opacity: loading ? 0.85 : 1,
                   }}
                 >
-                  {saved
-                    ? <>{Icons.check} Saved!</>
-                    : loading
-                      ? <>{Icons.loader} Saving…</>
-                      : <>{Icons.save} Save Changes</>
-                  }
+                  {saved ? <>{Icons.check} Saved!</> : loading ? <>{Icons.loader} Saving…</> : <>{Icons.save} Save Changes</>}
+                </button>
+                <button
+                  onClick={() => window.location.reload()}
+                  style={{
+                    flex: "0 0 auto",
+                    padding: "14px 22px",
+                    borderRadius: "14px",
+                    border: "1.5px solid #e2e8f0",
+                    background: "#fff",
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    color: "#64748b",
+                    cursor: "pointer",
+                    fontFamily: "inherit",
+                    transition: "border-color 0.2s",
+                    whiteSpace: "nowrap",
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.borderColor = "#94a3b8"}
+                  onMouseLeave={e => e.currentTarget.style.borderColor = "#e2e8f0"}
+                >
+                  Cancel
                 </button>
               </div>
-              <button
-                onClick={() => window.location.reload()}
-                style={{ padding: "14px 22px", borderRadius: "14px", border: "1.5px solid #e2e8f0", background: "#fff", fontSize: "14px", fontWeight: "600", color: "#64748b", cursor: "pointer", fontFamily: "inherit", transition: "border-color 0.2s" }}
-                onMouseEnter={e => e.currentTarget.style.borderColor = "#94a3b8"}
-                onMouseLeave={e => e.currentTarget.style.borderColor = "#e2e8f0"}
-              >
-                Cancel
-              </button>
             </div>
 
-            {/* ── RIGHT: Preview ── */}
-            <div className="preview-sticky" style={{ position: "sticky", top: "90px" }}>
+            {/* ── RIGHT: Preview (desktop only) ── */}
+            <div className="preview-col" style={{ position: "sticky", top: "90px", minWidth: 0 }}>
               <div style={{ background: "#fff", borderRadius: "20px", overflow: "hidden", border: "1.5px solid #f1f5f9", boxShadow: "0 2px 16px rgba(99,102,241,0.06)" }}>
-
-                {/* Preview header */}
                 <div style={{ padding: "14px 18px", borderBottom: "1.5px solid #f1f5f9", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                   <span style={{ fontWeight: "700", fontSize: "14px", color: "#1e293b" }}>Card Preview</span>
                   <span style={{ fontSize: "12px", color: "#10b981", fontWeight: "600", display: "flex", alignItems: "center", gap: "4px" }}>
@@ -1165,12 +960,8 @@ END:VCARD`;
                     Live
                   </span>
                 </div>
-
-                {/* Card preview */}
-                <div style={{ margin: "16px" }}>{cardPreview}</div>
-
-                {/* QR code */}
-                <div style={{ margin: "0 16px 16px", background: "#f8fafc", border: "1.5px solid #e2e8f0", borderRadius: "14px", padding: "14px" }}>
+                <div style={{ margin: "14px" }}>{cardPreview}</div>
+                <div style={{ margin: "0 14px 14px", background: "#f8fafc", border: "1.5px solid #e2e8f0", borderRadius: "14px", padding: "14px" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
                     {Icons.qr}
                     <span style={{ fontSize: "12px", color: "#64748b", fontWeight: "600" }}>Public Profile QR</span>
@@ -1182,7 +973,53 @@ END:VCARD`;
 
           </div>
         </div>
-      </main >
+      </main>
+
+      {/* ── Mobile: FAB to open preview ── */}
+      <button
+        className="mobile-preview-fab"
+        onClick={() => setShowPreview(true)}
+        aria-label="Preview card"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
+        Preview Card
+      </button>
+
+      {/* ── Mobile: Preview sheet overlay ── */}
+      {showPreview && (
+        <div className="mobile-preview-overlay" onClick={() => setShowPreview(false)}>
+          <div className="mobile-preview-sheet" onClick={e => e.stopPropagation()}>
+
+            {/* Sheet handle + header */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+              <span style={{ fontWeight: "700", fontSize: "15px", color: "#1e293b" }}>Card Preview</span>
+              <button
+                onClick={() => setShowPreview(false)}
+                style={{ background: "#f1f5f9", border: "none", borderRadius: "50%", width: "32px", height: "32px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", fontSize: "16px", color: "#64748b" }}
+              >
+                ×
+              </button>
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "14px" }}>
+              <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: "#10b981", display: "inline-block" }} />
+              <span style={{ fontSize: "12px", color: "#10b981", fontWeight: "600" }}>Live Preview</span>
+            </div>
+
+            {cardPreview}
+
+            {/* QR */}
+            <div style={{ marginTop: "14px", background: "#f8fafc", border: "1.5px solid #e2e8f0", borderRadius: "14px", padding: "14px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
+                {Icons.qr}
+                <span style={{ fontSize: "12px", color: "#64748b", fontWeight: "600" }}>Public Profile QR</span>
+              </div>
+              <ProfileQRCode uniqueId={storedUser?.uniqueId} />
+            </div>
+
+          </div>
+        </div>
+      )}
     </>
   );
 }
