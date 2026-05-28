@@ -33,6 +33,41 @@ const PublicProfile = () => {
 
       setUser(res.data);
 
+
+      /* TRACK NFC TAP */
+
+      try {
+
+        const alreadyTapped =
+
+          sessionStorage.getItem(
+
+            `nfc_tap_${res.data._id}`
+          );
+
+        if (!alreadyTapped) {
+
+          await axios.post(
+
+            `${import.meta.env.VITE_API_URL}/api/analytics/nfc-tap`,
+            {
+              userId: res.data._id,
+            }
+          );
+
+          sessionStorage.setItem(
+
+            `nfc_tap_${res.data._id}`,
+
+            "true"
+          );
+        }
+
+      } catch (error) {
+
+        console.log(error);
+      }
+
       /* TRACK PROFILE VIEW */
 
       try {
