@@ -209,7 +209,7 @@ const LoginForm = () => {
             <input
               type="text"
               name="email"
-              placeholder="Email or Username"
+              placeholder="Email"
               onChange={handleChange}
               style={styles.input}
               onFocus={e => Object.assign(e.target.style, styles.inputFocus)}
