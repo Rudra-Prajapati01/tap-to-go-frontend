@@ -11,7 +11,9 @@ import Home from "../pages/Home";
 // ─── HOME COMPONENTS IMPORTS ─────────────────────────────────────────────────
 import Features from "../components/home/Features";
 import About from "../components/home/About";
-import Products from "../components/home/Products"; // <-- DEDICATED PRODUCTS COMPONENT IMPORT ADDED HERE
+import Products from "../components/home/Products";
+import Contact from "../components/home/Contact";
+import TeamsBusiness from "../components/home/TeamsBusiness";
 // ─────────────────────────────────────────────────────────────────────────────
 
 import Dashboard from "../components/dashboard/Dashboard";
@@ -25,16 +27,25 @@ import EditProfile from "../components/profile/EditProfile";
 
 import Leads from "../components/leads/Leads";
 
-import ProductAndServices
-  from "../components/products-services/ProductAndServices";
+import ProductAndServices from "../components/products-services/ProductAndServices";
 
-import ProductDetails
-  from "../pages/ProductDetails";
+import ProductDetails from "../pages/ProductDetails";
 
-import Analytics
-  from "../components/analytics/Analytics";
+import Analytics from "../components/analytics/Analytics";
 
-import Contact from "../components/home/Contact";
+
+
+import AdminLogin from "../admin/pages/AdminLogin";
+import AdminDashboard from "../admin/pages/AdminDashboard";
+import Users from "../admin/pages/Users";
+import AdminLayout from "../admin/layouts/AdminLayout";
+import AdminProtectedRoute from "../admin/routes/AdminProtectedRoute";
+import ContactRequests
+  from "../admin/pages/ContactRequests";
+
+import UserDetails
+  from "../admin/pages/UserDetails";
+import EditUser from "../admin/pages/EditUser";
 
 const AppRoutes = () => {
   return (
@@ -58,12 +69,22 @@ const AppRoutes = () => {
           path="/about"
           element={<About />}
         />
-        <Route path="/contact" element={<Contact />} />
 
-        {/* ─── DEDICATED PRODUCTS PUBLIC ROUTE ADDED HERE ─── */}
+        <Route
+          path="/contact"
+          element={<Contact />}
+        />
+
+        {/* ─── DEDICATED PRODUCTS PUBLIC ROUTE ─── */}
         <Route
           path="/products"
           element={<Products />}
+        />
+
+        {/* ─── DEDICATED TEAMS & BUSINESS ROUTE ADDED HERE ─── */}
+        <Route
+          path="/teams-business"
+          element={<TeamsBusiness />}
         />
 
         <Route
@@ -142,6 +163,71 @@ const AppRoutes = () => {
         <Route
           path="/product/:id"
           element={<ProductDetails />}
+        />
+
+
+        {/* ==========================
+    ADMIN PANEL
+========================== */}
+
+        <Route
+          path="/admin"
+          element={<AdminLogin />}
+        />
+
+        <Route
+          path="/admin/dashboard"
+          element={
+            <AdminProtectedRoute>
+              <AdminLayout>
+                <AdminDashboard />
+              </AdminLayout>
+            </AdminProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/users"
+          element={
+            <AdminProtectedRoute>
+              <AdminLayout>
+                <Users />
+              </AdminLayout>
+            </AdminProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/users/:id"
+          element={
+            <AdminProtectedRoute>
+              <AdminLayout>
+                <UserDetails />
+              </AdminLayout>
+            </AdminProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/users/edit/:id"
+          element={
+            <AdminProtectedRoute>
+              <AdminLayout>
+                <EditUser />
+              </AdminLayout>
+            </AdminProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/contacts"
+          element={
+            <AdminProtectedRoute>
+              <AdminLayout>
+                <ContactRequests />
+              </AdminLayout>
+            </AdminProtectedRoute>
+          }
         />
       </Routes>
 

@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import ProfileQRCode from "../qr/ProfileQRCode";
 
 // ── Shared style helpers ────────────────────────────────────────────────────
@@ -105,7 +105,134 @@ export default function EditProfile() {
     try { return JSON.parse(localStorage.getItem("user")) || {}; }
     catch { return {}; }
   })();
+  useEffect(() => {
 
+    const fetchLatestUser = async () => {
+
+      try {
+
+        if (!storedUser?._id) return;
+
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/auth/user/${storedUser._id}`
+        );
+
+        const data = await response.json();
+
+        if (!data) return;
+
+        localStorage.setItem(
+          "user",
+          JSON.stringify(data)
+        );
+
+        setForm((prev) => ({
+
+          ...prev,
+
+          profileImage:
+            data.profileImage || "",
+
+          coverImage:
+            data.coverImage || "",
+
+          logoImage:
+            data.logoImage || "",
+
+          coverTheme:
+            data.coverTheme || "",
+
+          firstName:
+            data.name?.split(" ")[0] || "",
+
+          lastName:
+            data.name?.split(" ").slice(1).join(" ") || "",
+
+          username:
+            data.username || "",
+
+          email:
+            data.email || "",
+
+          jobTitle:
+            data.jobTitle || "",
+
+          companyName:
+            data.companyName || "",
+
+          companyContact:
+            data.companyContact || "",
+
+          streetAddress:
+            data.streetAddress || "",
+
+          city:
+            data.city || "",
+
+          state:
+            data.state || "",
+
+          country:
+            data.country || "",
+
+          postcode:
+            data.postcode || "",
+
+          phone:
+            data.phone || "",
+
+          website:
+            data.website || "",
+
+          location:
+            data.location || "",
+
+          bio:
+            data.bio || "",
+
+          instagram:
+            data.instagram || "",
+
+          linkedin:
+            data.linkedin || "",
+
+          github:
+            data.github || "",
+
+          youtube:
+            data.youtube || "",
+
+          facebook:
+            data.facebook || "",
+
+          twitter:
+            data.twitter || "",
+
+          whatsapp:
+            data.whatsapp || "",
+
+          uniqueId:
+            data.uniqueId || "",
+
+          leadCapture:
+            data.leadCapture || prev.leadCapture,
+
+          theme:
+            data.theme || prev.theme,
+
+        }));
+
+      } catch (error) {
+
+        console.log(error);
+
+      }
+
+    };
+
+    fetchLatestUser();
+
+  }, []);
   const [form, setForm] = useState({
     profileImage: storedUser.profileImage || "",
     coverImage: storedUser.coverImage || "",
@@ -134,6 +261,7 @@ export default function EditProfile() {
     facebook: storedUser.facebook || "",
     twitter: storedUser.twitter || "",
     whatsapp: storedUser.whatsapp || "",
+    uniqueId: storedUser.uniqueId || "",
     leadCapture: storedUser.leadCapture || {
       enabled: true,
       fields: {
@@ -160,19 +288,33 @@ export default function EditProfile() {
     setForm(f => ({ ...f, theme: { ...f.theme, [k]: v } })), []);
 
   const uploadImage = useCallback(async (file) => {
+
     try {
+
       const formData = new FormData();
       formData.append("image", file);
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/upload/profile`, {
-        method: "POST",
-        body: formData,
-      });
+
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/upload/profile`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
       const data = await res.json();
+
+      console.log("UPLOAD RESPONSE:", data);
+
       return data?.imageUrl || "";
+
     } catch (err) {
-      console.error("Upload error:", err);
+
+      console.error("UPLOAD ERROR:", err);
+
       return "";
     }
+
   }, []);
 
   const handleImageField = useCallback(async (file, fieldName) => {
@@ -190,6 +332,9 @@ export default function EditProfile() {
   }, [uploadImage]);
 
   const handleSave = useCallback(async () => {
+    console.log("PROFILE IMAGE:", form.profileImage);
+    console.log("COVER IMAGE:", form.coverImage);
+    console.log("LOGO IMAGE:", form.logoImage);
     if (loading) return;
     try {
       setLoading(true);
@@ -201,11 +346,17 @@ export default function EditProfile() {
       if (!user?._id) { setError("User not found. Please log in again."); return; }
       const sanitised = {
         ...form,
-        profileImage: isBlob(form.profileImage) ? storedUser.profileImage || "" : form.profileImage,
-        coverImage: isBlob(form.coverImage) ? storedUser.coverImage || "" : form.coverImage,
-        logoImage: isBlob(form.logoImage) ? storedUser.logoImage || "" : form.logoImage,
-        name: `${form.firstName || ""} ${form.lastName || ""}`.trim(),
+
+        uniqueId:
+          form.uniqueId ||
+          storedUser.uniqueId ||
+          "",
+
+        name:
+          `${form.firstName || ""} ${form.lastName || ""}`.trim(),
       };
+
+      console.log("SAVING USER", sanitised);
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/auth/update-profile/${user._id}`,
         { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(sanitised) }
@@ -967,11 +1118,8 @@ export default function EditProfile() {
                     <span style={{ fontSize: "12px", color: "#64748b", fontWeight: "600" }}>Public Profile QR</span>
                   </div>
                   <ProfileQRCode
-
-                    uniqueId={storedUser?.uniqueId}
-
+                    uniqueId={form?.uniqueId}
                     userId={storedUser?._id}
-
                   />
                 </div>
               </div>
@@ -1021,11 +1169,8 @@ export default function EditProfile() {
                 <span style={{ fontSize: "12px", color: "#64748b", fontWeight: "600" }}>Public Profile QR</span>
               </div>
               <ProfileQRCode
-
-                uniqueId={storedUser?.uniqueId}
-
+                uniqueId={form?.uniqueId}
                 userId={storedUser?._id}
-
               />
             </div>
 

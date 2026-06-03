@@ -3,21 +3,15 @@ import axios from "axios";
 import { QRCodeCanvas } from "qrcode.react";
 
 export default function ProfileQRCode({
-
   uniqueId,
   userId,
-
 }) {
 
   const qrRef = useRef(null);
 
-  if (!uniqueId) {
-
-    return null;
-  }
-
-  const profileUrl =
-    `https://jiotap.com/u/${uniqueId}`;
+  const profileUrl = uniqueId
+    ? `https://jiotap.com/u/${uniqueId}`
+    : "";
 
   /* TRACK QR SCAN */
 
@@ -27,10 +21,10 @@ export default function ProfileQRCode({
 
       try {
 
-        if (!userId) return;
+        if (!userId || !uniqueId)
+          return;
 
         await axios.post(
-
           `${import.meta.env.VITE_API_URL}/api/analytics/qr-scan`,
           {
             userId,
@@ -40,12 +34,35 @@ export default function ProfileQRCode({
       } catch (error) {
 
         console.log(error);
+
       }
+
     };
 
     trackQR();
 
-  }, [userId]);
+  }, [userId, uniqueId]);
+
+  /* IMPORTANT:
+     Hooks must run before any return
+  */
+
+  if (!uniqueId) {
+
+    return (
+      <div
+        style={{
+          textAlign: "center",
+          padding: "20px",
+          color: "#64748b",
+          fontWeight: "500",
+        }}
+      >
+        QR Not Available
+      </div>
+    );
+
+  }
 
   /* DOWNLOAD QR */
 
@@ -82,6 +99,7 @@ export default function ProfileQRCode({
     document.body.removeChild(
       downloadLink
     );
+
   };
 
   return (
@@ -144,5 +162,7 @@ export default function ProfileQRCode({
       </button>
 
     </div>
+
   );
+
 }

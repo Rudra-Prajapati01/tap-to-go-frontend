@@ -1,9 +1,31 @@
 import { useState, useEffect, useRef } from "react";
 
 // ─── GLOBAL SYSTEM NAVIGATION INTEGRATION ────────────────────────────────────
-import Navbar from "./Navbar"; // <-- NAVBAR INTEGRATED
-import Footer from "./Footer"; // <-- FOOTER INTEGRATED
-// ─────────────────────────────────────────────────────────────────────────────
+import Navbar from "./Navbar"; 
+import Footer from "./Footer"; 
+
+import LightCard from "../../assets/Card/jiolight/light card.png";
+import LightCustom from "../../assets/Card/jiolight/customiscard.png";
+import LightRules from "../../assets/Card/jiolight/lightcardruls.png";
+import LightDashboard from "../../assets/Card/jiolight/lightdashbord.png";
+import LightAnalytics from "../../assets/Card/jiolight/Analytics.png";
+
+import PremiumCard from "../../assets/Card/jiotapprim/premiumcard.png";
+import PremiumCustom from "../../assets/Card/jiotapprim/customiscard.png";
+import PremiumRules from "../../assets/Card/jiotapprim/premiumcardruls.png";
+import PremiumDashboard from "../../assets/Card/jiotapprim/lightdashbord.png";
+import PremiumAnalytics from "../../assets/Card/jiotapprim/Analytics.png";
+
+import Review1 from "../../assets/Card/Jiotapgooglereview/googlereviewcard1.png";
+import Review2 from "../../assets/Card/Jiotapgooglereview/googlereviewcard2.png";
+import Review3 from "../../assets/Card/Jiotapgooglereview/googlereviewcard3.png";
+
+/* 
+  NOTE FOR SOLUTION 2 (RECOMMENDED): 
+  Agar aap assets ko public folder me move karte hain (e.g., public/cards/...), 
+  toh aap imports hata kar static string arrays use kar sakte hain:
+  images: [ "/cards/jiolight/light card.png", ... ]
+*/
 
 const initialProducts = [
   {
@@ -20,11 +42,11 @@ const initialProducts = [
       "Instant profile updates over-the-air"
     ],
     images: [
-      "/src/assets/Card/jiolight/light card.png",
-      "/src/assets/Card/jiolight/customiscard.png",
-      "/src/assets/Card/jiolight/lightcardruls.png",
-      "/src/assets/Card/jiolight/lightdashbord.png",
-      "/src/assets/Card/jiolight/Analytics.png"
+      LightCard,
+      LightCustom,
+      LightRules,
+      LightDashboard,
+      LightAnalytics
     ],
     bgColor: "#1a1a1a",
     accentColor: "#6155A6",
@@ -44,11 +66,11 @@ const initialProducts = [
       "Integrated lead capture & dynamic forms"
     ],
     images: [
-      "/src/assets/Card/jiotapprim/premiumcard.png",
-      "/src/assets/Card/jiotapprim/customiscard.png",
-      "/src/assets/Card/jiotapprim/premiumcardruls.png",
-      "/src/assets/Card/jiotapprim/lightdashbord.png",
-      "/src/assets/Card/jiotapprim/Analytics.png"
+      PremiumCard,
+      PremiumCustom,
+      PremiumRules,
+      PremiumDashboard,
+      PremiumAnalytics
     ],
     bgColor: "#0f172a",
     accentColor: "#a855f7",
@@ -68,9 +90,9 @@ const initialProducts = [
       "Highly durable scratch-resistant surface shield"
     ],
     images: [
-      "/src/assets/Card/Jiotapgooglereview/googlereviewcard1.png",
-      "/src/assets/Card/Jiotapgooglereview/googlereviewcard2.png",
-      "/src/assets/Card/Jiotapgooglereview/googlereviewcard3.png"
+      Review1,
+      Review2,
+      Review3
     ],
     bgColor: "#ffffff",
     accentColor: "#ca8a04",
@@ -260,18 +282,18 @@ export default function ProductsEcosystem() {
           /* Tablet & Mobile Media Breakpoints for Open Product State */
           @media (max-width: 992px) {
             .responsive-detail-grid {
-              grid-template-columns: 1fr !important; /* Stack columns layout vertically */
+              grid-template-columns: 1fr !important;
               gap: 32px !important;
               padding: 24px !important;
             }
             .responsive-img-wrapper {
-              height: 280px !important; /* Adjust image frame height on smaller views */
+              height: 280px !important;
             }
           }
 
           @media (max-width: 768px) {
             .responsive-products-grid {
-              grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important; /* Fixed grid items layout size */
+              grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
               gap: 20px !important;
             }
             .responsive-card-image-zone {
@@ -374,8 +396,6 @@ const styles = {
     lineHeight: 1.6,
     fontWeight: 500,
   },
-  
-  /* GRID STYLES */
   productsGrid: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
@@ -471,8 +491,6 @@ const styles = {
     fontWeight: 600,
     cursor: "pointer",
   },
-
-  /* DETAILED INTERACTION VIEW AREA */
   detailWrapper: {
     animation: "fadeIn 0.4s ease-out",
   },
@@ -521,8 +539,6 @@ const styles = {
     maxHeight: "100%",
     objectFit: "contain",
   },
-  
-  /* THUMBNAILS CONTAINER */
   thumbnailRow: {
     display: "flex",
     gap: "10px",
@@ -549,7 +565,6 @@ const styles = {
     maxHeight: "100%",
     objectFit: "contain"
   },
-
   specText: {
     fontSize: "0.8rem",
     color: "#94a3b8",

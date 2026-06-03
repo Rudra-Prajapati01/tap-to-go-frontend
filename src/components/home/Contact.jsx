@@ -16,13 +16,61 @@ export default function Contact() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Connect form data directly to your dynamic leads processing pipeline
-    console.log("Lead captured successfully:", formData);
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 4000);
-    setFormData({ name: "", email: "", phone: "", company: "", message: "" });
+
+    try {
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/contacts`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.message || "Failed to submit"
+        );
+      }
+
+      console.log(
+        "Contact submitted:",
+        data
+      );
+
+      setSubmitted(true);
+
+      setTimeout(() => {
+        setSubmitted(false);
+      }, 4000);
+
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        company: "",
+        message: "",
+      });
+
+    } catch (error) {
+
+      console.error(
+        "Contact Form Error:",
+        error
+      );
+
+      alert(
+        "Failed to send message. Please try again."
+      );
+
+    }
   };
 
   return (
@@ -32,7 +80,7 @@ export default function Contact() {
 
       <section style={styles.section}>
         <div style={styles.dotBg} />
-        
+
         <div style={styles.container}>
           {/* ── HEADER ── */}
           <div style={styles.header}>
@@ -51,12 +99,12 @@ export default function Contact() {
 
           {/* ── CONTACT GRID ── */}
           <div style={styles.grid}>
-            
+
             {/* COLUMN 1: INTERACTIVE LEAD FORM */}
             <div style={styles.formCard}>
               <h3 style={styles.cardTitle}>Send us a Message</h3>
               <p style={styles.cardSubtitle}>Our corporate ecosystem team typically responds within 2 hours.</p>
-              
+
               {submitted && (
                 <div style={styles.successBox}>
                   🎉 Thank you! Your inquiry has been transmitted successfully. We will connect shortly.
