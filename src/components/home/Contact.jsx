@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Navbar from "./Navbar"; // <-- NAVBAR IMPORT ADDED HERE (Apne real file path se adjust kar lena)
-import Footer from "./Footer"; // Ensuring consistent global footer layout
+import Navbar from "./Navbar"; 
+import Footer from "./Footer"; 
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -20,7 +20,6 @@ export default function Contact() {
     e.preventDefault();
 
     try {
-
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/contacts`,
         {
@@ -35,16 +34,10 @@ export default function Contact() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          data.message || "Failed to submit"
-        );
+        throw new Error(data.message || "Failed to submit");
       }
 
-      console.log(
-        "Contact submitted:",
-        data
-      );
-
+      console.log("Contact submitted:", data);
       setSubmitted(true);
 
       setTimeout(() => {
@@ -60,16 +53,8 @@ export default function Contact() {
       });
 
     } catch (error) {
-
-      console.error(
-        "Contact Form Error:",
-        error
-      );
-
-      alert(
-        "Failed to send message. Please try again."
-      );
-
+      console.error("Contact Form Error:", error);
+      alert("Failed to send message. Please try again.");
     }
   };
 
@@ -196,7 +181,7 @@ const styles = {
   section: {
     position: "relative",
     width: "100%",
-    padding: "160px 0 0px", // Increased padding top so content never clips behind fixed navbar
+    padding: "160px 0 0px", 
     background: "#ffffff",
     overflow: "hidden",
   },
@@ -213,6 +198,7 @@ const styles = {
     maxWidth: "1300px",
     margin: "0 auto",
     padding: "0 24px 120px",
+    boxSizing: "border-box", /* Extra padding handling safe rakhne ke liye */
   },
   header: {
     textAlign: "center",
@@ -265,9 +251,11 @@ const styles = {
   },
   grid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(420px, 1fr))",
+    /* FIX: minmax ko 420px se badal kar 280px kiya taaki UI same rahe par mobile pe width auto-adjust ho jaye */
+    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", 
     gap: "48px",
     alignItems: "start",
+    width: "100%",
   },
   formCard: {
     background: "#ffffff",
@@ -275,6 +263,8 @@ const styles = {
     borderRadius: "28px",
     padding: "40px",
     boxShadow: "0 20px 40px -15px rgba(0,0,0,0.02)",
+    boxSizing: "border-box", /* Padding overflow issue fix */
+    width: "100%",
   },
   cardTitle: {
     fontSize: "1.5rem",
@@ -302,18 +292,21 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     gap: "20px",
+    width: "100%",
   },
   formRow: {
     display: "flex",
     gap: "20px",
     flexWrap: "wrap",
+    width: "100%",
   },
   inputGroup: {
     display: "flex",
     flexDirection: "column",
     gap: "8px",
     flex: 1,
-    minWidth: "200px",
+    minWidth: "260px", /* Mobile fields break correctly down */
+    boxSizing: "border-box",
   },
   label: {
     fontSize: "0.88rem",
@@ -330,6 +323,7 @@ const styles = {
     color: "#0f0f0f",
     outline: "none",
     transition: "border-color 0.2s ease",
+    boxSizing: "border-box",
   },
   textarea: {
     width: "100%",
@@ -343,6 +337,7 @@ const styles = {
     resize: "vertical",
     fontFamily: "inherit",
     transition: "border-color 0.2s ease",
+    boxSizing: "border-box",
   },
   submitBtn: {
     width: "100%",
@@ -357,6 +352,7 @@ const styles = {
     boxShadow: "0 10px 20px -10px #6155A6",
     marginTop: "12px",
     transition: "opacity 0.2s ease",
+    boxSizing: "border-box",
   },
   infoColumn: {
     display: "flex",
