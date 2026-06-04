@@ -6,11 +6,11 @@ import Footer from "./Footer";
 
 import LightCard from "../../assets/Card/jiolight/light card.png";
 import LightCustom from "../../assets/Card/jiolight/customiscard.png";
-import LightRules from "../../assets/Card/jiolight/lightcardruls.png";
-import LightDashboard from "../../assets/Card/jiolight/lightdashbord.png";
-import LightAnalytics from "../../assets/Card/jiolight/Analytics.png";
+// import LightRules from "../../assets/Card/jiolight/lightcardruls.png";
+//import LightDashboard from "../../assets/Card/jiolight/lightdashbord.png";
+//import LightAnalytics from "../../assets/Card/jiolight/Analytics.png";
 
-import PremiumCard from "../../assets/Card/jiotapprim/premiumcard.png";
+//import PremiumCard from "../../assets/Card/jiotapprim/premiumcard.png";
 import PremiumCustom from "../../assets/Card/jiotapprim/customiscard.png";
 import PremiumRules from "../../assets/Card/jiotapprim/premiumcardruls.png";
 import PremiumDashboard from "../../assets/Card/jiotapprim/lightdashbord.png";
