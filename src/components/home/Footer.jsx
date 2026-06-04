@@ -5,6 +5,8 @@ import {
   FaXTwitter,
 } from "react-icons/fa6";
 import { FiArrowRight } from "react-icons/fi";
+// 1. React Router se Link ko import kiya
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -14,7 +16,7 @@ export default function Footer() {
       <div style={styles.glowRight} />
 
       <div style={styles.container}>
-        
+
         {/* ── TOP CTA SECTION ── */}
         <div style={styles.topCta}>
           <div style={styles.ctaFlex}>
@@ -30,7 +32,7 @@ export default function Footer() {
               </p>
             </div>
 
-            <button 
+            <button
               style={styles.button}
               onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
               onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
@@ -43,7 +45,7 @@ export default function Footer() {
 
         {/* ── MAIN LINKS GRID ── */}
         <div style={styles.grid}>
-          
+
           {/* Brand & Socials */}
           <div style={styles.brandCol}>
             <h3 style={styles.logo}>
@@ -53,13 +55,13 @@ export default function Footer() {
               The next generation NFC-powered digital business card platform
               helping professionals and businesses connect smarter.
             </p>
-            
+
             {/* Social Icons */}
             <div style={styles.socialFlex}>
               {[{ icon: <FaFacebookF />, label: "Facebook" },
-                { icon: <FaInstagram />, label: "Instagram" },
-                { icon: <FaLinkedinIn />, label: "LinkedIn" },
-                { icon: <FaXTwitter />, label: "X" }
+              { icon: <FaInstagram />, label: "Instagram" },
+              { icon: <FaLinkedinIn />, label: "LinkedIn" },
+              { icon: <FaXTwitter />, label: "X" }
               ].map((soc, index) => (
                 <a
                   key={index}
@@ -81,33 +83,33 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Links Columns */}
+          {/* Product Links */}
           <div>
             <h4 style={styles.linkHeader}>Product</h4>
             <ul style={styles.linkList}>
-              <li><a href="#" style={styles.link}>Digital Cards</a></li>
-              <li><a href="#" style={styles.link}>NFC Cards</a></li>
-              <li><a href="#" style={styles.link}>Analytics</a></li>
-              <li><a href="#" style={styles.link}>Lead Capture</a></li>
+              <li><Link to="/products" style={styles.link}>JioTap Light Card</Link></li>
+              <li><Link to="/products" style={styles.link}>Premium Custom Card</Link></li>
+              <li><Link to="/products" style={styles.link}>JioTap Google Review Card</Link></li>
             </ul>
           </div>
 
+          {/* Company Links */}
           <div>
             <h4 style={styles.linkHeader}>Company</h4>
             <ul style={styles.linkList}>
-              <li><a href="#" style={styles.link}>About Us</a></li>
-              <li><a href="#" style={styles.link}>Careers</a></li>
-              <li><a href="#" style={styles.link}>Contact</a></li>
+              <li><Link to="/products" style={styles.link}>Products</Link></li>
+              <li><Link to="/features" style={styles.link}>Features</Link></li>
+              <li><Link to="/teams-business" style={styles.link}>Teams & Business</Link></li>
+              <li><Link to="/about" style={styles.link}>About Us</Link></li>
+              <li><Link to="/contact" style={styles.link}>Contact Us</Link></li>
             </ul>
           </div>
 
+          {/* Support Links */}
           <div>
             <h4 style={styles.linkHeader}>Support</h4>
             <ul style={styles.linkList}>
-              <li><a href="#" style={styles.link}>Help Center</a></li>
-              <li><a href="#" style={styles.link}>Privacy Policy</a></li>
-              <li><a href="#" style={styles.link}>Terms of Service</a></li>
-              <li><a href="#" style={styles.link}>FAQ</a></li>
+              <li><Link to="/contact" style={styles.link}>Contact Us</Link></li>
             </ul>
           </div>
 
