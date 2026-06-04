@@ -3,21 +3,21 @@ import { useState, useEffect, useRef } from "react";
 import Navbar from "./Navbar"; 
 import Footer from "./Footer"; 
 
-import LightCard from "../../assets/Card/jiolight/lightcard.png";
-import LightCustom from "../../assets/Card/jiolight/customiscard.png";
-import LightRules from "../../assets/Card/jiolight/lightcardruls.png";
-import LightDashboard from "../../assets/Card/jiolight/lightdashbord.png";
-import LightAnalytics from "../../assets/Card/jiolight/Analytics.png";
+import LightCard from "../../assets/card/jiolight/lightcard.png";
+import LightCustom from "../../assets/card/jiolight/customiscard.png";
+import LightRules from "../../assets/card/jiolight/lightcardruls.png";
+import LightDashboard from "../../assets/card/jiolight/lightdashbord.png";
+import LightAnalytics from "../../assets/card/jiolight/analytics.png";
 
-import PremiumCard from "../../assets/Card/jiotapprim/premiumcard.png";
-import PremiumCustom from "../../assets/Card/jiotapprim/customiscard.png";
-import PremiumRules from "../../assets/Card/jiotapprim/premiumcardruls.png";
-import PremiumDashboard from "../../assets/Card/jiotapprim/lightdashbord.png";
-import PremiumAnalytics from "../../assets/Card/jiotapprim/Analytics.png";
+import PremiumCard from "../../assets/card/jiotapprim/premiumcard.png";
+import PremiumCustom from "../../assets/card/jiotapprim/customiscard.png";
+import PremiumRules from "../../assets/card/jiotapprim/premiumcardruls.png";
+import PremiumDashboard from "../../assets/card/jiotapprim/lightdashbord.png";
+import PremiumAnalytics from "../../assets/card/jiotapprim/analytics.png";
 
-import Review1 from "../../assets/Card/Jiotapgooglereview/googlereviewcard1.png";
-import Review2 from "../../assets/Card/Jiotapgooglereview/googlereviewcard2.png";
-import Review3 from "../../assets/Card/Jiotapgooglereview/googlereviewcard3.png";
+import Review1 from "../../assets/card/jiotapgooglereview/googlereviewcard1.png";
+import Review2 from "../../assets/card/jiotapgooglereview/googlereviewcard2.png";
+import Review3 from "../../assets/card/jiotapgooglereview/googlereviewcard3.png";
 
 /* 
   NOTE FOR SOLUTION 2 (RECOMMENDED): 
