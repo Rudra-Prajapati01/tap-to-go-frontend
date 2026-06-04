@@ -21,11 +21,6 @@ export default function Sidebar() {
       path: "/admin/contacts",
     },
 
-    {
-      name: "Settings",
-      path: "/admin/settings",
-    },
-
   ];
 
   return (
