@@ -317,20 +317,33 @@ export default function EditProfile() {
 
   }, []);
 
-  const handleImageField = useCallback(async (file, fieldName) => {
-    if (!file) return;
-    try {
-      const blobUrl = URL.createObjectURL(file);
-      setForm((f) => ({ ...f, [fieldName]: blobUrl }));
-      const realUrl = await uploadImage(file);
-      if (realUrl) {
-        setForm((f) => ({ ...f, [fieldName]: realUrl }));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, [uploadImage]);
+  const handleImageField = useCallback(
+    async (file, fieldName) => {
 
+      if (!file) return;
+
+      try {
+
+        const realUrl = await uploadImage(file);
+
+        if (realUrl) {
+
+          setForm((f) => ({
+            ...f,
+            [fieldName]: realUrl,
+          }));
+
+        }
+
+      } catch (error) {
+
+        console.log(error);
+
+      }
+
+    },
+    [uploadImage]
+  );
   const handleSave = useCallback(async () => {
     console.log("PROFILE IMAGE:", form.profileImage);
     console.log("COVER IMAGE:", form.coverImage);
