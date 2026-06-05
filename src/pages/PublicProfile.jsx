@@ -282,9 +282,9 @@ const PublicProfile = () => {
         .pp-cover-bg {
           position: absolute;
           inset: 0;
-          background: ${coverBg};
-          background-size: cover;
+          background-size: contain;
           background-position: center;
+          background-repeat: no-repeat;
         }
         /* dark overlay exactly like reference */
         .pp-cover-overlay {

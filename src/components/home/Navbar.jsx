@@ -56,6 +56,35 @@ const Navbar = () => {
         .nav-links span:hover::after { width: 100%; }
         .nav-links span:hover { color: #0B4DBB !important; }
         
+        /* Pure CSS Responsive JioTap Logo Sizing Matrix */
+        .jiotap-logo {
+          width: auto;
+          height: 90px;
+          object-fit: contain;
+          display: block;
+        }
+
+        /* Responsive Breakpoints Override Hooks */
+        @media(max-width: 992px) {
+          .nav-links { display: none !important; }
+          .hamburger-icon { display: flex !important; }
+          .nav-buttons-desktop { display: none !important; }
+          .jiotap-logo { height: 75px; }
+        }
+
+        @media (max-width: 768px) {
+          .jio-navbar { height: 80px !important; padding: 0 18px !important; }
+          .logo-text { font-size: 18px !important; }
+          .mobile-drawer { width: 100% !important; }
+          .jiotap-logo { height: 60px; }
+        }
+
+        @media (max-width: 480px) {
+          .jio-navbar { padding: 0 16px !important; }
+          .logo-text { font-size: 17px !important; }
+          .jiotap-logo { height: 55px; }
+        }
+        
         /* Hamburger Icon Animation */
         .hamburger-icon { display: none; flex-direction: column; gap: 6px; cursor: pointer; padding: 8px; z-index: 1001; }
         .hamburger-line { width: 24px; height: 2px; background-color: #3E3276; transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -71,23 +100,8 @@ const Navbar = () => {
           gap: 32px; transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 999;
         }
         .mobile-drawer.open { right: 0; }
-        .mobile-drawer-link { fontSize: 20px; fontWeight: 600; color: #475569; cursor: pointer; transition: 0.2s; }
+        .mobile-drawer-link { font-size: 20px; font-weight: 600; color: #475569; cursor: pointer; transition: 0.2s; }
         .mobile-drawer-link:hover { color: #0B4DBB; transform: scale(1.05); }
-
-        @media (max-width: 992px){
-          .nav-links { display: none !important; }
-          .hamburger-icon { display: flex !important; }
-          .nav-buttons-desktop { display: none !important; }
-        }
-        @media (max-width: 768px){
-          .jio-navbar { height: 64px !important; padding: 0 20px !important; }
-          .logo-text { font-size: 18px !important; }
-          .mobile-drawer { width: 100% !important; }
-        }
-        @media (max-width: 480px){
-          .jio-navbar { padding: 0 16px !important; }
-          .logo-text { font-size: 17px !important; }
-        }
       `}</style>
 
       <nav
@@ -97,7 +111,7 @@ const Navbar = () => {
           top: 0,
           left: 0,
           width: "100%",
-          height: "130px",
+          height: "110px", // Desktop height configured to 110px for sleek spacing
           padding: "0 40px",
           display: "flex",
           alignItems: "center",
@@ -124,16 +138,14 @@ const Navbar = () => {
             flex: "1 0 0%",
           }}
         >
+          {/* Enhanced Image Target calling pure CSS hooks */}
           <img
             src={logo}
             alt="JioTap Logo"
-            style={{
-              height: isMobile ? "70px" : "100px",
-              width: "auto",
-              objectFit: "contain",
-            }}
+            className="jiotap-logo"
           />
         </div>
+
         {/* DESKTOP NAV LINKS */}
         <div
           className="nav-links"
