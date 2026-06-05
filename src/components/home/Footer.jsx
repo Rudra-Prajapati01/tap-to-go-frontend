@@ -5,7 +5,7 @@ import {
   FaXTwitter,
 } from "react-icons/fa6";
 import { FiArrowRight } from "react-icons/fi";
-// 1. React Router se Link ko import kiya
+// React Router se Link ko import kiya
 import { Link } from "react-router-dom";
 
 export default function Footer() {
@@ -87,9 +87,36 @@ export default function Footer() {
           <div>
             <h4 style={styles.linkHeader}>Product</h4>
             <ul style={styles.linkList}>
-              <li><Link to="/products" style={styles.link}>JioTap Light Card</Link></li>
-              <li><Link to="/products" style={styles.link}>Premium Custom Card</Link></li>
-              <li><Link to="/products" style={styles.link}>JioTap Google Review Card</Link></li>
+              <li>
+                <Link 
+                  to="/products" 
+                  style={styles.link}
+                  onMouseEnter={(e) => (e.target.style.color = "#4CAF1D")}
+                  onMouseLeave={(e) => (e.target.style.color = "#94a3b8")}
+                >
+                  JioTap Light Card
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/products" 
+                  style={styles.link}
+                  onMouseEnter={(e) => (e.target.style.color = "#4CAF1D")}
+                  onMouseLeave={(e) => (e.target.style.color = "#94a3b8")}
+                >
+                  Premium Custom Card
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/products" 
+                  style={styles.link}
+                  onMouseEnter={(e) => (e.target.style.color = "#4CAF1D")}
+                  onMouseLeave={(e) => (e.target.style.color = "#94a3b8")}
+                >
+                  JioTap Google Review Card
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -97,11 +124,56 @@ export default function Footer() {
           <div>
             <h4 style={styles.linkHeader}>Company</h4>
             <ul style={styles.linkList}>
-              <li><Link to="/products" style={styles.link}>Products</Link></li>
-              <li><Link to="/features" style={styles.link}>Features</Link></li>
-              <li><Link to="/teams-business" style={styles.link}>Teams & Business</Link></li>
-              <li><Link to="/about" style={styles.link}>About Us</Link></li>
-              <li><Link to="/contact" style={styles.link}>Contact Us</Link></li>
+              <li>
+                <Link 
+                  to="/products" 
+                  style={styles.link}
+                  onMouseEnter={(e) => (e.target.style.color = "#4CAF1D")}
+                  onMouseLeave={(e) => (e.target.style.color = "#94a3b8")}
+                >
+                  Products
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/features" 
+                  style={styles.link}
+                  onMouseEnter={(e) => (e.target.style.color = "#4CAF1D")}
+                  onMouseLeave={(e) => (e.target.style.color = "#94a3b8")}
+                >
+                  Features
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/teams-business" 
+                  style={styles.link}
+                  onMouseEnter={(e) => (e.target.style.color = "#4CAF1D")}
+                  onMouseLeave={(e) => (e.target.style.color = "#94a3b8")}
+                >
+                  Teams & Business
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/about" 
+                  style={styles.link}
+                  onMouseEnter={(e) => (e.target.style.color = "#4CAF1D")}
+                  onMouseLeave={(e) => (e.target.style.color = "#94a3b8")}
+                >
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/contact" 
+                  style={styles.link}
+                  onMouseEnter={(e) => (e.target.style.color = "#4CAF1D")}
+                  onMouseLeave={(e) => (e.target.style.color = "#94a3b8")}
+                >
+                  Contact Us
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -109,7 +181,53 @@ export default function Footer() {
           <div>
             <h4 style={styles.linkHeader}>Support</h4>
             <ul style={styles.linkList}>
-              <li><Link to="/contact" style={styles.link}>Contact Us</Link></li>
+              <li>
+                <Link 
+                  to="/contact" 
+                  style={styles.link}
+                  onMouseEnter={(e) => (e.target.style.color = "#4CAF1D")}
+                  onMouseLeave={(e) => (e.target.style.color = "#94a3b8")}
+                >
+                  Contact Us
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Legal Links */}
+          <div>
+            <h4 style={styles.linkHeader}>Legal</h4>
+            <ul style={styles.linkList}>
+              <li>
+                <Link
+                  to="/privacy-policy"
+                  style={styles.link}
+                  onMouseEnter={(e) => (e.target.style.color = "#4CAF1D")}
+                  onMouseLeave={(e) => (e.target.style.color = "#94a3b8")}
+                >
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/refund-policy"
+                  style={styles.link}
+                  onMouseEnter={(e) => (e.target.style.color = "#4CAF1D")}
+                  onMouseLeave={(e) => (e.target.style.color = "#94a3b8")}
+                >
+                  Refund Policy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/shipping-policy"
+                  style={styles.link}
+                  onMouseEnter={(e) => (e.target.style.color = "#4CAF1D")}
+                  onMouseLeave={(e) => (e.target.style.color = "#94a3b8")}
+                >
+                  Shipping Policy
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -207,7 +325,7 @@ const styles = {
   },
   grid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+    gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", // Auto layout manage karne ke liye adjusts kiya
     gap: "48px",
     padding: "70px 0",
   },
@@ -265,7 +383,7 @@ const styles = {
     color: "#94a3b8",
     textDecoration: "none",
     fontSize: "0.95rem",
-    transition: "color 0.2s ease",
+    transition: "all 0.3s ease", // Requirement ke hisab se update kiya gaya 0.3s all
   },
   bottomBar: {
     borderTop: "1px solid rgba(255, 255, 255, 0.1)",

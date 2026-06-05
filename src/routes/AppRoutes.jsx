@@ -14,6 +14,9 @@ import About from "../components/home/About";
 import Products from "../components/home/Products";
 import Contact from "../components/home/Contact";
 import TeamsBusiness from "../components/home/TeamsBusiness";
+import PrivacyPolicy from "../components/home/privacy-policy";
+import RefundPolicy from "../components/home/refund-policy";
+import ShippingPolicy from "../components/home/shipping-policy";
 // ─────────────────────────────────────────────────────────────────────────────
 
 import Dashboard from "../components/dashboard/Dashboard";
@@ -73,6 +76,21 @@ const AppRoutes = () => {
         <Route
           path="/contact"
           element={<Contact />}
+        />
+
+        <Route
+          path="/privacy-policy"
+          element={<PrivacyPolicy />}
+        />
+
+        <Route
+          path="/refund-policy"
+          element={<RefundPolicy />}
+        />
+
+        <Route
+          path="/shipping-policy"
+          element={<ShippingPolicy />}
         />
 
         {/* ─── DEDICATED PRODUCTS PUBLIC ROUTE ─── */}
