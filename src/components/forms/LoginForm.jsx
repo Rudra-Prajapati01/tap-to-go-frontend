@@ -5,44 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../firebase";
 import { Eye, EyeOff } from "lucide-react";
-
-const LotusIcon = () => (
-  <svg width="90" height="90" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="lp1" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#FFAED6" />
-        <stop offset="100%" stopColor="#D4A8FF" />
-      </linearGradient>
-      <linearGradient id="lp2" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#C9B8FF" />
-        <stop offset="100%" stopColor="#7B68CC" />
-      </linearGradient>
-      <linearGradient id="lp3" x1="0" y1="1" x2="0.5" y2="0">
-        <stop offset="0%" stopColor="#9B85E0" />
-        <stop offset="100%" stopColor="#D4A8FF" />
-      </linearGradient>
-      <linearGradient id="lp4" x1="1" y1="1" x2="0" y2="0">
-        <stop offset="0%" stopColor="#FFC0D8" />
-        <stop offset="100%" stopColor="#F0A0C8" />
-      </linearGradient>
-    </defs>
-    {/* Left outer petal */}
-    <ellipse cx="28" cy="63" rx="13" ry="23" transform="rotate(-30 28 63)" fill="url(#lp2)" opacity="0.9" />
-    {/* Right outer petal */}
-    <ellipse cx="62" cy="63" rx="13" ry="23" transform="rotate(30 62 63)" fill="url(#lp3)" opacity="0.9" />
-    {/* Left inner petal */}
-    <ellipse cx="36" cy="55" rx="11" ry="25" transform="rotate(-13 36 55)" fill="url(#lp4)" opacity="0.95" />
-    {/* Right inner petal */}
-    <ellipse cx="54" cy="55" rx="11" ry="25" transform="rotate(13 54 55)" fill="url(#lp2)" opacity="0.9" />
-    {/* Center petal */}
-    <ellipse cx="45" cy="46" rx="10" ry="28" fill="url(#lp1)" />
-    {/* Sparkles */}
-    <text x="14" y="36" fontSize="10" fill="#8471D0" opacity="0.85">✦</text>
-    <text x="65" y="30" fontSize="10" fill="#D4A8FF" opacity="0.85">✦</text>
-    <text x="10" y="57" fontSize="7" fill="#FFAED6" opacity="0.7">+</text>
-    <text x="72" y="60" fontSize="7" fill="#9B85E0" opacity="0.7">+</text>
-  </svg>
-);
+// 1. Logo Import Kiya
+import logo from "../../assets/logo.png";
 
 const GoogleIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24">
@@ -52,7 +16,6 @@ const GoogleIcon = () => (
     <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
   </svg>
 );
-
 
 const UserIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9B8DCF" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -93,81 +56,31 @@ const LoginForm = () => {
   };
 
   const googleLogin = async () => {
-
     try {
-
-      // GOOGLE PROVIDER
-      const provider =
-        new GoogleAuthProvider();
+      const provider = new GoogleAuthProvider();
       provider.setCustomParameters({
         prompt: "select_account",
       });
 
-      // FIREBASE LOGIN
-      const result =
-        await signInWithPopup(
-          auth,
-          provider
-        );
+      const result = await signInWithPopup(auth, provider);
+      const googleUser = result.user;
 
-      // FIREBASE USER
-      const googleUser =
-        result.user;
+      console.log("GOOGLE USER:", googleUser);
 
-      console.log(
-        "GOOGLE USER:",
-        googleUser
-      );
+      const res = await API.post("/google-login", {
+        name: googleUser.displayName,
+        email: googleUser.email,
+        profileImage: googleUser.photoURL,
+      });
 
-      // SEND USER TO BACKEND
-      const res = await API.post(
-        "/google-login",
-        {
+      console.log("BACKEND RESPONSE:", res.data);
 
-          name:
-            googleUser.displayName,
-
-          email:
-            googleUser.email,
-
-          profileImage:
-            googleUser.photoURL,
-
-        }
-      );
-
-      console.log(
-        "BACKEND RESPONSE:",
-        res.data
-      );
-
-      // SAVE TOKEN
-      localStorage.setItem(
-        "token",
-        res.data.token
-      );
-
-      // SAVE USER
-      localStorage.setItem(
-        "user",
-        JSON.stringify(
-          res.data.user
-        )
-      );
-
-      // CONTEXT
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
       setUser(res.data.user);
-
-      // REDIRECT
       navigate("/dashboard");
-
     } catch (error) {
-
-      console.log(
-        "GOOGLE LOGIN ERROR:",
-        error
-      );
-
+      console.log("GOOGLE LOGIN ERROR:", error);
     }
   };
 
@@ -189,9 +102,17 @@ const LoginForm = () => {
       {/* Card */}
       <div style={styles.card}>
 
-        {/* Lotus Logo */}
+        {/* 2. JioTap Logo (Lotus Icon removed) */}
         <div style={styles.logoWrap}>
-          <LotusIcon />
+          <img
+            src={logo}
+            alt="JioTap"
+            style={{
+              width: "130px",
+              height: "auto",
+              objectFit: "contain",
+            }}
+          />
         </div>
 
         {/* Title */}
@@ -252,8 +173,12 @@ const LoginForm = () => {
 
           {/* Login Button */}
           <button type="submit" style={styles.loginBtn}
-            onMouseEnter={e => e.target.style.transform = "translateY(-1px)"}
-            onMouseLeave={e => e.target.style.transform = "translateY(0)"}
+            onMouseEnter={e => {
+              e.target.style.transform = "translateY(-1px)";
+            }}
+            onMouseLeave={e => {
+              e.target.style.transform = "translateY(0)";
+            }}
           >
             Log In
           </button>
@@ -284,8 +209,9 @@ const LoginForm = () => {
           <span
             onClick={() => navigate("/register")}
             style={styles.signupLink}
-            onMouseEnter={e => e.target.style.color = "#6155A6"}
-            onMouseLeave={e => e.target.style.color = "#FF69B4"}
+            // 7. Signup Link Hover effect handled dynamically
+            onMouseEnter={e => e.target.style.color = "#0B4DBB"}
+            onMouseLeave={e => e.target.style.color = "#4CAF1D"}
           >
             Sign Up
           </span>
@@ -300,7 +226,8 @@ const styles = {
     fontFamily: "'DM Sans', 'Segoe UI', sans-serif",
     minHeight: "100vh",
     width: "100%",
-    background: "linear-gradient(135deg, #FFD6E0 0%, #F5DDFF 40%, #D5C2FF 100%)",
+    // 4. Background Gradient Change kiya
+    background: "linear-gradient(135deg, #F5FAFF 0%, #FFFFFF 50%, #F6FFF1 100%)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -315,8 +242,9 @@ const styles = {
     width: "360px",
     height: "360px",
     borderRadius: "50%",
-    background: "radial-gradient(circle, #FFAED6 0%, transparent 70%)",
-    opacity: 0.6,
+    blob1: {
+      background: "radial-gradient(circle, rgba(11,77,187,0.15) 0%, transparent 70%)",
+    }
   },
   blob2: {
     position: "absolute",
@@ -325,7 +253,7 @@ const styles = {
     width: "340px",
     height: "340px",
     borderRadius: "50%",
-    background: "radial-gradient(circle, #B8A0E8 0%, transparent 70%)",
+    background: "radial-gradient(circle, rgba(76,175,29,0.15) 0%, transparent 70%)",
     opacity: 0.65,
   },
   blob3: {
@@ -335,12 +263,12 @@ const styles = {
     width: "220px",
     height: "220px",
     borderRadius: "50%",
-    background: "radial-gradient(circle, #C9B8FF 0%, transparent 70%)",
+    background: "radial-gradient(circle, rgba(11,77,187,0.10) 0%, transparent 70%)",
     opacity: 0.45,
   },
   star: {
     position: "absolute",
-    color: "#C0AAEE",
+    color: "#0B4DBB",
     fontSize: "14px",
     opacity: 0.75,
     pointerEvents: "none",
@@ -377,7 +305,8 @@ const styles = {
   title: {
     fontSize: "26px",
     fontWeight: 700,
-    color: "#3D3480",
+    // 5. Welcome Back color changed
+    color: "#0B4DBB",
     margin: "0 0 6px 0",
   },
   subtitle: {
@@ -463,12 +392,13 @@ const styles = {
   checkbox: {
     width: "16px",
     height: "16px",
-    accentColor: "#6155A6",
+    accentColor: "#0B4DBB",
     cursor: "pointer",
     borderRadius: "4px",
   },
   forgotBtn: {
-    color: "#6155A6",
+    // 6. Forgot password is blue already
+    color: "#0B4DBB",
     fontWeight: 600,
     background: "none",
     border: "none",
@@ -482,13 +412,14 @@ const styles = {
     height: "52px",
     border: "none",
     borderRadius: "14px",
-    background: "linear-gradient(135deg, #5C52A0 0%, #9B8DCF 100%)",
+    // 3. Login Button theme changed
+    background: "linear-gradient(135deg, #0B4DBB 0%, #4CAF1D 100%)",
     color: "#fff",
     fontSize: "16px",
     fontWeight: 600,
     fontFamily: "inherit",
     cursor: "pointer",
-    boxShadow: "0 6px 20px rgba(92,82,160,0.38)",
+    boxShadow: "0 6px 20px rgba(11,77,187,0.28)",
     transition: "transform 0.2s, box-shadow 0.2s",
     marginBottom: "20px",
   },
@@ -539,7 +470,8 @@ const styles = {
     margin: 0,
   },
   signupLink: {
-    color: "#FF69B4",
+    // 7. Default state color changed
+    color: "#4CAF1D",
     fontWeight: 700,
     cursor: "pointer",
     transition: "color 0.2s",

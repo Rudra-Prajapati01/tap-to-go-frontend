@@ -48,7 +48,7 @@ const initialProducts = [
       LightAnalytics
     ],
     bgColor: "#1a1a1a",
-    accentColor: "#6155A6",
+    accentColor: "#0B4DBB",
     specs: "Material: Matte Finished PVC | Size: Standard CR80 | Logo: JioTap Branding"
   },
   {
@@ -72,7 +72,7 @@ const initialProducts = [
       PremiumAnalytics
     ],
     bgColor: "#0f172a",
-    accentColor: "#a855f7",
+    accentColor: "#4CAF1D",
     specs: "Material: Premium Composite Resin / Matte Metal | Print: High Precision Laser Vector"
   },
   {
@@ -364,14 +364,14 @@ const styles = {
     width: "8px",
     height: "8px",
     borderRadius: "50%",
-    background: "#6155A6",
+    background: "#0B4DBB",
   },
   badgeText: {
     fontSize: "11px",
     fontWeight: 800,
     letterSpacing: "2.5px",
     textTransform: "uppercase",
-    color: "#6155A6",
+    color: "#0B4DBB",
   },
   h2: {
     fontSize: "clamp(1.8rem, 4.5vw, 3.2rem)",
@@ -382,7 +382,7 @@ const styles = {
     letterSpacing: "-0.02em",
   },
   gradientText: {
-    background: "linear-gradient(90deg, #6155A6 0%, #a855f7 100%)",
+    background: "linear-gradient(90deg, #0B4DBB 0%, #4CAF1D 100%)",
     WebkitBackgroundClip: "text",
     WebkitTextFillColor: "transparent",
     backgroundClip: "text",
@@ -458,7 +458,7 @@ const styles = {
   cardPrice: {
     fontSize: "1.15rem",
     fontWeight: 800,
-    color: "#6155A6",
+    color: "#0B4DBB",
   },
   cardCutDesc: {
     fontSize: "0.9rem",

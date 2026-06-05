@@ -19,9 +19,9 @@ const features = [
     description:
       "Store, organise, update and manage all your contacts from a single dashboard. Keep your network accessible, searchable and always in sync across devices.",
     image: contactImg,
-    accent: "#6155A6",
-    accentLight: "#A685E2",
-    gradient: "linear-gradient(135deg, #6155A6 0%, #A685E2 100%)",
+    accent: "#0B4DBB",
+    accentLight: "#4CAF1D",
+    gradient: "linear-gradient(135deg, #0B4DBB 0%, #4CAF1D 100%)",
     points: [
       { icon: "⚡", label: "Real-time sync across devices" },
       { icon: "🔍", label: "Smart search & filters" },
@@ -36,9 +36,9 @@ const features = [
     description:
       "Personalize your digital business card with colors, fonts, branding, social links and custom sections to reflect your unique professional identity.",
     image: customizeImg,
-    accent: "#a855f7",
+    accent: "#4CAF1D",
     accentLight: "#ec4899",
-    gradient: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
+    gradient: "linear-gradient(135deg,  #4CAF1D 0%, #ec4899 100%)",
     points: [
       { icon: "🎨", label: "Full theme & color control" },
       { icon: "🔗", label: "Social links & custom sections" },
@@ -121,14 +121,14 @@ const styles = {
     width: "8px",
     height: "8px",
     borderRadius: "50%",
-    background: "#6155A6",
+    background: "#0B4DBB",
   },
   badgeText: {
     fontSize: "11px",
     fontWeight: 800,
     letterSpacing: "2.5px",
     textTransform: "uppercase",
-    color: "#6155A6",
+    color: "#0B4DBB",
   },
   h2: {
     fontSize: "clamp(2.25rem, 5vw, 3.8rem)",
@@ -139,7 +139,7 @@ const styles = {
     letterSpacing: "-0.02em",
   },
   gradientText: {
-    background: "linear-gradient(90deg, #6155A6 0%, #A685E2 50%, #ec4899 100%)",
+    background: "linear-gradient(90deg, #0B4DBB 0%, #4CAF1D 50%, #ec4899 100%)",
     WebkitBackgroundClip: "text",
     WebkitTextFillColor: "transparent",
     backgroundClip: "text",

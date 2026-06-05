@@ -5,7 +5,7 @@ const ProductCard = ({
   price,
   currency = "₹",
   showPrice = true,
-  theme = "#7c3aed",
+  theme = "#0B4DBB",
 }) => {
 
   const isMobile =
@@ -120,7 +120,7 @@ const ProductCard = ({
           background: "#ffffff",
           borderRadius: "24px",
           overflow: "hidden",
-          border: "1px solid #eef2ff",
+          border: "1px solid rgba(11,77,187,0.12)",
           boxShadow:
             "0 10px 30px rgba(15,23,42,0.08)",
           display: "flex",
@@ -275,7 +275,7 @@ const ProductCard = ({
                     margin: 0,
                     fontSize: "28px",
                     fontWeight: "900",
-                    color: theme,
+                    color: "#0B4DBB",
                     lineHeight: 1,
                     wordBreak: "break-word",
                   }}
@@ -314,14 +314,14 @@ const ProductCard = ({
                 padding: "12px 18px",
                 borderRadius: "14px",
                 background:
-                  `linear-gradient(135deg, ${theme}, ${theme})`,
+                  "linear-gradient(135deg, #0B4DBB, #4CAF1D)",
                 color: "#fff",
                 fontWeight: "800",
                 fontSize: "13px",
                 cursor: "pointer",
                 whiteSpace: "nowrap",
                 boxShadow:
-                  "0 4px 14px rgba(15,23,42,0.15)",
+                  "0 8px 20px rgba(11,77,187,0.25)",
                 display: "flex",
                 alignItems: "center",
                 gap: "6px",

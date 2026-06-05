@@ -82,8 +82,8 @@ const Dashboard = () => {
           background:
           linear-gradient(
             135deg,
-            #6155A6,
-            #A685E2
+            #0B4DBB,
+            #4CAF1D
           );
 
           color:#fff;
@@ -150,7 +150,7 @@ const Dashboard = () => {
                 height: "180px",
                 background: user?.coverImage
                   ? `url(${user.coverImage}) center/cover`
-                  : "linear-gradient(135deg,#6155A6,#A685E2,#FFABE1)",
+                  : "linear-gradient(135deg,#0B4DBB,#4CAF1D,#2E7BFF)",
               }}
             />
 
@@ -263,7 +263,7 @@ const Dashboard = () => {
                   margin: "0 auto 20px",
 
                   background:
-                    "linear-gradient(135deg,#6155A6,#A685E2)",
+                    "linear-gradient(135deg,#0B4DBB,#4CAF1D)",
 
                   display: "flex",
                   alignItems: "center",

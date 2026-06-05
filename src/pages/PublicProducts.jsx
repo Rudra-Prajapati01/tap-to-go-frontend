@@ -6,7 +6,7 @@ import { useNavigate }
 
 const PublicProducts = ({
     userId,
-    theme = "#7c3aed",
+    theme = "#0B4DBB",
 }) => {
 
     const [products, setProducts] =

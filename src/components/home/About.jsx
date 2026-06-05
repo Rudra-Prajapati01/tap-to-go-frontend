@@ -54,24 +54,21 @@ export default function About() {
         }
       `}</style>
 
-      {/* FIXED TOP NAVBAR */}
       <Navbar />
 
       <div className="about-page">
         
-        {/* 1. HERO SECTION (GAP REDUCED FROM NAVBAR) */}
-        {/* Padding-top changed from 160px to 110px to reduce the space right under the navbar */}
-        <section className="padding-section" style={{ position: "relative", padding: "110px 0 60px", background: "linear-gradient(180deg, rgba(97,85,166,0.04) 0%, #ffffff 100%)" }}>
+        <section className="padding-section" style={{ position: "relative", padding: "150px 0 60px", background: "linear-gradient(180deg, rgba(97,85,166,0.04) 0%, #ffffff 100%)" }}>
           <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle, rgba(97,85,166,0.04) 1.5px, transparent 1.5px)", backgroundSize: "32px 32px", pointerEvents: "none" }} />
           
           <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 40px", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
             
             {/* Margins balanced nicely */}
-            <span style={{ display: "inline-block", padding: "6px 16px", background: "rgba(97,85,166,0.06)", border: "1px solid rgba(97,85,166,0.15)", borderRadius: "999px", color: "#6155A6", fontSize: "12px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "20px" }}>About JioTap</span>
+            <span style={{ display: "inline-block", padding: "6px 16px", background: "rgba(97,85,166,0.06)", border: "1px solid rgba(97,85,166,0.15)", borderRadius: "999px", color: "#0B4DBB", fontSize: "12px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "20px" }}>About JioTap</span>
             
             <h1 style={{ fontSize: "clamp(2.5rem, 5.5vw, 4.2rem)", fontWeight: 800, lineHeight: 1.2, letterSpacing: "-0.03em", margin: "0 0 20px", color: "#111" }}>
               Smart Digital Networking <br />
-              <span style={{ background: "linear-gradient(90deg, #6155A6, #A685E2, #ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Powered By NFC Technology</span>
+              <span style={{ background: "linear-gradient(90deg, #0B4DBB, #4CAF1D, #ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Powered By NFC Technology</span>
             </h1>
             
             <p style={{ fontSize: "clamp(1.05rem, 1.8vw, 1.25rem)", color: "#64748b", maxWidth: "860px", margin: "0 auto 40px", lineHeight: 1.6, fontWeight: 500 }}>
@@ -108,14 +105,14 @@ export default function About() {
         <section className="padding-section" style={{ padding: "90px 0", borderTop: "1px solid #f1f5f9" }}>
           <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 40px" }} className="grid-2">
             <div>
-              <span style={{ color: "#6155A6", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.5px", fontSize: "13px" }}>The Problem</span>
+              <span style={{ color: "#0B4DBB", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.5px", fontSize: "13px" }}>The Problem</span>
               <h2 style={{ fontSize: "clamp(1.8rem, 3vw, 2.6rem)", fontWeight: 800, margin: "12px 0 20px", color: "#0f0f0f" }}>Traditional Paper Cards Are Dead.</h2>
               <p style={{ color: "#64748b", fontSize: "1.05rem", lineHeight: 1.7, margin: 0, fontWeight: 500 }}>
                 Traditional business cards are difficult to update, easy to lose, and expensive to reprint. Every time your phone number, email, or designation changes, hundreds of cards go to waste.
               </p>
             </div>
             <div style={{ background: "rgba(97,85,166,0.02)", padding: "48px", borderRadius: "24px", border: "1px dashed rgba(97,85,166,0.2)" }}>
-              <span style={{ color: "#a855f7", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.5px", fontSize: "13px" }}>Our Solution</span>
+              <span style={{ color: " #4CAF1D", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.5px", fontSize: "13px" }}>Our Solution</span>
               <h2 style={{ fontSize: "clamp(1.8rem, 3vw, 2.6rem)", fontWeight: 800, margin: "12px 0 20px", color: "#0f0f0f" }}>Why JioTap?</h2>
               <p style={{ color: "#334155", fontSize: "1.05rem", lineHeight: 1.7, margin: 0, fontWeight: 500 }}>
                 JioTap was built to provide a smarter, greener, and more effective way of networking. With a single tap, users can instantly share their digital profile, contact information, social media links, and business details.
@@ -228,7 +225,7 @@ export default function About() {
             <button 
               className="btn-hover"
               onClick={() => navigate("/register")}
-              style={{ padding: "18px 44px", background: "linear-gradient(135deg, #6155A6, #A685E2)", color: "#ffffff", border: "none", borderRadius: "16px", fontSize: "16px", fontWeight: 700, cursor: "pointer", boxShadow: "0 10px 25px rgba(97,85,166,0.3)" }}
+              style={{ padding: "18px 44px", background: "linear-gradient(135deg, #0B4DBB, #4CAF1D)", color: "#4CAF1D", border: "none", borderRadius: "16px", fontSize: "16px", fontWeight: 700, cursor: "pointer", boxShadow: "0 10px 25px rgba(97,85,166,0.3)" }}
             >
               Get Started Now →
             </button>

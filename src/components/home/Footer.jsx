@@ -49,7 +49,7 @@ export default function Footer() {
           {/* Brand & Socials */}
           <div style={styles.brandCol}>
             <h3 style={styles.logo}>
-              Jio<span style={{ color: "#A685E2" }}>Tap</span>
+              Jio<span style={{ color: "#4CAF1D" }}>Tap</span>
             </h3>
             <p style={styles.brandDesc}>
               The next generation NFC-powered digital business card platform
@@ -69,7 +69,7 @@ export default function Footer() {
                   aria-label={soc.label}
                   style={styles.socialIcon}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = '#6155A6';
+                    e.currentTarget.style.backgroundColor = '#0B4DBB';
                     e.currentTarget.style.transform = 'translateY(-3px)';
                   }}
                   onMouseLeave={(e) => {
@@ -198,7 +198,7 @@ const styles = {
     borderRadius: "16px",
     fontWeight: "bold",
     fontSize: "1rem",
-    background: "linear-gradient(135deg, #6155A6 0%, #A685E2 100%)",
+    background: "linear-gradient(135deg, #0B4DBB 0%, #4CAF1D 100%)",
     color: "#ffffff",
     border: "none",
     cursor: "pointer",

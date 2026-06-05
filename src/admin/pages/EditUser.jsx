@@ -1132,7 +1132,7 @@ export default function EditUser() {
                                             : loading
                                                 ? "linear-gradient(135deg,#7c3aedcc,#a855f7cc)"
                                                 : "linear-gradient(135deg,#7c3aed,#a855f7)",
-                                        color: "#ffffff",
+                                        color: "#FFFFFF",
                                         fontWeight: "700",
                                         fontSize: "14px",
                                         cursor: loading ? "not-allowed" : "pointer",

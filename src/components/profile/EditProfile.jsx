@@ -43,8 +43,8 @@ const Icons = {
   save: <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" /></svg>,
   check: <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12" /></svg>,
   loader: <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" style={{ animation: "spin 0.8s linear infinite" }}><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" opacity="0.25" /><path d="M21 12a9 9 0 00-9-9" /></svg>,
-  edit: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="2.2" strokeLinecap="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z" /></svg>,
-  qr: <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" /></svg>,
+  edit: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0B4DBB" strokeWidth="2.2" strokeLinecap="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z" /></svg>,
+  qr: <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0B4DBB" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" /></svg>,
 };
 
 // ── Reusable Field ───────────────────────────────────────────────────────────
@@ -59,7 +59,7 @@ const Field = ({ icon, label, name, type = "text", placeholder, form, set, hint 
         value={form[name] || ""}
         onChange={e => set(name, e.target.value)}
         style={inputStyle}
-        onFocus={e => (e.target.style.borderColor = "#7c3aed")}
+        onFocus={e => (e.target.style.borderColor = "#0B4DBB")}
         onBlur={e => (e.target.style.borderColor = "#e2e8f0")}
       />
     </div>
@@ -273,10 +273,10 @@ export default function EditProfile() {
       },
     },
     theme: {
-      profileTheme: storedUser.theme?.profileTheme || "#7c3aed",
+      profileTheme: storedUser.theme?.profileTheme || "#0B4DBB",
       backgroundColor: storedUser.theme?.backgroundColor || "#ffffff",
       textColor: storedUser.theme?.textColor || "#1e293b",
-      buttonColor: storedUser.theme?.buttonColor || "#7c3aed",
+      buttonColor: storedUser.theme?.buttonColor || "#0B4DBB",
       buttonTextColor: storedUser.theme?.buttonTextColor || "#ffffff",
       fontFamily: storedUser.theme?.fontFamily || "Poppins",
       cardView: storedUser.theme?.cardView || "left",
@@ -480,8 +480,8 @@ export default function EditProfile() {
           <label style={labelStyle}>Company Logo</label>
           <div
             onClick={() => logoRef.current?.click()}
-            style={{ width: "82px", height: "82px", borderRadius: "16px", cursor: "pointer", border: "2px dashed #c7d2fe", background: "#f5f3ff", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "4px", transition: "border-color 0.2s", position: "relative", overflow: "hidden", flexShrink: 0 }}
-            onMouseEnter={e => e.currentTarget.style.borderColor = "#7c3aed"}
+            style={{ width: "82px", height: "82px", borderRadius: "16px", cursor: "pointer", border: "2px dashed #c7d2fe", background: "#EAF4FF", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "4px", transition: "border-color 0.2s", position: "relative", overflow: "hidden", flexShrink: 0 }}
+            onMouseEnter={e => e.currentTarget.style.borderColor = "#EAF4FF"}
             onMouseLeave={e => e.currentTarget.style.borderColor = "#c7d2fe"}
           >
             {form.logoImage
@@ -536,7 +536,7 @@ export default function EditProfile() {
             transition: "0.2s",
             boxSizing: "border-box",
           }}
-          onFocus={(e) => (e.target.style.borderColor = "#7c3aed")}
+          onFocus={(e) => (e.target.style.borderColor = "#0B4DBB")}
           onBlur={(e) => (e.target.style.borderColor = "#e2e8f0")}
         />
         <span style={{ marginTop: "6px", fontSize: "12px", color: bioLeft < 20 ? "#ef4444" : "#94a3b8", textAlign: "right" }}>
@@ -641,7 +641,7 @@ export default function EditProfile() {
       <div style={{ border: "1px solid #e5e7eb", borderRadius: "18px", padding: "20px", background: "#fff" }}>
         <h4 style={{ margin: "0 0 16px", fontSize: "15px", fontWeight: "700", color: "#111827" }}>Accent Color</h4>
         <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-          {["#7c3aed", "#2563eb", "#dc2626", "#ea580c", "#16a34a", "#0891b2", "#db2777", "#000000"].map(color => (
+          {["#0B4DBB", "#2563eb", "#dc2626", "#ea580c", "#16a34a", "#0891b2", "#db2777", "#000000"].map(color => (
             <button
               key={color}
               onClick={() => setForm(f => ({ ...f, theme: { ...f.theme, profileTheme: color, buttonColor: color } }))}
@@ -683,7 +683,7 @@ export default function EditProfile() {
                   value={theme[key]}
                   onChange={e => setTheme(key, e.target.value)}
                   style={{ flex: 1, minWidth: 0, padding: "10px 12px", borderRadius: "10px", border: "1.5px solid #e2e8f0", fontSize: "13px", fontFamily: "monospace", color: "#1e293b", outline: "none" }}
-                  onFocus={e => (e.target.style.borderColor = "#7c3aed")}
+                  onFocus={e => (e.target.style.borderColor = "#0B4DBB")}
                   onBlur={e => (e.target.style.borderColor = "#e2e8f0")}
                 />
               </div>
@@ -933,14 +933,14 @@ export default function EditProfile() {
             align-items: center;
             gap: 8px;
             padding: 12px 18px;
-            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            background: linear-gradient(135deg, #0B4DBB, #4CAF1D);
             color: #fff;
             border: none;
             border-radius: 999px;
             font-size: 13px;
             font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 6px 24px rgba(124,58,237,0.35);
+            box-shadow: 0 6px 24px rgba(11,77,187,0.35);
             font-family: inherit;
           }
           .mobile-preview-overlay {
@@ -1057,8 +1057,8 @@ export default function EditProfile() {
                     background: saved
                       ? "#10b981"
                       : loading
-                        ? "linear-gradient(135deg,#7c3aedcc,#a855f7cc)"
-                        : "linear-gradient(135deg,#7c3aed,#a855f7)",
+                        ? "linear-gradient(135deg,#0B4DBBcc,#4CAF1Dcc)"
+                        : "linear-gradient(135deg,#0B4DBB,#4CAF1D)",
                     color: "#ffffff",
                     fontWeight: "700",
                     fontSize: "14px",
@@ -1070,7 +1070,7 @@ export default function EditProfile() {
                     gap: "8px",
                     boxShadow: saved
                       ? "0 4px 16px rgba(16,185,129,0.25)"
-                      : "0 4px 20px rgba(124,58,237,0.28)",
+                      : "0 4px 20px rgba(11,77,187,0.28)",
                     transition: "all 0.2s",
                     opacity: loading ? 0.85 : 1,
                   }}

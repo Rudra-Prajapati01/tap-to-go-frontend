@@ -9,7 +9,7 @@ const CardShowcase = () => {
         px-6
         bg-gradient-to-b
         from-white
-        to-[#f5f3ff]
+        to-[#EAF4FF]
       "
     >
 
@@ -29,7 +29,7 @@ const CardShowcase = () => {
 
           <p
             className="
-              text-[#7c3aed]
+              text-[#0B4DBB]
               font-bold
               uppercase
               tracking-[4px]
@@ -48,7 +48,7 @@ const CardShowcase = () => {
             "
           >
             Share Your
-            <span className="text-[#7c3aed]">
+            <span className="text-[#0B4DBB]">
               {" "}Digital Business Card
             </span>
             {" "}Anywhere.
@@ -83,7 +83,7 @@ const CardShowcase = () => {
                 py-4
                 rounded-2xl
                 bg-gradient-to-r
-                from-[#7c3aed]
+                from-[#0B4DBB]
                 to-[#ec4899]
                 text-white
                 font-bold
@@ -101,10 +101,10 @@ const CardShowcase = () => {
                 py-4
                 rounded-2xl
                 border-2
-                border-[#7c3aed]
-                text-[#7c3aed]
+                border-[#0B4DBB]
+                text-[#0B4DBB]
                 font-bold
-                hover:bg-[#7c3aed]
+                hover:bg-[#0B4DBB]
                 hover:text-white
                 duration-300
               "
@@ -198,7 +198,7 @@ const CardShowcase = () => {
 
               <p
                 className="
-                  text-[#7c3aed]
+                  text-[#0B4DBB]
                   font-semibold
                   mt-1
                 "

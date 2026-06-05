@@ -151,7 +151,7 @@ export default function ProfileQRCode({
           padding: "12px 20px",
           borderRadius: "14px",
           background:
-            "linear-gradient(135deg,#6155A6,#A685E2)",
+            "linear-gradient(135deg,#0B4DBB,#4CAF1D)",
           color: "#fff",
           fontWeight: "700",
           fontSize: "14px",

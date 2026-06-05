@@ -62,7 +62,7 @@ const Analytics = () => {
     }
 
     const stats = [
-        { title: "Card Taps", value: analytics?.nfcTaps || 0, icon: Smartphone, color: "#7C3AED" },
+        { title: "Card Taps", value: analytics?.nfcTaps || 0, icon: Smartphone, color: "#0B4DBB" },
         { title: "Leads", value: analytics?.leads || 0, icon: Users, color: "#22C55E" },
         {
             title: "Link Clicks",
@@ -105,7 +105,7 @@ const Analytics = () => {
         { name: "Sun", clicks: 15 },
     ];
 
-    const COLORS = ["#7C3AED", "#A855F7", "#EC4899", "#3B82F6", "#22C55E"];
+    const COLORS = ["#0B4DBB", " #4CAF1D", "#EC4899", "#3B82F6", "#22C55E"];
 
     return (
         <>
@@ -116,7 +116,7 @@ const Analytics = () => {
             width: 100%;
             min-height: 100vh;
             padding: 16px;
-            background: #F5F3FF;
+            background: #EAF4FF;
         }
 
         /* ── HEADER ── */
@@ -355,8 +355,8 @@ const Analytics = () => {
                                 <AreaChart data={areaData}>
                                     <defs>
                                         <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor="#7C3AED" stopOpacity={0.5} />
-                                            <stop offset="95%" stopColor="#7C3AED" stopOpacity={0} />
+                                            <stop offset="5%" stopColor="#0B4DBB" stopOpacity={0.5} />
+                                            <stop offset="95%" stopColor="#0B4DBB" stopOpacity={0} />
                                         </linearGradient>
                                     </defs>
                                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -366,7 +366,7 @@ const Analytics = () => {
                                     <Area
                                         type="monotone"
                                         dataKey="taps"
-                                        stroke="#7C3AED"
+                                        stroke="#0B4DBB"
                                         fillOpacity={1}
                                         fill="url(#colorUv)"
                                         strokeWidth={3}
@@ -427,7 +427,7 @@ const Analytics = () => {
                                     <XAxis dataKey="name" tick={{ fontSize: 12 }} />
                                     <YAxis tick={{ fontSize: 12 }} width={30} />
                                     <Tooltip />
-                                    <Bar dataKey="clicks" fill="#7C3AED" radius={[10, 10, 0, 0]} />
+                                    <Bar dataKey="clicks" fill="#0B4DBB" radius={[10, 10, 0, 0]} />
                                 </BarChart>
                             </ResponsiveContainer>
                         </div>

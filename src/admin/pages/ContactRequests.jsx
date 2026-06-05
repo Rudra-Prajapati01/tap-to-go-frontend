@@ -131,7 +131,7 @@ export default function ContactRequests() {
                 <div
                     style={{
                         background:
-                            "linear-gradient(135deg,#6155A6,#A685E2)",
+                            "linear-gradient(135deg,#0B4DBB,#4CAF1D)",
                         color: "#fff",
                         padding: "25px",
                         borderRadius: "18px",
@@ -227,7 +227,7 @@ export default function ContactRequests() {
                                 <tr
                                     style={{
                                         background:
-                                            "linear-gradient(135deg,#6155A6,#A685E2)",
+                                            "linear-gradient(135deg,#0B4DBB,#4CAF1D)",
                                         color: "#fff",
                                     }}
                                 >
@@ -284,7 +284,7 @@ export default function ContactRequests() {
                                                             setSelectedMessage(contact)
                                                         }
                                                         style={{
-                                                            background: "#6155A6",
+                                                            background: "#0B4DBB",
                                                             color: "#fff",
                                                             border: "none",
                                                             padding: "8px 14px",

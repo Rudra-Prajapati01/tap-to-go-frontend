@@ -4,7 +4,7 @@ import HeroImage from "../../assets/jiotap-hero.png";
 
 const Hero = () => {
   const navigate = useNavigate();
-  
+
   // State to track mobile view properly on load and resize
   const [isMobile, setIsMobile] = useState(
     typeof window !== "undefined" ? window.innerWidth < 992 : false
@@ -22,7 +22,7 @@ const Hero = () => {
     <section
       style={{
         minHeight: "100vh",
-        background: "linear-gradient(135deg,#f8f4ff 0%,#ffffff 50%,#f2ebff 100%)",
+        background: "linear-gradient(135deg,#F5FAFF 0%,#FFFFFF 50%,#F6FFF1 100%)",
         padding: isMobile ? "100px 20px 50px" : "140px 6% 80px",
         display: "flex",
         flexDirection: isMobile ? "column" : "row", // Stack elements on mobile
@@ -43,7 +43,7 @@ const Hero = () => {
           width: isMobile ? "300px" : "500px",
           height: isMobile ? "300px" : "500px",
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(166,133,226,0.18) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(11,77,187,0.15) 0%, transparent 70%)",
           zIndex: 0,
         }}
       />
@@ -56,7 +56,7 @@ const Hero = () => {
           width: isMobile ? "280px" : "450px",
           height: isMobile ? "280px" : "450px",
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(255,171,225,0.18) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(76,175,29,0.15) 0%, transparent 70%)",
           zIndex: 0,
         }}
       />
@@ -81,8 +81,8 @@ const Hero = () => {
             gap: "10px",
             padding: "8px 16px",
             borderRadius: "50px",
-            background: "#f1ebff",
-            color: "#6155A6",
+            background: "#EAF4FF",
+            color: "#0B4DBB",
             fontWeight: "700",
             fontSize: isMobile ? "13px" : "15px",
             marginBottom: "20px",
@@ -97,7 +97,7 @@ const Hero = () => {
             fontSize: isMobile ? "38px" : "72px", // Scaled down beautifully for mobile screens
             fontWeight: "900",
             lineHeight: isMobile ? "1.15" : "1.05",
-            color: "#1a1040",
+            color: "#1F2937",
             marginBottom: "20px",
             letterSpacing: "-0.02em",
           }}
@@ -106,7 +106,7 @@ const Hero = () => {
           <br />
           <span
             style={{
-              background: "linear-gradient(135deg,#6155A6,#FFABE1,#A685E2)",
+              background: "linear-gradient(135deg,#0B4DBB,#2E7BFF,#4CAF1D)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               display: "inline-block",
@@ -146,12 +146,12 @@ const Hero = () => {
               padding: isMobile ? "14px 28px" : "18px 34px",
               borderRadius: "16px",
               border: "none",
-              background: "linear-gradient(135deg,#6155A6,#A685E2)",
+              background: "linear-gradient(135deg,#0B4DBB,#4CAF1D)",
               color: "#fff",
               fontWeight: "700",
               fontSize: isMobile ? "15px" : "16px",
               cursor: "pointer",
-              boxShadow: "0 12px 24px rgba(97,85,166,0.25)",
+              boxShadow: "0 12px 24px rgba(11,77,187,0.25)",
               flex: isMobile ? "1" : "initial", // Buttons take full width side-by-side if needed
               minWidth: "150px",
             }}
@@ -163,9 +163,9 @@ const Hero = () => {
             style={{
               padding: isMobile ? "14px 28px" : "18px 34px",
               borderRadius: "16px",
-              border: "2px solid #6155A6",
+              border: "2px solid #0B4DBB",
               background: "#fff",
-              color: "#6155A6",
+              color: "#0B4DBB",
               fontWeight: "700",
               fontSize: isMobile ? "15px" : "16px",
               cursor: "pointer",

@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import logo from "../../assets/logo.png";
+
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -33,9 +35,9 @@ const Navbar = () => {
 
   const handleNavLinkClick = (item) => {
     setMenuOpen(false); // Link click hote hi menu close karo
-    if (item === "Features") navigate("/features"); 
+    if (item === "Features") navigate("/features");
     else if (item === "Products") navigate("/products");
-    else if (item === "About Us") navigate("/about"); 
+    else if (item === "About Us") navigate("/about");
     else if (item === "Teams & Business") navigate("/teams-business");
     else if (item === "Contact Us") navigate("/contact");
   };
@@ -50,9 +52,9 @@ const Navbar = () => {
         .nav-btn { transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; align-items: center; justify-content: center; }
         .nav-btn:hover { transform: translateY(-2px); }
         .nav-links span { transition: 0.3s; position: relative; }
-        .nav-links span::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0; background-color: #6155A6; transition: 0.3s; }
+        .nav-links span::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0; background-color: #0B4DBB; transition: 0.3s; }
         .nav-links span:hover::after { width: 100%; }
-        .nav-links span:hover { color: #6155A6 !important; }
+        .nav-links span:hover { color: #0B4DBB !important; }
         
         /* Hamburger Icon Animation */
         .hamburger-icon { display: none; flex-direction: column; gap: 6px; cursor: pointer; padding: 8px; z-index: 1001; }
@@ -70,7 +72,7 @@ const Navbar = () => {
         }
         .mobile-drawer.open { right: 0; }
         .mobile-drawer-link { fontSize: 20px; fontWeight: 600; color: #475569; cursor: pointer; transition: 0.2s; }
-        .mobile-drawer-link:hover { color: #6155A6; transform: scale(1.05); }
+        .mobile-drawer-link:hover { color: #0B4DBB; transform: scale(1.05); }
 
         @media (max-width: 992px){
           .nav-links { display: none !important; }
@@ -95,7 +97,7 @@ const Navbar = () => {
           top: 0,
           left: 0,
           width: "100%",
-          height: "74px",
+          height: "130px",
           padding: "0 40px",
           display: "flex",
           alignItems: "center",
@@ -109,7 +111,10 @@ const Navbar = () => {
       >
         {/* LOGO AREA */}
         <div
-          onClick={() => { setMenuOpen(false); navigate("/"); }}
+          onClick={() => {
+            setMenuOpen(false);
+            navigate("/");
+          }}
           style={{
             display: "flex",
             alignItems: "center",
@@ -119,21 +124,16 @@ const Navbar = () => {
             flex: "1 0 0%",
           }}
         >
-          <h1
-            className="logo-text"
+          <img
+            src={logo}
+            alt="JioTap Logo"
             style={{
-              fontSize: isMobile ? "20px" : "24px",
-              fontWeight: "800",
-              color: "#3E3276",
-              fontFamily: "sans-serif",
-              margin: 0,
-              whiteSpace: "nowrap",
+              height: isMobile ? "70px" : "100px",
+              width: "auto",
+              objectFit: "contain",
             }}
-          >
-            Jio Tap
-          </h1>
+          />
         </div>
-
         {/* DESKTOP NAV LINKS */}
         <div
           className="nav-links"
@@ -150,7 +150,7 @@ const Navbar = () => {
               key={item}
               onClick={() => handleNavLinkClick(item)}
               style={{
-                fontSize: "14px",
+                fontSize: "18px",
                 fontWeight: "650",
                 color: "#475569",
                 cursor: "pointer",
@@ -172,7 +172,7 @@ const Navbar = () => {
             justifyContent: "flex-end",
             gap: "14px",
             flexShrink: 0,
-            flex: "1 0 0%", 
+            flex: "1 0 0%",
           }}
         >
           {/* Desktop Right Buttons Row */}
@@ -183,9 +183,9 @@ const Navbar = () => {
               style={{
                 padding: "11px 22px",
                 borderRadius: "14px",
-                border: "2px solid #6155A6",
+                border: "2px solid #0B4DBB",
                 background: "#fff",
-                color: "#6155A6",
+                color: "#0B4DBB",
                 fontSize: "14px",
                 fontWeight: "700",
                 cursor: "pointer",
@@ -201,7 +201,7 @@ const Navbar = () => {
                 padding: "12px 24px",
                 borderRadius: "14px",
                 border: "none",
-                background: "linear-gradient(135deg,#6155A6,#A685E2)",
+                background: "linear-gradient(135deg,#0B4DBB,#4CAF1D)",
                 color: "#fff",
                 fontSize: "14px",
                 fontWeight: "700",
@@ -215,8 +215,8 @@ const Navbar = () => {
           </div>
 
           {/* Responsive Hamburger Toggle Action Button */}
-          <div 
-            className={`hamburger-icon ${menuOpen ? 'open' : ''}`} 
+          <div
+            className={`hamburger-icon ${menuOpen ? 'open' : ''}`}
             onClick={() => setMenuOpen(!menuOpen)}
           >
             <div className="hamburger-line line1"></div>
@@ -239,7 +239,7 @@ const Navbar = () => {
             </span>
           ))}
         </div>
-        
+
         {/* Mobile Action Controls inside Drawer */}
         <div style={{ display: "flex", flexDirection: "column", width: "80%", gap: "12px", marginTop: "16px" }}>
           <button
@@ -249,9 +249,9 @@ const Navbar = () => {
               width: "100%",
               padding: "14px",
               borderRadius: "14px",
-              border: "2px solid #6155A6",
+              border: "2px solid #0B4DBB",
               background: "#fff",
-              color: "#6155A6",
+              color: "#0B4DBB",
               fontSize: "15px",
               fontWeight: "700",
               cursor: "pointer",
@@ -267,12 +267,12 @@ const Navbar = () => {
               padding: "14px",
               borderRadius: "14px",
               border: "none",
-              background: "linear-gradient(135deg,#6155A6,#A685E2)",
+              background: "linear-gradient(135deg,#0B4DBB,#4CAF1D)",
               color: "#fff",
               fontSize: "15px",
               fontWeight: "700",
               cursor: "pointer",
-              boxShadow: "0 8px 24px rgba(97,85,166,0.25)",
+              boxShadow: "0 8px 24px rgba(11,77,187,0.25)",
             }}
           >
             Get Started →

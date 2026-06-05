@@ -1,7 +1,18 @@
 @import "tailwindcss";
 
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+:root {
+  --primary-blue: #0B4DBB;
+  --primary-green: #4CAF1D;
+
+  --blue-dark: #083A8A;
+  --green-dark: #2F8A14;
+
+  --blue-light: #2E7BFF;
+  --green-light: #7ED321;
+
+  --text-dark: #1F2937;
+  --text-light: #6B7280;
+
+  --background: #FFFFFF;
+  --background-alt: #F8FAFC;
 }

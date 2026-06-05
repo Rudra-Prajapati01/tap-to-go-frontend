@@ -88,7 +88,7 @@ const Leads = () => {
 
   const avatarColor = (name = "") => {
     const colors = [
-      ["#6d28d9","#ede9fe"], ["#0369a1","#e0f2fe"], ["#065f46","#d1fae5"],
+      ["#0B4DBB","rgba(11,77,187,0.12)"], ["#0369a1","#e0f2fe"], ["#065f46","#d1fae5"],
       ["#92400e","#fef3c7"], ["#831843","#fce7f3"], ["#1e3a5f","#dbeafe"],
     ];
     const idx = name.charCodeAt(0) % colors.length;
@@ -108,7 +108,7 @@ const Leads = () => {
 
     .jtc-root {
       font-family: 'DM Sans', sans-serif;
-      background: #f5f3ff;
+      background: #EAF4FF;
       min-height: 100vh;
       padding: 32px 28px 60px;
       color: #111827;
@@ -129,10 +129,10 @@ const Leads = () => {
     .jtc-icon-badge {
       width: 48px; height: 48px;
       border-radius: 14px;
-      background: linear-gradient(135deg, #7c3aed, #9333ea);
+      background: linear-gradient(135deg, #0B4DBB, #4CAF1D);
       display: flex; align-items: center; justify-content: center;
       font-size: 22px;
-      box-shadow: 0 8px 24px rgba(124,58,237,0.35);
+      box-shadow: 0 8px 24px rgba(11,77,187,0.35);
       flex-shrink: 0;
     }
 
@@ -154,8 +154,8 @@ const Leads = () => {
     .jtc-topbar-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 
     .jtc-count-badge {
-      background: #ede9fe;
-      color: #6d28d9;
+      background: rgba(11,77,187,0.12);
+      color: #0B4DBB;
       font-size: 13px;
       font-weight: 700;
       padding: 6px 14px;
@@ -192,8 +192,8 @@ const Leads = () => {
     }
 
     .jtc-search:focus {
-      border-color: #7c3aed;
-      box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
+      border-color: #0B4DBB;
+      box-shadow: 0 0 0 3px rgba(11,77,187,0.1);
     }
 
     .jtc-search::placeholder { color: #9ca3af; }
@@ -202,9 +202,9 @@ const Leads = () => {
     .jtc-card {
       background: #fff;
       border-radius: 20px;
-      border: 1px solid #ede9fe;
+      border: 1px solid rgba(11,77,187,0.12);
       overflow: hidden;
-      box-shadow: 0 4px 24px rgba(124,58,237,0.07), 0 1px 4px rgba(0,0,0,0.04);
+      box-shadow: 0 4px 24px rgba(11,77,187,0.07), 0 1px 4px rgba(0,0,0,0.04);
     }
 
     .jtc-thead {
@@ -212,8 +212,8 @@ const Leads = () => {
       grid-template-columns: 2.4fr 1.1fr 0.9fr 60px 56px;
       gap: 8px;
       padding: 14px 24px;
-      background: #faf7ff;
-      border-bottom: 1px solid #ede9fe;
+      background: #F5FAFF;
+      border-bottom: 1px solid rgba(11,77,187,0.12);
     }
 
     .jtc-th {
@@ -230,14 +230,14 @@ const Leads = () => {
       gap: 8px;
       align-items: center;
       padding: 16px 24px;
-      border-bottom: 1px solid #f5f3ff;
+      border-bottom: 1px solid #EAF4FF;
       transition: background 0.15s;
       position: relative;
       cursor: default;
     }
 
     .jtc-row:last-child { border-bottom: none; }
-    .jtc-row:hover { background: #faf7ff; }
+    .jtc-row:hover { background: #F5FAFF; }
 
     .jtc-contact-cell { display: flex; align-items: center; gap: 14px; min-width: 0; }
 
@@ -290,8 +290,8 @@ const Leads = () => {
       width: 36px; height: 36px;
       border: none;
       border-radius: 10px;
-      background: #f5f3ff;
-      color: #7c3aed;
+      background: #EAF4FF;
+      color: #0B4DBB;
       font-size: 16px;
       cursor: pointer;
       display: flex; align-items: center; justify-content: center;
@@ -299,7 +299,7 @@ const Leads = () => {
       flex-shrink: 0;
     }
 
-    .jtc-icon-btn:hover { background: #ede9fe; transform: scale(1.07); }
+    .jtc-icon-btn:hover { background: rgba(11,77,187,0.12); transform: scale(1.07); }
     .jtc-icon-btn:active { transform: scale(0.95); }
 
     /* ── DROPDOWN MENU ── */
@@ -312,10 +312,10 @@ const Leads = () => {
       min-width: 200px;
       background: #fff;
       border-radius: 16px;
-      border: 1px solid #ede9fe;
+      border: 1px solid rgba(11,77,187,0.12);
       overflow: hidden;
       z-index: 999;
-      box-shadow: 0 16px 48px rgba(124,58,237,0.14), 0 4px 12px rgba(0,0,0,0.06);
+      box-shadow: 0 16px 48px rgba(11,77,187,0.14), 0 4px 12px rgba(0,0,0,0.06);
       animation: jtcDropIn 0.15s ease;
     }
 
@@ -338,12 +338,12 @@ const Leads = () => {
       display: flex;
       align-items: center;
       gap: 10px;
-      border-bottom: 1px solid #f5f3ff;
+      border-bottom: 1px solid #EAF4FF;
       transition: background 0.12s;
     }
 
     .jtc-menu-item:last-child { border-bottom: none; }
-    .jtc-menu-item:hover { background: #faf7ff; }
+    .jtc-menu-item:hover { background: #F5FAFF; }
     .jtc-menu-item.danger { color: #ef4444; }
     .jtc-menu-item.danger:hover { background: #fef2f2; }
 
@@ -375,7 +375,7 @@ const Leads = () => {
       align-items: center;
       gap: 14px;
       padding: 16px 24px;
-      border-bottom: 1px solid #f5f3ff;
+      border-bottom: 1px solid #EAF4FF;
       animation: jtcPulse 1.5s ease-in-out infinite;
     }
 
@@ -431,15 +431,15 @@ const Leads = () => {
       width: 36px; height: 36px;
       border: none;
       border-radius: 10px;
-      background: #f5f3ff;
-      color: #6d28d9;
+      background: #EAF4FF;
+      color: #0B4DBB;
       font-size: 20px;
       cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       transition: background 0.15s;
     }
 
-    .jtc-modal-close:hover { background: #ede9fe; }
+    .jtc-modal-close:hover { background: rgba(11,77,187,0.12); }
 
     /* View modal layout */
     .jtc-view-header {
@@ -477,18 +477,18 @@ const Leads = () => {
       padding: 0 24px;
       border: none;
       border-radius: 12px;
-      background: linear-gradient(135deg, #7c3aed, #9333ea);
+      background: linear-gradient(135deg, #0B4DBB, #4CAF1D);
       color: #fff;
       font-family: 'DM Sans', sans-serif;
       font-size: 14px;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 6px 20px rgba(124,58,237,0.3);
+      box-shadow: 0 6px 20px rgba(11,77,187,0.3);
       transition: box-shadow 0.2s, transform 0.1s;
       white-space: nowrap;
     }
 
-    .jtc-view-card-btn:hover { box-shadow: 0 8px 28px rgba(124,58,237,0.4); transform: translateY(-1px); }
+    .jtc-view-card-btn:hover { box-shadow: 0 8px 28px rgba(11,77,187,0.4); transform: translateY(-1px); }
 
     .jtc-view-grid {
       display: grid;
@@ -503,7 +503,7 @@ const Leads = () => {
     }
 
     .jtc-info-item {
-      background: #faf7ff;
+      background: #F5FAFF;
       border-radius: 16px;
       padding: 16px 18px;
     }
@@ -525,13 +525,13 @@ const Leads = () => {
     }
 
     .jtc-side-panel {
-      border: 1px solid #ede9fe;
+      border: 1px solid rgba(11,77,187,0.12);
       border-radius: 22px;
       overflow: hidden;
     }
 
     .jtc-side-avatar-wrap {
-      background: linear-gradient(160deg, #f5f3ff 0%, #ede9fe 100%);
+      background: linear-gradient(160deg, #EAF4FF 0%, rgba(11,77,187,0.12) 100%);
       padding: 28px;
       display: flex;
       flex-direction: column;
@@ -546,7 +546,7 @@ const Leads = () => {
       font-size: 38px;
       font-weight: 800;
       margin-bottom: 14px;
-      box-shadow: 0 8px 24px rgba(124,58,237,0.15);
+      box-shadow: 0 8px 24px rgba(11,77,187,0.15);
     }
 
     .jtc-side-name {
@@ -580,12 +580,12 @@ const Leads = () => {
       display: flex;
       align-items: center;
       gap: 10px;
-      border-bottom: 1px solid #f5f3ff;
+      border-bottom: 1px solid #EAF4FF;
       transition: background 0.12s, padding-left 0.15s;
     }
 
     .jtc-side-action-btn:last-child { border-bottom: none; }
-    .jtc-side-action-btn:hover { background: #faf7ff; padding-left: 26px; }
+    .jtc-side-action-btn:hover { background: #F5FAFF; padding-left: 26px; }
     .jtc-side-action-btn.danger { color: #ef4444; }
     .jtc-side-action-btn.danger:hover { background: #fef2f2; }
 
@@ -626,8 +626,8 @@ const Leads = () => {
     }
 
     .jtc-input:focus {
-      border-color: #7c3aed;
-      box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
+      border-color: #0B4DBB;
+      box-shadow: 0 0 0 3px rgba(11,77,187,0.1);
     }
 
     .jtc-textarea {
@@ -645,8 +645,8 @@ const Leads = () => {
     }
 
     .jtc-textarea:focus {
-      border-color: #7c3aed;
-      box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
+      border-color: #0B4DBB;
+      box-shadow: 0 0 0 3px rgba(11,77,187,0.1);
     }
 
     .jtc-save-btn {
@@ -654,18 +654,18 @@ const Leads = () => {
       height: 52px;
       border: none;
       border-radius: 14px;
-      background: linear-gradient(135deg, #7c3aed, #9333ea);
+      background: linear-gradient(135deg, #0B4DBB, #4CAF1D);
       color: #fff;
       font-family: 'DM Sans', sans-serif;
       font-size: 15px;
       font-weight: 700;
       cursor: pointer;
       margin-top: 8px;
-      box-shadow: 0 6px 24px rgba(124,58,237,0.3);
+      box-shadow: 0 6px 24px rgba(11,77,187,0.3);
       transition: box-shadow 0.2s, transform 0.1s;
     }
 
-    .jtc-save-btn:hover { box-shadow: 0 8px 30px rgba(124,58,237,0.4); transform: translateY(-1px); }
+    .jtc-save-btn:hover { box-shadow: 0 8px 30px rgba(11,77,187,0.4); transform: translateY(-1px); }
     .jtc-save-btn:active { transform: translateY(0); }
 
     /* ── MOBILE CARD LAYOUT ── */
@@ -674,15 +674,15 @@ const Leads = () => {
     .jtc-mobile-card {
       background: #fff;
       border-radius: 20px;
-      border: 1px solid #ede9fe;
+      border: 1px solid rgba(11,77,187,0.12);
       padding: 18px;
       margin-bottom: 12px;
-      box-shadow: 0 2px 12px rgba(124,58,237,0.06);
+      box-shadow: 0 2px 12px rgba(11,77,187,0.06);
       position: relative;
       transition: box-shadow 0.2s;
     }
 
-    .jtc-mobile-card:active { box-shadow: 0 4px 20px rgba(124,58,237,0.12); }
+    .jtc-mobile-card:active { box-shadow: 0 4px 20px rgba(11,77,187,0.12); }
 
     .jtc-mc-top { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
 
@@ -725,13 +725,13 @@ const Leads = () => {
     }
 
     .jtc-mc-pill {
-      background: #faf7ff;
-      border: 1px solid #ede9fe;
+      background: #F5FAFF;
+      border: 1px solid rgba(11,77,187,0.12);
       border-radius: 8px;
       padding: 5px 10px;
       font-size: 12px;
       font-weight: 600;
-      color: #6d28d9;
+      color: #0B4DBB;
     }
 
     .jtc-mc-actions { display: flex; gap: 8px; justify-content: flex-end; }
@@ -739,26 +739,26 @@ const Leads = () => {
     .jtc-mc-btn {
       height: 40px;
       padding: 0 16px;
-      border: 1.5px solid #ede9fe;
+      border: 1.5px solid rgba(11,77,187,0.12);
       border-radius: 10px;
       background: #fff;
       font-family: 'DM Sans', sans-serif;
       font-size: 13px;
       font-weight: 600;
-      color: #7c3aed;
+      color: #0B4DBB;
       cursor: pointer;
       display: flex; align-items: center; gap: 6px;
       transition: background 0.15s, border-color 0.15s;
       white-space: nowrap;
     }
 
-    .jtc-mc-btn:hover { background: #faf7ff; border-color: #7c3aed; }
+    .jtc-mc-btn:hover { background: #F5FAFF; border-color: #0B4DBB; }
 
     .jtc-mc-btn.danger { color: #ef4444; border-color: #fee2e2; }
     .jtc-mc-btn.danger:hover { background: #fef2f2; border-color: #ef4444; }
 
     .jtc-mc-btn.primary {
-      background: linear-gradient(135deg, #7c3aed, #9333ea);
+      background: linear-gradient(135deg, #0B4DBB, #4CAF1D);
       border: none;
       color: #fff;
     }
@@ -774,10 +774,10 @@ const Leads = () => {
       min-width: 190px;
       background: #fff;
       border-radius: 16px;
-      border: 1px solid #ede9fe;
+      border: 1px solid rgba(11,77,187,0.12);
       overflow: hidden;
       z-index: 999;
-      box-shadow: 0 16px 48px rgba(124,58,237,0.14);
+      box-shadow: 0 16px 48px rgba(11,77,187,0.14);
       animation: jtcDropIn 0.15s ease;
     }
 

@@ -262,12 +262,12 @@ const ProductAndServices = () => {
 
     borderColor:
       focusedField === name
-        ? "#7c3aed"
+        ? "#0B4DBB"
         : "#e8eaf0",
 
     boxShadow:
       focusedField === name
-        ? "0 0 0 3px rgba(124,58,237,0.1)"
+        ? "0 0 0 3px rgba(11,77,187,0.15)"
         : "none",
   });
 
@@ -430,7 +430,7 @@ const ProductAndServices = () => {
                 height: "42px",
                 borderRadius: "12px",
                 background:
-                  "linear-gradient(135deg,#7c3aed,#a855f7)",
+                  "linear-gradient(135deg#0B4DBB,#4CAF1D)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -499,10 +499,10 @@ const ProductAndServices = () => {
                   gap: "8px",
                   padding: "20px",
                   border:
-                    "2px dashed #e2e8f0",
+                    "2px dashed #0B4DBB",
                   borderRadius: "14px",
                   cursor: "pointer",
-                  background: "#fafbff",
+                  background: "#F5FAFF",
                 }}
               >
 
@@ -697,13 +697,13 @@ const ProductAndServices = () => {
                 border: "none",
                 borderRadius: "14px",
                 background:
-                  "linear-gradient(135deg,#7c3aed,#a855f7)",
+                  "linear-gradient(135deg#0B4DBB,#4CAF1D)",
                 color: "#fff",
                 fontWeight: "800",
                 fontSize: "15px",
                 cursor: "pointer",
                 boxShadow:
-                  "0 4px 16px rgba(124,58,237,0.3)",
+                  "0 4px 16px rgba(11,77,187,0.25)",
               }}
             >
               {loading
@@ -725,9 +725,9 @@ const ProductAndServices = () => {
                 borderRadius: "22px",
                 overflow: "hidden",
                 boxShadow:
-                  "0 12px 50px rgba(124,58,237,0.14)",
+                  "0 12px 50px rgba(11,77,187,0.12)",
                 border:
-                  "1px solid #ede9fe",
+                  "1px solid rgba(11,77,187,0.12)",
               }}
             >
 
@@ -812,7 +812,7 @@ const ProductAndServices = () => {
                     style={{
                       fontSize: "26px",
                       fontWeight: "800",
-                      color: "#7c3aed",
+                      color: "#0B4DBB",
                     }}
                   >
                     {form.currency}
@@ -827,7 +827,7 @@ const ProductAndServices = () => {
                       borderRadius:
                         "10px",
                       background:
-                        "linear-gradient(135deg,#7c3aed,#a855f7)",
+                        "linear-gradient(135deg,#0B4DBB,#4CAF1D)",
                       color: "#fff",
                       fontWeight: "700",
                     }}
@@ -978,7 +978,7 @@ const ProductAndServices = () => {
                             fontWeight:
                               "800",
                             color:
-                              "#7c3aed",
+                              "#0B4DBB",
                           }}
                         >
                           {
@@ -1013,8 +1013,8 @@ const ProductAndServices = () => {
                             minWidth: "120px",
                             border: "none",
                             borderRadius: "12px",
-                            background: "#f5f3ff",
-                            color: "#7c3aed",
+                            background: "#EAF4FF",
+                            color: "#0B4DBB",
                             fontWeight: "700",
                             fontSize: "14px",
                             cursor: "pointer",

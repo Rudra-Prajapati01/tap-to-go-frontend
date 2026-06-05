@@ -115,14 +115,14 @@ const PublicProfile = () => {
         gap: 16,
         background: "linear-gradient(135deg,#FFE6E6,#FFCBE8,#D4B8FF,#B8D4FF)",
         fontFamily: "'Plus Jakarta Sans', sans-serif",
-        color: "#7c3aed",
+        color: "#0B4DBB",
         fontSize: 15,
         fontWeight: 700,
       }}>
         <div style={{
           width: 40, height: 40,
           border: "3px solid #e9d5ff",
-          borderTopColor: "#7c3aed",
+          borderTopColor: "#0B4DBB",
           borderRadius: "50%",
           animation: "spin 0.8s linear infinite",
         }} />
@@ -138,7 +138,7 @@ const PublicProfile = () => {
         minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center",
         fontSize: 22, fontWeight: 800,
         background: "linear-gradient(135deg,#FFE6E6,#FFCBE8,#D4B8FF)",
-        color: "#6d28d9", fontFamily: "'Plus Jakarta Sans', sans-serif",
+        color: "#0B4DBB", fontFamily: "'Plus Jakarta Sans', sans-serif",
       }}>
         User not found 🔍
       </div>
@@ -154,14 +154,14 @@ const PublicProfile = () => {
   const fontFamily = theme.fontFamily || "'Plus Jakarta Sans', sans-serif";
   const bgColor = theme.backgroundColor || "#0f172a";
   const textColor = theme.textColor || "#1e1b4b";
-  const buttonColor = theme.buttonColor || "linear-gradient(135deg,#7c3aed,#a855f7,#ec4899)";
+  const buttonColor = theme.buttonColor || "linear-gradient(135deg,#0B4DBB,#4CAF1D,#ec4899)";
   const buttonTextColor = theme.buttonTextColor || "#fff";
   const isSolidButton = buttonColor && !buttonColor.includes("gradient");
   const buttonStyle = { background: buttonColor, color: buttonTextColor };
 
   const coverBg = user.coverImage
     ? `url(${user.coverImage}) center/cover no-repeat`
-    : user.coverTheme || "linear-gradient(135deg,#1e1b4b 0%,#312e81 30%,#4c1d95 60%,#6d28d9 100%)";
+    : user.coverTheme || "linear-gradient(135deg,#1e1b4b 0%,#312e81 30%,#4c1d95 60%,#0B4DBB 100%)";
 
   const avatarSize = isPortrait ? 110 : isCenter ? 96 : 90;
 
@@ -225,10 +225,10 @@ const PublicProfile = () => {
   };
   const pillTextStyle = { color: theme.textColor || "#4c1d95" };
   const nameStyle = { fontFamily: fontFamily, color: textColor };
-  const jobColor = isSolidButton ? buttonColor : "#7c3aed";
+  const jobColor = isSolidButton ? buttonColor : "#0B4DBB";
 
   // ─── NEW: accent color derived from theme ─────────────────────────────────
-  const accentColor = isSolidButton ? buttonColor : "#7c3aed";
+  const accentColor = isSolidButton ? buttonColor : "#0B4DBB";
 
   return (
     <>
@@ -303,7 +303,7 @@ const PublicProfile = () => {
           left: -20px;
           width: 260px;
           height: 180px;
-          background: radial-gradient(ellipse, rgba(124,58,237,0.55) 0%, transparent 70%);
+          background: radial-gradient(ellipse, rgba(11,77,187,0.55) 0%, transparent 70%);
           filter: blur(28px);
           pointer-events: none;
         }
@@ -328,7 +328,7 @@ const PublicProfile = () => {
           font-family: ${fontFamily};
         }
         .pp-tagline-code {
-          background: rgba(124,58,237,0.6);
+          background: rgba(11,77,187,0.6);
           border-radius: 100px;
           padding: 2px 9px;
           font-size: 11px;
@@ -480,7 +480,7 @@ const PublicProfile = () => {
           padding: 3px;
           border-radius: ${isPortrait ? "50%" : "50%"};
           background: linear-gradient(135deg,#c084fc,#f472b6,#fb923c);
-          box-shadow: 0 6px 24px rgba(124,58,237,0.32);
+          box-shadow: 0 6px 24px rgba(11,77,187,0.32);
         }
         .pp-avatar {
           width: ${isPortrait ? "108px" : isCenter ? "100px" : "100px"};
@@ -558,7 +558,7 @@ const PublicProfile = () => {
           justify-content: center;
           width: 22px; height: 22px;
           border-radius: 50%;
-          background: ${isSolidButton ? buttonColor : "linear-gradient(135deg,#6366f1,#a855f7)"};
+          background: ${isSolidButton ? buttonColor : "linear-gradient(135deg,#6366f1,#4CAF1D)"};
           flex-shrink: 0;
         }
         .pp-job {
@@ -671,7 +671,7 @@ const PublicProfile = () => {
         .pp-contact-card-header-icon {
           width: 36px; height: 36px;
           border-radius: 10px;
-          background: ${isSolidButton ? buttonColor : "linear-gradient(135deg,#6366f1,#a855f7)"};
+          background: ${isSolidButton ? buttonColor : "linear-gradient(135deg,#6366f1,#4CAF1D)"};
           display: flex; align-items: center; justify-content: center;
         }
         .pp-contact-card-header h3 {
@@ -869,7 +869,7 @@ const PublicProfile = () => {
         }
         .lead-box input:focus,
         .lead-box textarea:focus {
-          border-color: ${isSolidButton ? buttonColor : "#a855f7"};
+          border-color: ${isSolidButton ? buttonColor : "#4CAF1D"};
         }
         .lead-box textarea { min-height: 100px; resize: none; }
         .lead-submit-btn {

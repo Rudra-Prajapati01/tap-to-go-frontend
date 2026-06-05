@@ -5,38 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../firebase";
 import { Eye, EyeOff } from "lucide-react";
-
-const LotusIcon = () => (
-  <svg width="80" height="80" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="rp1" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#FFAED6" />
-        <stop offset="100%" stopColor="#D4A8FF" />
-      </linearGradient>
-      <linearGradient id="rp2" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#C9B8FF" />
-        <stop offset="100%" stopColor="#7B68CC" />
-      </linearGradient>
-      <linearGradient id="rp3" x1="0" y1="1" x2="0.5" y2="0">
-        <stop offset="0%" stopColor="#9B85E0" />
-        <stop offset="100%" stopColor="#D4A8FF" />
-      </linearGradient>
-      <linearGradient id="rp4" x1="1" y1="1" x2="0" y2="0">
-        <stop offset="0%" stopColor="#FFC0D8" />
-        <stop offset="100%" stopColor="#F0A0C8" />
-      </linearGradient>
-    </defs>
-    <ellipse cx="28" cy="63" rx="13" ry="23" transform="rotate(-30 28 63)" fill="url(#rp2)" opacity="0.9" />
-    <ellipse cx="62" cy="63" rx="13" ry="23" transform="rotate(30 62 63)" fill="url(#rp3)" opacity="0.9" />
-    <ellipse cx="36" cy="55" rx="11" ry="25" transform="rotate(-13 36 55)" fill="url(#rp4)" opacity="0.95" />
-    <ellipse cx="54" cy="55" rx="11" ry="25" transform="rotate(13 54 55)" fill="url(#rp2)" opacity="0.9" />
-    <ellipse cx="45" cy="46" rx="10" ry="28" fill="url(#rp1)" />
-    <text x="14" y="36" fontSize="10" fill="#8471D0" opacity="0.85">✦</text>
-    <text x="65" y="30" fontSize="10" fill="#D4A8FF" opacity="0.85">✦</text>
-    <text x="10" y="57" fontSize="7" fill="#FFAED6" opacity="0.7">+</text>
-    <text x="72" y="60" fontSize="7" fill="#9B85E0" opacity="0.7">+</text>
-  </svg>
-);
+// 1. Logo Import Kiya
+import logo from "../../assets/logo.png";
 
 const GoogleIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24">
@@ -103,84 +73,35 @@ const RegisterForm = () => {
   };
 
   const googleRegister = async () => {
-
     try {
-
-      // GOOGLE PROVIDER
-      const provider =
-        new GoogleAuthProvider();
+      const provider = new GoogleAuthProvider();
       provider.setCustomParameters({
         prompt: "select_account",
       });
 
-      // FIREBASE LOGIN
-      const result =
-        await signInWithPopup(
-          auth,
-          provider
-        );
+      const result = await signInWithPopup(auth, provider);
+      const googleUser = result.user;
 
-      // GOOGLE USER
-      const googleUser =
-        result.user;
+      console.log("GOOGLE USER:", googleUser);
 
-      console.log(
-        "GOOGLE USER:",
-        googleUser
-      );
+      const res = await API.post("/google-login", {
+        name: googleUser.displayName,
+        email: googleUser.email,
+        profileImage: googleUser.photoURL,
+      });
 
-      // SEND TO BACKEND
-      const res = await API.post(
-        "/google-login",
-        {
+      console.log("BACKEND RESPONSE:", res.data);
 
-          name:
-            googleUser.displayName,
-
-          email:
-            googleUser.email,
-
-          profileImage:
-            googleUser.photoURL,
-
-        }
-      );
-
-      console.log(
-        "BACKEND RESPONSE:",
-        res.data
-      );
-
-      // SAVE TOKEN
-      localStorage.setItem(
-        "token",
-        res.data.token
-      );
-
-      // SAVE USER
-      localStorage.setItem(
-        "user",
-        JSON.stringify(
-          res.data.user
-        )
-      );
-
-      // CONTEXT
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
       setUser(res.data.user);
-
-      // REDIRECT
       navigate("/dashboard");
-
     } catch (error) {
-
-      console.log(
-        "GOOGLE REGISTER ERROR:",
-        error
-      );
-
+      console.log("GOOGLE REGISTER ERROR:", error);
     }
   };
 
+  // 8. Global Focus changes implemented inside functions below
   const inputStyle = {
     width: "100%",
     height: "52px",
@@ -214,9 +135,17 @@ const RegisterForm = () => {
       {/* Card */}
       <div style={styles.card}>
 
-        {/* Lotus Logo */}
+        {/* 2. JioTap Logo Added (Lotus Removed) */}
         <div style={styles.logoWrap}>
-          <LotusIcon />
+          <img
+            src={logo}
+            alt="JioTap"
+            style={{
+              width: "130px",
+              height: "auto",
+              objectFit: "contain",
+            }}
+          />
         </div>
 
         {/* Title */}
@@ -238,8 +167,8 @@ const RegisterForm = () => {
               onChange={handleChange}
               style={inputStyle}
               onFocus={e => {
-                e.target.style.borderColor = "#9B8DCF";
-                e.target.style.boxShadow = "0 0 0 3px rgba(155,141,207,0.15)";
+                e.target.style.borderColor = "#0B4DBB";
+                e.target.style.boxShadow = "0 0 0 3px rgba(11,77,187,0.15)";
                 e.target.style.background = "rgba(255,255,255,0.95)";
               }}
               onBlur={e => {
@@ -260,8 +189,8 @@ const RegisterForm = () => {
               onChange={handleChange}
               style={inputStyle}
               onFocus={e => {
-                e.target.style.borderColor = "#9B8DCF";
-                e.target.style.boxShadow = "0 0 0 3px rgba(155,141,207,0.15)";
+                e.target.style.borderColor = "#0B4DBB";
+                e.target.style.boxShadow = "0 0 0 3px rgba(11,77,187,0.15)";
                 e.target.style.background = "rgba(255,255,255,0.95)";
               }}
               onBlur={e => {
@@ -282,8 +211,8 @@ const RegisterForm = () => {
               onChange={handleChange}
               style={inputStyle}
               onFocus={e => {
-                e.target.style.borderColor = "#9B8DCF";
-                e.target.style.boxShadow = "0 0 0 3px rgba(155,141,207,0.15)";
+                e.target.style.borderColor = "#0B4DBB";
+                e.target.style.boxShadow = "0 0 0 3px rgba(11,77,187,0.15)";
                 e.target.style.background = "rgba(255,255,255,0.95)";
               }}
               onBlur={e => {
@@ -304,8 +233,8 @@ const RegisterForm = () => {
               onChange={handleChange}
               style={{ ...inputStyle, paddingRight: "48px" }}
               onFocus={e => {
-                e.target.style.borderColor = "#9B8DCF";
-                e.target.style.boxShadow = "0 0 0 3px rgba(155,141,207,0.15)";
+                e.target.style.borderColor = "#0B4DBB";
+                e.target.style.boxShadow = "0 0 0 3px rgba(11,77,187,0.15)";
                 e.target.style.background = "rgba(255,255,255,0.95)";
               }}
               onBlur={e => {
@@ -330,13 +259,14 @@ const RegisterForm = () => {
           <button
             type="submit"
             style={styles.registerBtn}
+            // 3. Theme & 4. Hover effect values updated
             onMouseEnter={e => {
               e.target.style.transform = "translateY(-1px)";
-              e.target.style.boxShadow = "0 8px 28px rgba(92,82,160,0.48)";
+              e.target.style.boxShadow = "0 8px 28px rgba(11,77,187,0.35)";
             }}
             onMouseLeave={e => {
               e.target.style.transform = "translateY(0)";
-              e.target.style.boxShadow = "0 6px 20px rgba(92,82,160,0.38)";
+              e.target.style.boxShadow = "0 6px 20px rgba(11,77,187,0.28)";
             }}
           >
             Create Account
@@ -375,8 +305,9 @@ const RegisterForm = () => {
           <span
             onClick={() => navigate("/login")}
             style={styles.loginLink}
-            onMouseEnter={e => e.target.style.color = "#6155A6"}
-            onMouseLeave={e => e.target.style.color = "#FF69B4"}
+            // 7. Login Link Colors and dynamic Hover implemented
+            onMouseEnter={e => e.target.style.color = "#0B4DBB"}
+            onMouseLeave={e => e.target.style.color = "#4CAF1D"}
           >
             Sign In
           </span>
@@ -392,7 +323,8 @@ const styles = {
     fontFamily: "'DM Sans', 'Segoe UI', sans-serif",
     minHeight: "100vh",
     width: "100%",
-    background: "linear-gradient(135deg, #FFD6E0 0%, #F5DDFF 40%, #D5C2FF 100%)",
+    // 5. Page Background updated
+    background: "linear-gradient(135deg, #F5FAFF 0%, #FFFFFF 50%, #F6FFF1 100%)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -407,8 +339,9 @@ const styles = {
     width: "360px",
     height: "360px",
     borderRadius: "50%",
-    background: "radial-gradient(circle, #FFAED6 0%, transparent 70%)",
-    opacity: 0.6,
+    blob1: {
+      background: "radial-gradient(circle, rgba(11,77,187,0.15) 0%, transparent 70%)",
+    }
   },
   blob2: {
     position: "absolute",
@@ -417,7 +350,7 @@ const styles = {
     width: "340px",
     height: "340px",
     borderRadius: "50%",
-    background: "radial-gradient(circle, #B8A0E8 0%, transparent 70%)",
+    background: "radial-gradient(circle, rgba(76,175,29,0.15) 0%, transparent 70%)",
     opacity: 0.65,
   },
   blob3: {
@@ -427,12 +360,12 @@ const styles = {
     width: "220px",
     height: "220px",
     borderRadius: "50%",
-    background: "radial-gradient(circle, #C9B8FF 0%, transparent 70%)",
+    background: "radial-gradient(circle, rgba(11,77,187,0.10) 0%, transparent 70%)",
     opacity: 0.45,
   },
   star: {
     position: "absolute",
-    color: "#C0AAEE",
+    color: "#0B4DBB",
     fontSize: "14px",
     opacity: 0.75,
     pointerEvents: "none",
@@ -469,7 +402,8 @@ const styles = {
   title: {
     fontSize: "26px",
     fontWeight: 700,
-    color: "#3D3480",
+    // 6. Title color updated
+    color: "#0B4DBB",
     margin: "0 0 6px 0",
   },
   subtitle: {
@@ -510,13 +444,14 @@ const styles = {
     height: "52px",
     border: "none",
     borderRadius: "14px",
-    background: "linear-gradient(135deg, #5C52A0 0%, #9B8DCF 100%)",
+    // 3. Default styling for Button theme updated
+    background: "linear-gradient(135deg, #0B4DBB 0%, #4CAF1D 100%)",
     color: "#fff",
     fontSize: "16px",
     fontWeight: 600,
     fontFamily: "inherit",
     cursor: "pointer",
-    boxShadow: "0 6px 20px rgba(92,82,160,0.38)",
+    boxShadow: "0 6px 20px rgba(11,77,187,0.28)",
     transition: "transform 0.2s, box-shadow 0.2s",
     marginBottom: "18px",
     marginTop: "4px",
@@ -563,7 +498,8 @@ const styles = {
     margin: 0,
   },
   loginLink: {
-    color: "#FF69B4",
+    // 7. Default state color updated
+    color: "#4CAF1D",
     fontWeight: 700,
     cursor: "pointer",
     transition: "color 0.2s",

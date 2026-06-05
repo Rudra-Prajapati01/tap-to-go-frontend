@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
+import logo from "../../assets/logo.png";
 
 const LotusIcon = ({ size = 36 }) => (
   <svg
@@ -260,7 +261,7 @@ const DashboardLayout = ({ children }) => {
         body{
           margin:0;
           overflow-x:hidden;
-          background:#F5F0FF;
+          background:#F5FAFF;
         }
 
         .dashboard-root{
@@ -276,7 +277,7 @@ const DashboardLayout = ({ children }) => {
           height:100vh;
           background:rgba(255,255,255,0.9);
           backdrop-filter:blur(20px);
-          border-right:1px solid rgba(220,210,255,0.6);
+          border-right:1px solid rgba(11,77,187,0.12);
           padding:24px 16px;
           position:fixed;
           left:0;
@@ -317,16 +318,16 @@ const DashboardLayout = ({ children }) => {
 
         .sidebar-logo{
           display:flex;
+          justify-content:center;
           align-items:center;
-          gap:10px;
           margin-bottom:32px;
-          padding-left:8px;
+          padding:10px 0;
         }
 
         .brand-name{
           font-size:22px;
           font-weight:800;
-          background:linear-gradient(135deg,#5C52A0,#C084FC);
+          background:linear-gradient(135deg,#0B4DBB,#4CAF1D);
           -webkit-background-clip:text;
           -webkit-text-fill-color:transparent;
         }
@@ -353,7 +354,7 @@ const DashboardLayout = ({ children }) => {
 
         .nav-item:hover{
           background:rgba(155,141,207,0.08);
-          color:#5C52A0;
+          color:#0B4DBB;
         }
 
         .nav-item.active{
@@ -362,7 +363,7 @@ const DashboardLayout = ({ children }) => {
             rgba(92,82,160,0.12),
             rgba(192,132,252,0.12)
           );
-          color:#5C52A0;
+          color:#0B4DBB;
         }
 
         .logout-btn{
@@ -434,7 +435,7 @@ const DashboardLayout = ({ children }) => {
           width:40px;
           height:40px;
           border-radius:12px;
-          background:linear-gradient(135deg,#5C52A0,#C084FC);
+          background:linear-gradient(135deg,#0B4DBB,#4CAF1D);
           display:flex;
           align-items:center;
           justify-content:center;
@@ -528,13 +529,15 @@ const DashboardLayout = ({ children }) => {
         >
 
           <div className="sidebar-logo">
-
-            <LotusIcon size={36} />
-
-            <span className="brand-name">
-              Jio Tap
-            </span>
-
+            <img
+              src={logo}
+              alt="JioTap"
+              style={{
+                width: "80px",
+                height: "auto",
+                objectFit: "contain",
+              }}
+            />
           </div>
 
           <div className="nav-list">

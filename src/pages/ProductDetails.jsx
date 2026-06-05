@@ -145,7 +145,7 @@ const ProductDetails = () => {
         style={{
           minHeight: "100vh",
 
-          background: "#f5f3ff",
+          background: "#EAF4FF",
 
           padding:
             window.innerWidth < 768
@@ -243,9 +243,9 @@ const ProductDetails = () => {
 
             <span
               style={{
-                background: "#ede9fe",
+                background: "rgba(11,77,187,0.12)",
 
-                color: "#7c3aed",
+                color: "#0B4DBB",
 
                 width: "fit-content",
 
@@ -310,7 +310,7 @@ const ProductDetails = () => {
 
                 fontWeight: "900",
 
-                color: "#7c3aed",
+                color: "#0B4DBB",
               }}
             >
               {product.currency}
@@ -334,7 +334,7 @@ const ProductDetails = () => {
                 borderRadius: "18px",
 
                 background:
-                  "linear-gradient(135deg,#7c3aed,#a855f7)",
+                  "linear-gradient(135deg,#0B4DBB,#4CAF1D)",
 
                 color: "#fff",
 
@@ -345,7 +345,7 @@ const ProductDetails = () => {
                 cursor: "pointer",
 
                 boxShadow:
-                  "0 10px 30px rgba(124,58,237,0.35)",
+                  "0 10px 30px rgba(11,77,187,0.35)",
               }}
             >
               💬 Inquiry Now
@@ -573,7 +573,7 @@ const ProductDetails = () => {
                   borderRadius: "16px",
 
                   background:
-                    "linear-gradient(135deg,#7c3aed,#a855f7)",
+                    "linear-gradient(135deg,#0B4DBB,#4CAF1D)",
 
                   color: "#fff",
 
@@ -584,7 +584,7 @@ const ProductDetails = () => {
                   cursor: "pointer",
 
                   boxShadow:
-                    "0 10px 30px rgba(124,58,237,0.35)",
+                    "0 10px 30px rgba(11,77,187,0.35)",
                 }}
               >
                 Submit Inquiry

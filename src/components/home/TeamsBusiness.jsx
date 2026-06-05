@@ -86,7 +86,7 @@ export default function TeamsBusiness() {
           <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
             <span
               style={{
-                background: "#6155A6",
+                background: "#0B4DBB",
                 color: "#FFFFFF",
                 padding: "6px 16px",
                 borderRadius: "6px",
@@ -111,7 +111,7 @@ export default function TeamsBusiness() {
             >
               One Platform for
               <br />
-              <span style={{ color: "#6155A6" }}>Your Entire Team</span>
+              <span style={{ color: "#0B4DBB" }}>Your Entire Team</span>
             </h1>
 
             <p
@@ -137,7 +137,7 @@ export default function TeamsBusiness() {
               <button
                 onClick={() => navigate("/register")}
                 style={{
-                  background: "linear-gradient(135deg, #6155A6 0%, #A685E2 100%)",
+                  background: "linear-gradient(135deg, #0B4DBB 0%, #4CAF1D 100%)",
                   color: "#FFFFFF",
                   border: "none",
                   padding: "16px 35px",
@@ -157,7 +157,7 @@ export default function TeamsBusiness() {
         <section style={{ padding: "80px 20px", background: "#F8FAFC" }}>
           <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
             <div style={{ marginBottom: "50px" }}>
-              <span style={{ color: "#6155A6", fontWeight: "700", textTransform: "uppercase", fontSize: "0.9rem" }}>Features</span>
+              <span style={{ color: "#0B4DBB", fontWeight: "700", textTransform: "uppercase", fontSize: "0.9rem" }}>Features</span>
               <h2 style={{ fontSize: "2.5rem", fontWeight: "800", color: "#0F172A", marginTop: "5px" }}>Powerful Features</h2>
             </div>
 
@@ -189,7 +189,7 @@ export default function TeamsBusiness() {
                       alignItems: "center",
                       justifyContent: "center",
                       borderRadius: "10px",
-                      color: "#6155A6"
+                      color: "#0B4DBB"
                     }}
                   >
                     {feature.icon}
@@ -206,7 +206,7 @@ export default function TeamsBusiness() {
         <section style={{ padding: "80px 20px", background: "#FFFFFF" }}>
           <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
             <div style={{ marginBottom: "50px" }}>
-              <span style={{ color: "#6155A6", fontWeight: "700", textTransform: "uppercase", fontSize: "0.9rem" }}>Process</span>
+              <span style={{ color: "#0B4DBB", fontWeight: "700", textTransform: "uppercase", fontSize: "0.9rem" }}>Process</span>
               <h2 style={{ fontSize: "2.5rem", fontWeight: "800", color: "#0F172A", marginTop: "5px" }}>How It Works</h2>
             </div>
 
@@ -232,7 +232,7 @@ export default function TeamsBusiness() {
                     style={{
                       fontSize: "1.5rem",
                       fontWeight: "800",
-                      color: "#6155A6",
+                      color: "#0B4DBB",
                       background: "rgba(97, 85, 166, 0.1)",
                       width: "40px",
                       height: "40px",
@@ -266,7 +266,7 @@ export default function TeamsBusiness() {
                   <tr style={{ background: "rgba(97, 85, 166, 0.05)" }}>
                     <th style={{ padding: "18px 20px", textAlign: "left", color: "#1E293B", fontWeight: "700", borderBottom: "2px solid #E2E8F0" }}>Feature</th>
                     <th style={{ padding: "18px 20px", color: "#64748B", textAlign: "center", borderBottom: "2px solid #E2E8F0" }}>Traditional Cards</th>
-                    <th style={{ padding: "18px 20px", color: "#6155A6", textAlign: "center", fontWeight: "800", borderBottom: "2px solid #E2E8F0" }}>Jio Tap</th>
+                    <th style={{ padding: "18px 20px", color: "#0B4DBB", textAlign: "center", fontWeight: "800", borderBottom: "2px solid #E2E8F0" }}>Jio Tap</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -296,7 +296,7 @@ export default function TeamsBusiness() {
         <section style={{ padding: "80px 20px", background: "#FFFFFF" }}>
           <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
             <div style={{ marginBottom: "50px", textAlign: "center" }}>
-              <span style={{ color: "#6155A6", fontWeight: "700", textTransform: "uppercase", fontSize: "0.9rem" }}>Versatility</span>
+              <span style={{ color: "#0B4DBB", fontWeight: "700", textTransform: "uppercase", fontSize: "0.9rem" }}>Versatility</span>
               <h2 style={{ fontSize: "2.5rem", fontWeight: "800", color: "#0F172A", marginTop: "5px" }}>Perfect For Every Business</h2>
             </div>
 
@@ -338,7 +338,7 @@ export default function TeamsBusiness() {
           style={{
             padding: "80px 20px",
             textAlign: "center",
-            background: "linear-gradient(135deg, #6155A6 0%, #A685E2 100%)",
+            background: "linear-gradient(135deg, #0B4DBB 0%, #4CAF1D 100%)",
             color: "#FFFFFF",
           }}
         >
@@ -356,7 +356,7 @@ export default function TeamsBusiness() {
                 onClick={() => navigate("/register")}
                 style={{
                   background: "#FFFFFF",
-                  color: "#6155A6",
+                  color: "#0B4DBB",
                   border: "none",
                   padding: "15px 35px",
                   borderRadius: "10px",
