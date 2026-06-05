@@ -22,74 +22,40 @@ const PublicProfile = () => {
   }, [uniqueId]);
 
   const fetchUser = async () => {
-
     try {
-
-      const res =
-        await axios.get(
-
-          `${import.meta.env.VITE_API_URL}/api/users/${uniqueId}`
-        );
-
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/users/${uniqueId}`
+      );
       setUser(res.data);
 
-
       /* TRACK NFC TAP */
-
       try {
-
         await axios.post(
-
           `${import.meta.env.VITE_API_URL}/api/analytics/nfc-tap`,
-          {
-            userId: res.data._id,
-          }
+          { userId: res.data._id }
         );
-
       } catch (error) {
-
         console.log(error);
       }
+
       /* TRACK PROFILE VIEW */
-
       try {
-
-        const alreadyViewed =
-
-          sessionStorage.getItem(
-
-            `profile_view_${res.data._id}`
-          );
-
+        const alreadyViewed = sessionStorage.getItem(
+          `profile_view_${res.data._id}`
+        );
         if (!alreadyViewed) {
-
           await axios.post(
-
             `${import.meta.env.VITE_API_URL}/api/analytics/profile-view`,
-            {
-              userId: res.data._id,
-            }
+            { userId: res.data._id }
           );
-
-          sessionStorage.setItem(
-
-            `profile_view_${res.data._id}`,
-
-            "true"
-          );
+          sessionStorage.setItem(`profile_view_${res.data._id}`, "true");
         }
-
       } catch (error) {
-
         console.log(error);
       }
-
     } catch (error) {
-
       console.log(error);
-
     } finally {
-
       setLoading(false);
     }
   };
@@ -166,55 +132,13 @@ const PublicProfile = () => {
   const avatarSize = isPortrait ? 110 : isCenter ? 96 : 90;
 
   const socials = [
-
-    {
-      key: "instagram",
-      label: "Instagram",
-      bg: "linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)",
-      icon: "📸"
-    },
-
-    {
-      key: "linkedin",
-      label: "LinkedIn",
-      bg: "#0A66C2",
-      icon: "💼"
-    },
-
-    {
-      key: "github",
-      label: "GitHub",
-      bg: "#18181b",
-      icon: "🐙"
-    },
-
-    {
-      key: "twitter",
-      label: "Twitter / X",
-      bg: "#000",
-      icon: "𝕏"
-    },
-
-    {
-      key: "youtube",
-      label: "YouTube",
-      bg: "#FF0000",
-      icon: "▶️"
-    },
-
-    {
-      key: "facebook",
-      label: "Facebook",
-      bg: "#1877F2",
-      icon: "📘"
-    },
-
-    {
-      key: "whatsapp",
-      label: "WhatsApp",
-      bg: "#25D366",
-      icon: "💬"
-    },
+    { key: "instagram", label: "Instagram", bg: "linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)", icon: "📸" },
+    { key: "linkedin", label: "LinkedIn", bg: "#0A66C2", icon: "💼" },
+    { key: "github", label: "GitHub", bg: "#18181b", icon: "🐙" },
+    { key: "twitter", label: "Twitter / X", bg: "#000", icon: "𝕏" },
+    { key: "youtube", label: "YouTube", bg: "#FF0000", icon: "▶️" },
+    { key: "facebook", label: "Facebook", bg: "#1877F2", icon: "📘" },
+    { key: "whatsapp", label: "WhatsApp", bg: "#25D366", icon: "💬" },
   ];
 
   const pillStyle = {
@@ -227,7 +151,6 @@ const PublicProfile = () => {
   const nameStyle = { fontFamily: fontFamily, color: textColor };
   const jobColor = isSolidButton ? buttonColor : "#0B4DBB";
 
-  // ─── NEW: accent color derived from theme ─────────────────────────────────
   const accentColor = isSolidButton ? buttonColor : "#0B4DBB";
 
   return (
@@ -239,40 +162,30 @@ const PublicProfile = () => {
         body { margin: 0; }
 
         /* ── PAGE ── */
-.pp-page {
-  min-height: 100vh;
-  background: ${theme.backgroundColor || "#f0f2f8"};
-  font-family: ${fontFamily};
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 0 0 60px;
-  transition: background 0.3s ease;
-}
+        .pp-page {
+          min-height: 100vh;
+          background: ${theme.backgroundColor || "#f0f2f8"};
+          font-family: ${fontFamily};
+          display: flex;
+          align-items: flex-start;
+          justify-content: center;
+          padding: 0 0 60px;
+          transition: background 0.3s ease;
+        }
 
         /* ── CARD ── */
         .pp-card {
-        width: 100%;
-        max-width: ${isPortrait ? "520px" : "860px"};
+          width: 100%;
+          max-width: ${isPortrait ? "520px" : "860px"};
+          background: ${theme.backgroundColor || "#ffffff"};
+          color: ${theme.textColor || "#1e293b"};
+          border-radius: 0 0 32px 32px;
+          box-shadow: 0 8px 48px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
+          overflow: hidden;
+          transition: background 0.3s ease, color 0.3s ease;
+        }
 
-        background: ${theme.backgroundColor || "#ffffff"};
-
-        color: ${theme.textColor || "#1e293b"};
-
-        border-radius: 0 0 32px 32px;
-
-        box-shadow: 0 8px 48px rgba(0,0,0,0.10),
-                    0 2px 8px rgba(0,0,0,0.06);
-
-        overflow: hidden;
-
-        transition: background 0.3s ease,
-                    color 0.3s ease;
-      }
-
-        /* ══════════════════════════════════════════
-           HERO / COVER — reference image exact
-        ══════════════════════════════════════════ */
+        /* ── HERO / COVER ── */
         .pp-cover {
           width: 100%;
           height: ${isPortrait ? "260px" : "300px"};
@@ -282,21 +195,15 @@ const PublicProfile = () => {
         .pp-cover-bg {
           position: absolute;
           inset: 0;
-          background-size: contain;
+          background-size: cover;
           background-position: center;
           background-repeat: no-repeat;
         }
-        /* dark overlay exactly like reference */
         .pp-cover-overlay {
           position: absolute;
           inset: 0;
-          background: linear-gradient(
-            160deg,
-            rgba(0,0,0,0.25) 0%,
-            rgba(15,10,40,0.68) 100%
-          );
+          background: linear-gradient(160deg, rgba(0,0,0,0.25) 0%, rgba(15,10,40,0.68) 100%);
         }
-        /* purple glow blob at bottom-left like reference */
         .pp-cover-glow {
           position: absolute;
           bottom: -30px;
@@ -404,7 +311,7 @@ const PublicProfile = () => {
           font-size: 17px;
         }
 
-        /* Let's Connect floating button — bottom-right over cover */
+        /* Let's Connect floating button */
         .pp-connect-float {
           position: absolute;
           bottom: 24px;
@@ -445,20 +352,17 @@ const PublicProfile = () => {
         }
         .pp-logo img { width:100%; height:100%; object-fit:contain; }
 
-        /* ══════════════════════════════════════════
-           CONTENT AREA
-        ══════════════════════════════════════════ */
+        /* ── CONTENT AREA ── */
         .pp-content {
           padding: ${isPortrait ? "0 28px 32px" : "0 28px 28px"};
         }
 
-        /* ── TOP ROW (avatar + connect for non-portrait) ── */
         .pp-top-row {
           display: flex;
           justify-content: ${isCenter || isPortrait ? "center" : "space-between"};
           align-items: flex-end;
           margin-top: ${isPortrait ? "-55px" : "-50px"};
-          margin-bottom: ${isPortrait ? "20px" : "20px"};
+          margin-bottom: 20px;
           position: relative;
           z-index: 5;
         }
@@ -478,13 +382,13 @@ const PublicProfile = () => {
           position: relative;
           display: inline-block;
           padding: 3px;
-          border-radius: ${isPortrait ? "50%" : "50%"};
+          border-radius: 50%;
           background: linear-gradient(135deg,#c084fc,#f472b6,#fb923c);
           box-shadow: 0 6px 24px rgba(11,77,187,0.32);
         }
         .pp-avatar {
-          width: ${isPortrait ? "108px" : isCenter ? "100px" : "100px"};
-          height: ${isPortrait ? "108px" : isCenter ? "100px" : "100px"};
+          width: 100px;
+          height: 100px;
           border-radius: 50%;
           object-fit: cover;
           background: #fff;
@@ -492,8 +396,8 @@ const PublicProfile = () => {
           display: block;
         }
         .pp-avatar-placeholder {
-          width: ${isPortrait ? "108px" : "100px"};
-          height: ${isPortrait ? "108px" : "100px"};
+          width: 100px;
+          height: 100px;
           border-radius: 50%;
           background: linear-gradient(135deg,#c084fc,#f472b6);
           display: flex;
@@ -504,7 +408,6 @@ const PublicProfile = () => {
           color: #fff;
           border: 3px solid #fff;
         }
-        /* green online dot */
         .pp-online-dot {
           position: absolute;
           bottom: 6px; right: 6px;
@@ -515,7 +418,6 @@ const PublicProfile = () => {
           box-shadow: 0 0 8px rgba(34,197,94,0.7);
         }
 
-        /* connect button (portrait / center mode only) */
         .pp-connect {
           padding: 12px 26px;
           border-radius: 14px;
@@ -637,9 +539,7 @@ const PublicProfile = () => {
         }
         .pp-social:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.22); }
 
-        /* ══════════════════════════════════════════
-           CONTACT CARD (right column) — reference exact
-        ══════════════════════════════════════════ */
+        /* ── CONTACT CARD ── */
         .pp-section-label {
           font-size: 10px;
           font-weight: 800;
@@ -650,16 +550,10 @@ const PublicProfile = () => {
           ${isCenter || isPortrait ? "text-align: center;" : ""}
         }
         .pp-contact-card {
-
-          background:
-            ${theme.backgroundColor || "#ffffff"};
-
+          background: ${theme.backgroundColor || "#ffffff"};
           border: 1.5px solid rgba(255,255,255,0.08);
-
           border-radius: 22px;
-
           padding: 20px;
-
           box-shadow: 0 4px 24px rgba(0,0,0,0.06);
         }
         .pp-contact-card-header {
@@ -686,7 +580,7 @@ const PublicProfile = () => {
           gap: 10px;
         }
 
-        /* each contact chip — redesigned like reference */
+        /* contact chips */
         .pp-chip {
           display: flex;
           align-items: center;
@@ -696,10 +590,7 @@ const PublicProfile = () => {
           position: relative;
           cursor: pointer;
           transition: background 0.15s, transform 0.15s;
-          background:
-                    ${theme.backgroundColor === "#ffffff"
-          ? "#f8fafc"
-          : "rgba(255,255,255,0.05)"};
+          background: ${theme.backgroundColor === "#ffffff" ? "#f8fafc" : "rgba(255,255,255,0.05)"};
           border: 1px solid #f1f5f9;
         }
         .pp-chip:hover { background: #f1f5f9; transform: translateX(2px); }
@@ -713,10 +604,7 @@ const PublicProfile = () => {
         .pp-chip-icon.phone-icon { background: #eff6ff; }
         .pp-chip-icon.email-icon { background: #f0fdf4; }
         .pp-chip-icon.addr-icon  { background: #fdf4ff; }
-        .pp-chip-body {
-          flex: 1;
-          min-width: 0;
-        }
+        .pp-chip-body { flex: 1; min-width: 0; }
         .pp-chip-sublabel {
           font-size: 10px;
           font-weight: 700;
@@ -761,71 +649,10 @@ const PublicProfile = () => {
         }
         .pp-website:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(99,102,241,0.32); }
 
-        /* ══════════════════════════════════════════
-           STATS BAR — reference exact
-        ══════════════════════════════════════════ */
-        .pp-stats-bar {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          border-top: 1px solid #f1f5f9;
-          border-bottom: 1px solid #f1f5f9;
-          margin: 8px 0 0;
-        }
-        .pp-stat {
-          padding: 24px 12px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 5px;
-          text-align: center;
-          border-right: 1px solid #f1f5f9;
-        }
-        .pp-stat:last-child { border-right: none; }
-        .pp-stat-value {
-          font-size: 26px;
-          font-weight: 900;
-          line-height: 1;
-          font-family: ${fontFamily};
-        }
-        .pp-stat-label {
-          font-size: 11.5px;
-          font-weight: 500;
-          color: #94a3b8;
-          line-height: 1.3;
-        }
+        /* ── PRODUCTS HEADER ── */
+        .pp-products-wrap { padding: 28px 28px 36px; }
 
-        /* ══════════════════════════════════════════
-           PRODUCTS SECTION HEADER
-        ══════════════════════════════════════════ */
-        .pp-products-wrap {
-          padding: 28px 28px 36px;
-        }
-        .pp-products-heading-row {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 20px;
-        }
-        .pp-products-heading {
-          font-size: 18px;
-          font-weight: 900;
-          color: ${theme.textColor || "#0f172a"};
-          font-family: ${fontFamily};
-          display: flex;
-          flex-direction: column;
-          gap: 6px;
-        }
-        .pp-products-heading-underline {
-          display: block;
-          width: 36px;
-          height: 3px;
-          border-radius: 2px;
-          background: ${isSolidButton ? buttonColor : "linear-gradient(135deg,#6366f1,#ec4899)"};
-        }
-
-        /* ══════════════════════════════════════════
-           LEAD MODAL — original logic, better style
-        ══════════════════════════════════════════ */
+        /* ── LEAD MODAL ── */
         .lead-modal {
           position: fixed;
           inset: 0;
@@ -855,8 +682,7 @@ const PublicProfile = () => {
           margin-bottom: 4px;
           font-family: ${fontFamily};
         }
-        .lead-box input,
-        .lead-box textarea {
+        .lead-box input, .lead-box textarea {
           width: 100%;
           padding: 13px 16px;
           border-radius: 14px;
@@ -867,8 +693,7 @@ const PublicProfile = () => {
           transition: border-color 0.2s;
           color: #1e293b;
         }
-        .lead-box input:focus,
-        .lead-box textarea:focus {
+        .lead-box input:focus, .lead-box textarea:focus {
           border-color: ${isSolidButton ? buttonColor : "#4CAF1D"};
         }
         .lead-box textarea { min-height: 100px; resize: none; }
@@ -884,9 +709,7 @@ const PublicProfile = () => {
         }
         .lead-submit-btn:hover { opacity: 0.88; transform: translateY(-1px); }
 
-        /* ══════════════════════════════════════════
-           RESPONSIVE
-        ══════════════════════════════════════════ */
+        /* ── RESPONSIVE ── */
         @media (max-width: 700px) {
           .pp-page { padding: 0 0 40px; }
           .pp-card { border-radius: 0 0 24px 24px; }
@@ -897,9 +720,6 @@ const PublicProfile = () => {
           .pp-content { padding: 0 18px 24px; }
           .pp-split { grid-template-columns: 1fr; gap: 20px; }
           .pp-name { font-size: 24px; }
-          .pp-stats-bar { grid-template-columns: repeat(2, 1fr); }
-          .pp-stat { border-right: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; }
-          .pp-stat:nth-child(2) { border-right: none; }
           .pp-products-wrap { padding: 20px 16px 32px; }
           .pp-top-row { margin-top: -46px; }
         }
@@ -914,11 +734,11 @@ const PublicProfile = () => {
 
           {/* ══ COVER / HERO ══ */}
           <div className="pp-cover">
-            <div className="pp-cover-bg" />
+            <div className="pp-cover-bg" style={{ background: coverBg }} />
             <div className="pp-cover-overlay" />
             <div className="pp-cover-glow" />
 
-            {/* tagline pill — only if bio exists, no logo conflict */}
+            {/* tagline pill */}
             {user.bio && !user.logoImage && (
               <div className="pp-tagline-pill">
                 {user.bio.split(" ").slice(0, 5).join(" ")}
@@ -977,7 +797,6 @@ const PublicProfile = () => {
                   }
                   <div className="pp-online-dot" />
                 </div>
-                {/* center layout: show connect here too */}
                 {isCenter && (
                   <button className="pp-connect" style={buttonStyle} onClick={() => setShowLeadForm(true)}>
                     + Connect
@@ -991,13 +810,11 @@ const PublicProfile = () => {
 
               {/* LEFT / FULL — info column */}
               <div>
-                {/* Name + verified badge */}
                 <h1 className="pp-name" style={nameStyle}>
                   {user.name}
                   <span className="pp-verified">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
-                      <polyline points="20 6 9 17 4 12" strokeWidth="3" stroke="white"
-                        strokeLinecap="round" strokeLinejoin="round" />
+                      <polyline points="20 6 9 17 4 12" strokeWidth="3" stroke="white" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </span>
                 </h1>
@@ -1008,7 +825,6 @@ const PublicProfile = () => {
                   </p>
                 )}
 
-                {/* Location + Open to Work pills */}
                 <div className="pp-pills-row">
                   {(user.city || user.state || user.country) && (
                     <span className="pp-location-pill">
@@ -1023,80 +839,36 @@ const PublicProfile = () => {
                 {/* Socials */}
                 {socials.some((s) => user[s.key]) && (
                   <>
-
-                    <p className="pp-socials-title">
-                      Connect with me
-                    </p>
-
+                    <p className="pp-socials-title">Connect with me</p>
                     <div className="pp-socials">
-
-                      {socials.map(
-                        ({ key, label, bg, icon }) =>
-
-                          user[key] ? (
-
-                            <a
-                              key={key}
-
-                              href={
-                                key === "whatsapp"
-                                  ? `https://wa.me/${user[key].replace(/\s+/g, "")}`
-                                  : user[key]
+                      {socials.map(({ key, label, bg, icon }) =>
+                        user[key] ? (
+                          <a
+                            key={key}
+                            href={key === "whatsapp" ? `https://wa.me/${user[key].replace(/\s+/g, "")}` : user[key]}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="pp-social"
+                            style={{ background: bg }}
+                            onClick={async () => {
+                              try {
+                                console.log("SOCIAL CLICK");
+                                const res = await axios.post(
+                                  `${import.meta.env.VITE_API_URL}/api/analytics/link-click`,
+                                  { userId: user._id, platform: key }
+                                );
+                                console.log("SUCCESS:", res.data);
+                              } catch (error) {
+                                console.log("ERROR:", error.response?.data || error.message);
                               }
-
-                              target="_blank"
-
-                              rel="noreferrer"
-
-                              className="pp-social"
-
-                              style={{
-                                background: bg
-                              }}
-
-                              onClick={async () => {
-
-                                try {
-
-                                  console.log(
-                                    "SOCIAL CLICK"
-                                  );
-
-                                  const res =
-                                    await axios.post(
-
-                                      `${import.meta.env.VITE_API_URL}/api/analytics/link-click`,
-                                      {
-                                        userId: user._id,
-                                        platform: key,
-                                      }
-                                    );
-
-                                  console.log(
-                                    "SUCCESS:",
-                                    res.data
-                                  );
-
-                                } catch (error) {
-
-                                  console.log(
-                                    "ERROR:",
-                                    error.response?.data ||
-                                    error.message
-                                  );
-                                }
-                              }}
-                            >
-                              <span>{icon}</span>
-
-                              {label.split(" ")[0]}
-                            </a>
-
-                          ) : null
+                            }}
+                          >
+                            <span>{icon}</span>
+                            {label.split(" ")[0]}
+                          </a>
+                        ) : null
                       )}
-
                     </div>
-
                   </>
                 )}
 
@@ -1131,55 +903,24 @@ const PublicProfile = () => {
             </div>
           </div>
 
-
           {/* ══ PRODUCTS ══ */}
           <div className="pp-products-wrap">
-            <PublicProducts
-              userId={user._id}
-              theme={theme.buttonColor}
-            />
+            <PublicProducts userId={user._id} theme={theme.buttonColor} />
           </div>
 
         </div>
 
         {/* ══ LEAD FORM MODAL ══ */}
-        {/* ════════════════════════════════════════
-    LEAD FORM MODAL
-════════════════════════════════════════ */}
         {showLeadForm && (
-          <div
-            className="lead-modal"
-            onClick={() => setShowLeadForm(false)}
-          >
-
-            <div
-              className="lead-box"
-              onClick={(e) => e.stopPropagation()}
-            >
-
+          <div className="lead-modal" onClick={() => setShowLeadForm(false)}>
+            <div className="lead-box" onClick={(e) => e.stopPropagation()}>
+              
               {/* HEADER */}
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: "18px",
-                }}
-              >
-                <h2>
-                  Connect with {user.name}
-                </h2>
-
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "18px" }}>
+                <h2>Connect with {user.name}</h2>
                 <button
                   onClick={() => setShowLeadForm(false)}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    fontSize: "24px",
-                    cursor: "pointer",
-                    color: "#64748b",
-                    fontWeight: "700",
-                  }}
+                  style={{ background: "none", border: "none", fontSize: "24px", cursor: "pointer", color: "#64748b", fontWeight: "700" }}
                 >
                   ×
                 </button>
@@ -1191,12 +932,7 @@ const PublicProfile = () => {
                   type="text"
                   placeholder="Your Name"
                   value={leadForm.name}
-                  onChange={(e) =>
-                    setLeadForm({
-                      ...leadForm,
-                      name: e.target.value,
-                    })
-                  }
+                  onChange={(e) => setLeadForm({ ...leadForm, name: e.target.value })}
                 />
               )}
 
@@ -1206,12 +942,7 @@ const PublicProfile = () => {
                   type="email"
                   placeholder="Your Email"
                   value={leadForm.email}
-                  onChange={(e) =>
-                    setLeadForm({
-                      ...leadForm,
-                      email: e.target.value,
-                    })
-                  }
+                  onChange={(e) => setLeadForm({ ...leadForm, email: e.target.value })}
                 />
               )}
 
@@ -1221,12 +952,7 @@ const PublicProfile = () => {
                   type="text"
                   placeholder="Phone Number"
                   value={leadForm.phone}
-                  onChange={(e) =>
-                    setLeadForm({
-                      ...leadForm,
-                      phone: e.target.value,
-                    })
-                  }
+                  onChange={(e) => setLeadForm({ ...leadForm, phone: e.target.value })}
                 />
               )}
 
@@ -1236,12 +962,7 @@ const PublicProfile = () => {
                   type="text"
                   placeholder="Company Name"
                   value={leadForm.company}
-                  onChange={(e) =>
-                    setLeadForm({
-                      ...leadForm,
-                      company: e.target.value,
-                    })
-                  }
+                  onChange={(e) => setLeadForm({ ...leadForm, company: e.target.value })}
                 />
               )}
 
@@ -1250,55 +971,32 @@ const PublicProfile = () => {
                 <textarea
                   placeholder="Message"
                   value={leadForm.message}
-                  onChange={(e) =>
-                    setLeadForm({
-                      ...leadForm,
-                      message: e.target.value,
-                    })
-                  }
+                  onChange={(e) => setLeadForm({ ...leadForm, message: e.target.value })}
                 />
               )}
+
               {/* SUBMIT */}
               <button
                 className="lead-submit-btn"
                 style={buttonStyle}
                 onClick={async () => {
-
                   try {
-
                     await axios.post(
                       `${import.meta.env.VITE_API_URL}/api/leads`,
                       {
                         owner: user._id,
-
                         name: leadForm.name,
-
                         email: leadForm.email,
-
                         phone: leadForm.phone,
-
                         company: leadForm.company,
-
                         message: leadForm.message,
                       }
                     );
-
                     alert("Lead Submitted 🚀");
-
                     setShowLeadForm(false);
-
-                    setLeadForm({
-                      name: "",
-                      email: "",
-                      phone: "",
-                      company: "",
-                      message: "",
-                    });
-
+                    setLeadForm({ name: "", email: "", phone: "", company: "", message: "" });
                   } catch (error) {
-
                     console.log(error);
-
                     alert("Something went wrong");
                   }
                 }}
@@ -1308,14 +1006,13 @@ const PublicProfile = () => {
 
             </div>
           </div>
-        )}      </div>
+        )}
+      </div>
     </>
   );
 };
 
-/* ══════════════════════════════════════════════════════════
-   CONTACT BLOCK — shared between left-layout & center/portrait
-══════════════════════════════════════════════════════════ */
+/* ── CONTACT BLOCK SHARED COMPONENT ── */
 const ContactBlock = ({ user, copied, handleCopy, buttonStyle, isCenter }) => (
   <div>
     {!isCenter && (
@@ -1356,8 +1053,7 @@ const ContactBlock = ({ user, copied, handleCopy, buttonStyle, isCenter }) => (
           <span className="pp-chip-icon addr-icon">📍</span>
           <div className="pp-chip-body">
             <div className="pp-chip-sublabel">Address</div>
-            <div className="pp-chip-text"
-              style={{ whiteSpace: "normal", lineHeight: "1.45", wordBreak: "break-word" }}>
+            <div className="pp-chip-text" style={{ whiteSpace: "normal", lineHeight: "1.45", wordBreak: "break-word" }}>
               {[user.streetAddress, user.city, user.state, user.country, user.postcode].filter(Boolean).join(", ")}
             </div>
           </div>
@@ -1366,99 +1062,31 @@ const ContactBlock = ({ user, copied, handleCopy, buttonStyle, isCenter }) => (
     </div>
 
     {user.website && (
-
       <a
-        href={
-
-          user.website.startsWith("http://") ||
-
-            user.website.startsWith("https://")
-
-            ? user.website
-
-            : `https://${user.website}`
-        }
-
+        href={user.website.startsWith("http://") || user.website.startsWith("https://") ? user.website : `https://${user.website}`}
         target="_blank"
-
         rel="noreferrer"
-
         className="pp-website"
-
         onClick={async () => {
-
           try {
-
             await axios.post(
-
               `${import.meta.env.VITE_API_URL}/api/analytics/link-click`,
-              {
-                userId: user._id,
-                platform: "website",
-              }
+              { userId: user._id, platform: "website" }
             );
-
           } catch (error) {
-
             console.log(error);
           }
         }}
-
         style={{
-
-          display: "flex",
-
-          alignItems: "center",
-
-          gap: "12px",
-
-          width: "100%",
-
-          padding: "18px 20px",
-
-          borderRadius: "18px",
-
-          background: "#ffffff",
-
-          border: "1px solid #e5e7eb",
-
-          textDecoration: "none",
-
-          color: "#111827",
-
-          fontWeight: "700",
-
-          fontSize: "18px",
-
-          wordBreak: "break-word",
-
-          boxShadow:
-            "0 8px 24px rgba(15,23,42,0.06)",
-
-          transition: "0.3s",
+          display: "flex", alignItems: "center", gap: "12px", width: "100%", padding: "18px 20px",
+          borderRadius: "18px", background: "#ffffff", border: "1px solid #e5e7eb", textDecoration: "none",
+          color: "#111827", fontWeight: "700", fontSize: "18px", wordBreak: "break-word",
+          boxShadow: "0 8px 24 rgba(15,23,42,0.06)", transition: "0.3s",
         }}
       >
-
-        <span
-          style={{
-            fontSize: "22px",
-          }}
-        >
-          🌐
-        </span>
-
-        <span
-          style={{
-            flex: 1,
-          }}
-        >
-          Visit My Website
-        </span>
-
-        <span>
-          →
-        </span>
-
+        <span style={{ fontSize: "22px" }}>🌐</span>
+        <span style={{ flex: 1 }}>Visit My Website</span>
+        <span>→</span>
       </a>
     )}
   </div>
