@@ -163,13 +163,15 @@ const LoginForm = () => {
           </div>
 
           {/* Remember me + Forgot Password */}
-          <div style={styles.options}>
-            <label style={styles.rememberLabel}>
-              <input type="checkbox" style={styles.checkbox} />
-              Remember me
-            </label>
-            <button type="button" style={styles.forgotBtn}>Forgot Password?</button>
-          </div>
+          <button
+            type="button"
+            style={styles.forgotBtn}
+            onClick={() =>
+              navigate("/forgot-password")
+            }
+          >
+            Forgot Password?
+          </button>
 
           {/* Login Button */}
           <button type="submit" style={styles.loginBtn}
@@ -275,7 +277,7 @@ const styles = {
   },
   starSmall: {
     position: "absolute",
-    color: "#FFFFFF",
+    color: "#4CAF1D",
     fontSize: "20px",
     opacity: 0.8,
     pointerEvents: "none",

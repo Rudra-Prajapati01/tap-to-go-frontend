@@ -50,6 +50,10 @@ import UserDetails
   from "../admin/pages/UserDetails";
 import EditUser from "../admin/pages/EditUser";
 
+import ForgotPassword from "../pages/auth/ForgotPassword";
+import VerifyOTP from "../pages/auth/VerifyOTP";
+import ResetPassword from "../pages/auth/ResetPassword";
+
 const AppRoutes = () => {
   return (
     <BrowserRouter>
@@ -118,6 +122,21 @@ const AppRoutes = () => {
         <Route
           path="/u/:uniqueId"
           element={<PublicProfile />}
+        />
+
+        <Route
+          path="/forgot-password"
+          element={<ForgotPassword />}
+        />
+
+        <Route
+          path="/verify-otp"
+          element={<VerifyOTP />}
+        />
+
+        <Route
+          path="/reset-password"
+          element={<ResetPassword />}
         />
 
         {/* DASHBOARD */}
