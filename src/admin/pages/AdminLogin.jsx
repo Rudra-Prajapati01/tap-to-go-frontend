@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import logo from "../../assets/logo.png"; // Logo imported
+import logo from "../../assets/logo.png"; 
 
 export default function AdminLogin() {
   const navigate = useNavigate();
