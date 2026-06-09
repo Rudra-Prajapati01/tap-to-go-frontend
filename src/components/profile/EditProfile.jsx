@@ -1125,16 +1125,6 @@ export default function EditProfile() {
                   </span>
                 </div>
                 <div style={{ margin: "14px" }}>{cardPreview}</div>
-                <div style={{ margin: "0 14px 14px", background: "#f8fafc", border: "1.5px solid #e2e8f0", borderRadius: "14px", padding: "14px" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
-                    {Icons.qr}
-                    <span style={{ fontSize: "12px", color: "#64748b", fontWeight: "600" }}>Public Profile QR</span>
-                  </div>
-                  <ProfileQRCode
-                    uniqueId={form?.uniqueId}
-                    userId={storedUser?._id}
-                  />
-                </div>
               </div>
             </div>
 
@@ -1174,19 +1164,6 @@ export default function EditProfile() {
             </div>
 
             {cardPreview}
-
-            {/* QR */}
-            <div style={{ marginTop: "14px", background: "#f8fafc", border: "1.5px solid #e2e8f0", borderRadius: "14px", padding: "14px" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
-                {Icons.qr}
-                <span style={{ fontSize: "12px", color: "#64748b", fontWeight: "600" }}>Public Profile QR</span>
-              </div>
-              <ProfileQRCode
-                uniqueId={form?.uniqueId}
-                userId={storedUser?._id}
-              />
-            </div>
-
           </div>
         </div>
       )}
