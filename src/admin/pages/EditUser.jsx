@@ -120,20 +120,20 @@ export default function EditUser() {
     const [form, setForm] = useState({
 
         uniqueId: "",
-        profileImage: storedUser.profileImage || "",
-        coverImage: storedUser.coverImage || "",
-        logoImage: storedUser.logoImage || "",
+        profileImage: "",
+        coverImage: "",
+        logoImage: "",
 
         // baki sara form data...
 
         theme: {
-            profileTheme: storedUser.theme?.profileTheme || "#7c3aed",
-            backgroundColor: storedUser.theme?.backgroundColor || "#ffffff",
-            textColor: storedUser.theme?.textColor || "#1e293b",
-            buttonColor: storedUser.theme?.buttonColor || "#7c3aed",
-            buttonTextColor: storedUser.theme?.buttonTextColor || "#ffffff",
-            fontFamily: storedUser.theme?.fontFamily || "Poppins",
-            cardView: storedUser.theme?.cardView || "left",
+            profileTheme: "#7c3aed",
+            backgroundColor: "#ffffff",
+            textColor: "#1e293b",
+            buttonColor: "#7c3aed",
+            buttonTextColor: "#ffffff",
+            fontFamily: "Poppins",
+            cardView: "left",
         },
     });
 
