@@ -174,6 +174,25 @@ const navItems = [
     ),
   },
 
+
+  {
+    label: "Add Videos",
+    path: "/dashboard/videos",
+    icon: (
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+      >
+        <path d="M23 7l-7 5 7 5V7z" />
+        <rect x="1" y="5" width="15" height="14" rx="2" />
+      </svg>
+    ),
+  },
+
   {
     label: "Leads",
     path: "/dashboard/leads",

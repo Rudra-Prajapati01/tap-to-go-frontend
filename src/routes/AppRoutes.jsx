@@ -36,6 +36,8 @@ import ProductDetails from "../pages/ProductDetails";
 
 import Analytics from "../components/analytics/Analytics";
 
+import VideoShowcase from "../components/videos/VideoShowcase";
+
 
 
 import AdminLogin from "../admin/pages/AdminLogin";
@@ -180,6 +182,17 @@ const AppRoutes = () => {
             <ProtectedRoute>
               <DashboardLayout>
                 <ProductAndServices />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/dashboard/videos"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <VideoShowcase />
               </DashboardLayout>
             </ProtectedRoute>
           }

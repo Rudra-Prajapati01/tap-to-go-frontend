@@ -79,6 +79,7 @@ const PublicProfile = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showLeadForm, setShowLeadForm] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState(null);
   const [leadForm, setLeadForm] = useState({
     name: "", email: "", phone: "", company: "", message: "",
   });
@@ -253,7 +254,7 @@ const PublicProfile = () => {
           );
         }
         .pp-cover-grain {
-          position: absolute;
+          position: absolute; 
           inset: 0;
           opacity: 0.035;
           background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
@@ -900,6 +901,102 @@ const PublicProfile = () => {
           position: relative;
           overflow: hidden;
         }
+
+        /* youtube video */
+
+
+        .video-thumb-wrapper {
+            position: relative;
+          }
+
+          .video-play-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: rgba(255, 0, 0, 0.92);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            opacity: 0;
+            transition: all .25s ease;
+            pointer-events: none;
+          }
+
+          .pp-video-card:hover .video-play-overlay {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+          }
+
+          .pp-video-card:hover .pp-video-thumb {
+            transform: scale(1.05);
+          }
+
+          .pp-video-thumb {
+            transition: transform .3s ease;
+          }
+
+        .pp-video-grid{
+          display:grid;
+          grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+          gap:20px;
+          margin-top:24px;
+        }
+
+        .pp-video-card{
+          background:#fff;
+          border-radius:20px;
+          overflow:hidden;
+          border:1px solid rgba(0,0,0,.06);
+          cursor:pointer;
+          transition:.25s;
+        }
+
+        .pp-video-card:hover{
+          transform:translateY(-6px);
+          box-shadow:0 20px 40px rgba(0,0,0,.12);
+        }
+
+        .pp-video-thumb{
+          width:100%;
+          aspect-ratio:16/9;
+          object-fit:contain;
+          background:#000;
+        }
+
+        .pp-video-body{
+          padding:14px;
+        }
+
+        .pp-video-title{
+          font-size:14px;
+          font-weight:700;
+        }
+
+        .pp-video-modal{
+          position:fixed;
+          inset:0;
+          background:rgba(0,0,0,.85);
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          z-index:99999;
+          padding:20px;
+        }
+
+        .pp-video-frame{
+          width:min(100%,1000px);
+          aspect-ratio:16/9;
+          border-radius:20px;
+          overflow:hidden;
+        }
+
+
         /* subtle shimmer line at top */
         .lead-box::before {
           content: "";
@@ -1247,6 +1344,92 @@ const PublicProfile = () => {
             </div>
           </div>
 
+          {user.youtubeVideos?.length > 0 && (
+            <div
+              style={{
+                padding: "0 36px 40px",
+                borderTop: "1px solid rgba(0,0,0,.06)",
+                marginTop: "20px",
+                paddingTop: "32px",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: "10px",
+                  fontWeight: "700",
+                  letterSpacing: "2px",
+                  textTransform: "uppercase",
+                  color: mutedText,
+                  marginBottom: "20px",
+                }}
+              >
+                Featured Videos
+              </div>
+
+              <div className="pp-video-grid">
+                {user.youtubeVideos.map((video, index) => (
+                  <div
+                    key={video._id || index}
+                    className="pp-video-card"
+                    onClick={() => setSelectedVideo(video)}
+                    style={{
+                      cursor: "pointer",
+                      overflow: "hidden",
+                      borderRadius: "20px",
+                      background: "#fff",
+                    }}
+                  >
+                    <div
+                      style={{
+                        position: "relative",
+                        overflow: "hidden",
+                      }}
+                      className="video-thumb-wrapper"
+                    >
+                      <img
+                        src={video.thumbnail}
+                        alt="YouTube Thumbnail"
+                        className="pp-video-thumb"
+                        style={{
+                          width: "100%",
+                          aspectRatio: "16/9",
+                          objectFit: "cover",
+                          display: "block",
+                        }}
+                      />
+
+                      <div className="video-play-overlay">
+                        ▶
+                      </div>
+                    </div>
+
+                    <div className="pp-video-body">
+                      <div
+                        className="pp-video-title"
+                        style={{
+                          fontWeight: "700",
+                          fontSize: "15px",
+                        }}
+                      >
+                        {video.title || "YouTube Video"}
+                      </div>
+
+                      <div
+                        style={{
+                          marginTop: "12px",
+                          color: "#ef4444",
+                          fontWeight: "600",
+                          fontSize: "13px",
+                        }}
+                      >
+                        Click to Watch
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
           {/* ══ PRODUCTS ══ */}
           <div className="pp-products-wrap">
             <PublicProducts userId={user._id} theme={theme.buttonColor} />
@@ -1374,7 +1557,35 @@ const PublicProfile = () => {
             </div>
           </div>
         )}
-      </div>
+
+        {selectedVideo && (
+          <div
+            className="pp-video-modal"
+            onClick={() => setSelectedVideo(null)}
+          >
+            <div
+              className="pp-video-frame"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <iframe
+                width="100%"
+                height="100%"
+                src={`https://www.youtube.com/embed/${selectedVideo.videoId}?autoplay=1&rel=0`}
+                title="YouTube Video"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                style={{
+                  border: "none",
+                  width: "100%",
+                  height: "100%",
+                }}
+              />
+            </div>
+          </div>
+        )}
+
+      </div >
     </>
   );
 };
