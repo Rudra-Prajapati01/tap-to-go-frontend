@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import logo from "../../assets/logo.png"; 
+import logo from "../../assets/logo.png";
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -20,11 +20,11 @@ export default function AdminLogin() {
 
     try {
       setLoading(true);
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/admin/login`,
-        { email, password }
-      );
-
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/admin/login`, { 
+        email, 
+        password 
+      });
+      
       if (response.data.success) {
         localStorage.setItem("adminToken", response.data.token);
         localStorage.setItem("adminData", JSON.stringify(response.data.admin));
@@ -42,8 +42,8 @@ export default function AdminLogin() {
   return (
     <div style={containerStyle}>
       <div style={cardStyle}>
-        <div style={{ textAlign: "center", marginBottom: "25px" }}>
-          {/* Logo added here */}
+        {/* Logo and Header Section */}
+        <div style={headerWrapperStyle}>
           <div style={logoWrapStyle}>
             <img src={logo} alt="JioTap" style={logoImgStyle} />
           </div>
@@ -52,6 +52,7 @@ export default function AdminLogin() {
         </div>
 
         <form onSubmit={handleAdminLogin}>
+          {/* Email Input */}
           <div style={{ marginBottom: "20px" }}>
             <label style={labelStyle}>Admin Email</label>
             <input
@@ -63,7 +64,8 @@ export default function AdminLogin() {
             />
           </div>
 
-          <div style={{ marginBottom: "28px" }}>
+          {/* Password Input */}
+          <div style={{ marginBottom: "25px" }}>
             <label style={labelStyle}>Password</label>
             <div style={inputWrapperStyle}>
               <input
@@ -77,6 +79,13 @@ export default function AdminLogin() {
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
+            
+            {/* Forgot Password Link */}
+            <div style={forgotPasswordContainerStyle}>
+              <span onClick={() => navigate("/admin/forgot-password")} style={forgotPasswordTextStyle}>
+                Forgot Password?
+              </span>
+            </div>
           </div>
 
           <button type="submit" disabled={loading} style={buttonStyle}>
@@ -88,61 +97,24 @@ export default function AdminLogin() {
   );
 }
 
-// --- Styles (Matching your previous components) ---
-const containerStyle = {
-  minHeight: "100vh",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  background: "#ffffff",
-  padding: "20px",
-};
+// --- Styles ---
+const containerStyle = { minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center", background: "#f8f9fa", padding: "20px" };
+const cardStyle = { width: "100%", maxWidth: "400px", background: "#ffffff", borderRadius: "24px", padding: "40px", boxShadow: "0 10px 30px rgba(0,0,0,0.08)" };
+const headerWrapperStyle = { textAlign: "center", marginBottom: "30px" };
 
-const cardStyle = {
-  width: "100%",
-  maxWidth: "430px",
-  background: "#ffffff",
-  borderRadius: "30px",
-  padding: "40px",
-  boxShadow: "0 20px 60px rgba(0,0,0,0.15)",
-  boxSizing: "border-box",
-};
-
+// Centering Logic
 const logoWrapStyle = { display: "flex", justifyContent: "center", marginBottom: "15px" };
 const logoImgStyle = { width: "130px", height: "auto", objectFit: "contain" };
-const headingStyle = { fontSize: "28px", fontWeight: "700", color: "#6C47FF", margin: "10px 0" };
-const subTextStyle = { color: "#666", fontSize: "14px", marginBottom: "20px" };
-const labelStyle = { display: "block", marginBottom: "8px", color: "#444", fontWeight: "600" };
+
+const headingStyle = { fontSize: "26px", fontWeight: "800", color: "#1a1a1a", margin: "0" };
+const subTextStyle = { color: "#888", fontSize: "14px", marginTop: "8px" };
+const labelStyle = { display: "block", marginBottom: "8px", color: "#555", fontWeight: "500", fontSize: "14px" };
 
 const inputWrapperStyle = { position: "relative" };
-const inputStyle = {
-  width: "100%",
-  height: "54px",
-  padding: "0 16px",
-  borderRadius: "14px",
-  border: "1px solid #ddd",
-  fontSize: "15px",
-  outline: "none",
-  boxSizing: "border-box",
-};
+const inputStyle = { width: "100%", height: "50px", padding: "0 16px", borderRadius: "12px", border: "1.5px solid #eee", fontSize: "15px", outline: "none" };
+const eyeIconStyle = { position: "absolute", right: "16px", top: "50%", transform: "translateY(-50%)", cursor: "pointer", color: "#aaa" };
 
-const eyeIconStyle = {
-  position: "absolute",
-  right: "15px",
-  top: "50%",
-  transform: "translateY(-50%)",
-  cursor: "pointer",
-  color: "#666",
-};
+const forgotPasswordContainerStyle = { display: "flex", justifyContent: "flex-end", marginTop: "12px" };
+const forgotPasswordTextStyle = { color: "#6C47FF", cursor: "pointer", fontWeight: "600", fontSize: "13px" };
 
-const buttonStyle = {
-  width: "100%",
-  height: "54px",
-  borderRadius: "14px",
-  border: "none",
-  background: "linear-gradient(135deg,#6C47FF,#8E5CFF)",
-  color: "#fff",
-  fontSize: "16px",
-  fontWeight: "700",
-  cursor: "pointer",
-};
+const buttonStyle = { width: "100%", height: "50px", borderRadius: "12px", border: "none", background: "#6C47FF", color: "#fff", fontSize: "16px", fontWeight: "600", cursor: "pointer" };

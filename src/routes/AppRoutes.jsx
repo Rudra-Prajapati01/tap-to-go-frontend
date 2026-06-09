@@ -45,11 +45,13 @@ import AdminDashboard from "../admin/pages/AdminDashboard";
 import Users from "../admin/pages/Users";
 import AdminLayout from "../admin/layouts/AdminLayout";
 import AdminProtectedRoute from "../admin/routes/AdminProtectedRoute";
-import ContactRequests
-  from "../admin/pages/ContactRequests";
+import ContactRequests from "../admin/pages/ContactRequests";
 
-import UserDetails
-  from "../admin/pages/UserDetails";
+import AdminForgotPassword from "../admin/pages/AdminForgotPassword";
+import AdminVerifyOTP from "../admin/pages/AdminVerifyOTP";
+import AdminResetPassword from "../admin/pages/AdminResetPassword";
+
+import UserDetails from "../admin/pages/UserDetails";
 import EditUser from "../admin/pages/EditUser";
 
 import ForgotPassword from "../pages/auth/ForgotPassword";
@@ -223,6 +225,21 @@ const AppRoutes = () => {
         <Route
           path="/admin"
           element={<AdminLogin />}
+        />
+
+        <Route
+          path="/admin/forgot-password"
+          element={<AdminForgotPassword />}
+        />
+
+        <Route
+          path="/admin/verify-otp"
+          element={<AdminVerifyOTP />}
+        />
+
+        <Route
+          path="/admin/reset-password"
+          element={<AdminResetPassword />}
         />
 
         <Route

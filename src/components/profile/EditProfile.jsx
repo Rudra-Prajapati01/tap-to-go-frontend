@@ -1,5 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import ProfileQRCode from "../qr/ProfileQRCode";
+import Cropper from "react-easy-crop";
+import { getCroppedImg } from "../../utils/cropImage";
 
 // ── Shared style helpers ────────────────────────────────────────────────────
 
@@ -100,6 +102,97 @@ export default function EditProfile() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
+
+  const [cropImage, setCropImage] =
+    useState(null);
+
+  const [showCropper, setShowCropper] =
+    useState(false);
+
+  const [crop, setCrop] = useState({
+    x: 0,
+    y: 0,
+  });
+
+  const [zoom, setZoom] =
+    useState(1);
+
+  const [croppedAreaPixels,
+    setCroppedAreaPixels] =
+    useState(null);
+
+
+  const onCropComplete = (
+    croppedArea,
+    croppedAreaPixels
+  ) => {
+    setCroppedAreaPixels(
+      croppedAreaPixels
+    );
+  };
+
+  const saveCroppedCover =
+
+    async () => {
+
+
+
+      const cropped =
+
+        await getCroppedImg(
+
+          cropImage,
+
+          croppedAreaPixels
+
+        );
+
+
+
+      const blob =
+
+        await (
+
+          await fetch(cropped)
+
+        ).blob();
+
+
+
+      const file =
+
+        new File(
+
+          [blob],
+
+          "cover.jpg",
+
+          {
+
+            type:
+
+              "image/jpeg",
+
+          }
+
+        );
+
+
+
+      await handleImageField(
+
+        file,
+
+        "coverImage"
+
+      );
+
+
+
+      setShowCropper(false);
+
+    };
+
 
   const storedUser = (() => {
     try { return JSON.parse(localStorage.getItem("user")) || {}; }
@@ -464,7 +557,24 @@ export default function EditProfile() {
             </span>
           </div>
           <input ref={coverRef} type="file" hidden accept="image/*"
-            onChange={e => handleImageField(e.target.files?.[0], "coverImage")} />
+            onChange={(e) => {
+              const file =
+                e.target.files?.[0];
+
+              if (!file) return;
+
+              const reader =
+                new FileReader();
+
+              reader.onload = () => {
+                setCropImage(
+                  reader.result
+                );
+                setShowCropper(true);
+              };
+
+              reader.readAsDataURL(file);
+            }} />
         </div>
       </div>
 
@@ -1164,6 +1274,111 @@ export default function EditProfile() {
             </div>
 
             {cardPreview}
+          </div>
+        </div>
+      )}
+      {showCropper && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,.85)",
+            zIndex: 99999,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "20px",
+          }}
+        >
+          <div
+            style={{
+              width: "100%",
+              maxWidth: "1100px",
+              background: "#111",
+              borderRadius: "20px",
+              padding: "20px",
+            }}
+          >
+            <div
+              style={{
+                position: "relative",
+                width: "100%",
+                height: "400px",
+                overflow: "hidden",
+                borderRadius: "16px",
+              }}
+            >
+              <Cropper
+                image={cropImage}
+                crop={crop}
+                zoom={zoom}
+                aspect={1584 / 396}
+                onCropChange={setCrop}
+                onZoomChange={setZoom}
+                onCropComplete={onCropComplete}
+              />
+            </div>
+
+            <div
+              style={{
+                marginTop: "20px",
+              }}
+            >
+              <input
+                type="range"
+                min={1}
+                max={3}
+                step={0.1}
+                value={zoom}
+                onChange={(e) =>
+                  setZoom(Number(e.target.value))
+                }
+                style={{
+                  width: "100%",
+                }}
+              />
+            </div>
+
+            <div
+              style={{
+                marginTop: "20px",
+                display: "flex",
+                justifyContent: "center",
+                gap: "12px",
+                position: "relative",
+                zIndex: 999999,
+              }}
+            >
+              <button
+                type="button"
+                onClick={() =>
+                  setShowCropper(false)
+                }
+                style={{
+                  padding: "12px 24px",
+                  cursor: "pointer",
+                }}
+              >
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  console.log("SAVE CLICKED");
+                  saveCroppedCover();
+                }}
+                style={{
+                  padding: "12px 24px",
+                  background: "#0B4DBB",
+                  color: "#fff",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                Save Cover
+              </button>
+            </div>
           </div>
         </div>
       )}

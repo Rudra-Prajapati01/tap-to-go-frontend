@@ -906,40 +906,40 @@ const PublicProfile = () => {
 
 
         .video-thumb-wrapper {
-            position: relative;
-          }
+          position: relative;
+        }
 
-          .video-play-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.8);
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: rgba(255, 0, 0, 0.92);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 28px;
-            opacity: 0;
-            transition: all .25s ease;
-            pointer-events: none;
-          }
+        .video-play-overlay {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%) scale(0.8);
+          width: 70px;
+          height: 70px;
+          border-radius: 50%;
+          background: rgba(255, 0, 0, 0.92);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-size: 28px;
+          opacity: 0;
+          transition: all .25s ease;
+          pointer-events: none;
+        }
 
-          .pp-video-card:hover .video-play-overlay {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
-          }
+        .pp-video-card:hover .video-play-overlay {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1);
+        }
 
-          .pp-video-card:hover .pp-video-thumb {
-            transform: scale(1.05);
-          }
+        .pp-video-card:hover .pp-video-thumb {
+          transform: scale(1.05);
+        }
 
-          .pp-video-thumb {
-            transition: transform .3s ease;
-          }
+        .pp-video-thumb {
+          transition: transform .3s ease;
+        }
 
         .pp-video-grid{
           display:grid;

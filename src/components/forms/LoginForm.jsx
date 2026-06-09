@@ -3,10 +3,11 @@ import API from "../../api/authApi";
 import { AuthContext } from "../../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../../firebase";
+import { auth } from "../../firebase"; 
 import { Eye, EyeOff } from "lucide-react";
 import logo from "../../assets/logo.png";
 
+// Icons
 const GoogleIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24">
     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -16,21 +17,10 @@ const GoogleIcon = () => (
   </svg>
 );
 
-const UserIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9B8DCF" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
-    <circle cx="12" cy="7" r="4" />
-  </svg>
-);
+const UserIcon = () => (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9B8DCF" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>);
+const LockIcon = () => (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9B8DCF" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>);
 
-const LockIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9B8DCF" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-    <path d="M7 11V7a5 5 0 0110 0v4" />
-  </svg>
-);
-
-const LoginForm = () => {
+export default function LoginForm() {
   const navigate = useNavigate();
   const { setUser } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
@@ -38,6 +28,7 @@ const LoginForm = () => {
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  // Normal Login
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -47,6 +38,27 @@ const LoginForm = () => {
       navigate("/dashboard");
     } catch (error) {
       alert(error?.response?.data?.message || "Login Failed");
+    }
+  };
+
+  // Google Login Logic
+  const handleGoogleLogin = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      
+      // Backend ko user data bhejein
+      const res = await API.post("/login/google", { 
+        email: result.user.email,
+        uid: result.user.uid
+      });
+
+      localStorage.setItem("token", res.data.token);
+      setUser(res.data.user);
+      navigate("/dashboard");
+    } catch (error) {
+      console.error(error);
+      alert("Google Login Failed: " + error.message);
     }
   };
 
@@ -62,18 +74,17 @@ const LoginForm = () => {
         <form onSubmit={handleSubmit} style={styles.form}>
           <div style={styles.fieldWrap}>
             <span style={styles.fieldIcon}><UserIcon /></span>
-            <input type="text" name="email" placeholder="Email" onChange={handleChange} style={styles.input} />
+            <input type="text" name="email" placeholder="Email" onChange={handleChange} style={styles.input} required />
           </div>
 
           <div style={styles.fieldWrap}>
             <span style={styles.fieldIcon}><LockIcon /></span>
-            <input type={showPassword ? "text" : "password"} name="password" placeholder="Password" onChange={handleChange} style={{ ...styles.input, paddingRight: "48px" }} />
+            <input type={showPassword ? "text" : "password"} name="password" placeholder="Password" onChange={handleChange} style={{ ...styles.input, paddingRight: "48px" }} required />
             <button type="button" onClick={() => setShowPassword(!showPassword)} style={styles.eyeBtn}>
               {showPassword ? <EyeOff size={18} color="#9B8DCF" /> : <Eye size={18} color="#9B8DCF" />}
             </button>
           </div>
 
-          {/* FIXED: Right aligned forgot password */}
           <div style={styles.forgotWrapper}>
             <button type="button" style={styles.forgotBtn} onClick={() => navigate("/forgot-password")}>
               Forgot Password?
@@ -88,7 +99,7 @@ const LoginForm = () => {
             <div style={styles.dividerLine} />
           </div>
 
-          <button type="button" onClick={() => {}} style={styles.socialBtn}>
+          <button type="button" onClick={handleGoogleLogin} style={styles.socialBtn}>
             <GoogleIcon /> <span>Google</span>
           </button>
         </form>
@@ -99,7 +110,7 @@ const LoginForm = () => {
       </div>
     </div>
   );
-};
+}
 
 const styles = {
   page: { fontFamily: "'DM Sans', sans-serif", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#F5FAFF" },
@@ -113,16 +124,13 @@ const styles = {
   fieldIcon: { position: "absolute", left: "16px", top: "50%", transform: "translateY(-50%)" },
   input: { width: "100%", height: "52px", padding: "0 16px 0 46px", border: "1.5px solid #E8DCFF", borderRadius: "14px", boxSizing: "border-box" },
   eyeBtn: { position: "absolute", right: "15px", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer" },
-  // Updated Styles
   forgotWrapper: { display: "flex", justifyContent: "flex-end", marginBottom: "20px" },
   forgotBtn: { color: "#0B4DBB", fontWeight: 600, background: "none", border: "none", cursor: "pointer", fontSize: "13px" },
   loginBtn: { width: "100%", height: "52px", border: "none", borderRadius: "14px", background: "#0B4DBB", color: "#fff", fontWeight: 600, cursor: "pointer", marginBottom: "20px" },
   divider: { display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" },
   dividerLine: { flex: 1, height: "1px", background: "#E0D5F5" },
   dividerText: { color: "#aaa", fontSize: "12px" },
-  socialBtn: { width: "100%", height: "48px", border: "1.5px solid #EAE0FF", borderRadius: "14px", background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", cursor: "pointer" },
+  socialBtn: { width: "100%", height: "48px", border: "1.5px solid #E8DCFF", borderRadius: "14px", background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", cursor: "pointer" },
   signupRow: { textAlign: "center", fontSize: "14px", marginTop: "20px" },
   signupLink: { color: "#4CAF1D", fontWeight: 700, cursor: "pointer" }
 };
-
-export default LoginForm;
