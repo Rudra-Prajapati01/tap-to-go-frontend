@@ -88,8 +88,8 @@ const Leads = () => {
 
   const avatarColor = (name = "") => {
     const colors = [
-      ["#0B4DBB","rgba(11,77,187,0.12)"], ["#0369a1","#e0f2fe"], ["#065f46","#d1fae5"],
-      ["#92400e","#fef3c7"], ["#831843","#fce7f3"], ["#1e3a5f","#dbeafe"],
+      ["#0B4DBB", "rgba(11,77,187,0.12)"], ["#0369a1", "#e0f2fe"], ["#065f46", "#d1fae5"],
+      ["#92400e", "#fef3c7"], ["#831843", "#fce7f3"], ["#1e3a5f", "#dbeafe"],
     ];
     const idx = name.charCodeAt(0) % colors.length;
     return colors[idx];
@@ -203,7 +203,7 @@ const Leads = () => {
       background: #fff;
       border-radius: 20px;
       border: 1px solid rgba(11,77,187,0.12);
-      overflow: hidden;
+      overflow: visible;
       box-shadow: 0 4px 24px rgba(11,77,187,0.07), 0 1px 4px rgba(0,0,0,0.04);
     }
 
@@ -234,10 +234,14 @@ const Leads = () => {
       transition: background 0.15s;
       position: relative;
       cursor: default;
+      z-index: 1;
     }
 
     .jtc-row:last-child { border-bottom: none; }
-    .jtc-row:hover { background: #F5FAFF; }
+   .jtc-row:hover {
+      background: #F5FAFF;
+      z-index: 100;
+    }
 
     .jtc-contact-cell { display: flex; align-items: center; gap: 14px; min-width: 0; }
 
@@ -314,9 +318,8 @@ const Leads = () => {
       border-radius: 16px;
       border: 1px solid rgba(11,77,187,0.12);
       overflow: hidden;
-      z-index: 999;
-      box-shadow: 0 16px 48px rgba(11,77,187,0.14), 0 4px 12px rgba(0,0,0,0.06);
-      animation: jtcDropIn 0.15s ease;
+      z-index: 99999;
+      box-shadow: 0 16px 48px rgba(11,77,187,0.14);
     }
 
     @keyframes jtcDropIn {
@@ -919,7 +922,7 @@ const Leads = () => {
                     ⋯
                   </button>
                   {openMenu === lead._id && (
-                    <div className="jtc-menu" onClick={(e) => e.stopPropagation()}>
+                    <div className="jtc-menu">
                       <button className="jtc-menu-item" onClick={() => { setSelectedLead(lead); setOpenMenu(null); }}>
                         <span>👁</span> View Contact
                       </button>
@@ -992,7 +995,7 @@ const Leads = () => {
                   <div className="jtc-view-email">{selectedLead.email}</div>
                 </div>
               </div>
-              
+
             </div>
 
             <div className="jtc-view-grid">

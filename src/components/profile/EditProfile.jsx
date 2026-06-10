@@ -676,20 +676,6 @@ export default function EditProfile() {
             </div>
           ))}
 
-          {/* Font family */}
-          <div>
-            <label style={labelStyle}>Font Family</label>
-            <select
-              value={theme.fontFamily}
-              onChange={e => setTheme("fontFamily", e.target.value)}
-              style={{ width: "100%", padding: "12px 14px", borderRadius: "12px", border: "1.5px solid #e5e7eb", fontSize: "14px", fontFamily: "inherit", outline: "none", cursor: "pointer", background: "#f8fafc" }}
-            >
-              {["Poppins", "Inter", "DM Sans", "Montserrat", "Raleway", "Nunito"].map(f => (
-                <option key={f}>{f}</option>
-              ))}
-            </select>
-          </div>
-
           {/* Card layout */}
           <div>
             <label style={labelStyle}>Card Layout</label>

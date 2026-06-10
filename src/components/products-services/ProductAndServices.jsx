@@ -513,9 +513,11 @@ const ProductAndServices = () => {
                     alt="preview"
                     style={{
                       width: "100%",
-                      maxHeight: "180px",
-                      objectFit: "cover",
+                      maxHeight: "220px",
+                      objectFit: "contain",
                       borderRadius: "10px",
+                      background: "#fff",
+                      padding: "10px",
                     }}
                   />
 
@@ -748,7 +750,9 @@ const ProductAndServices = () => {
                     style={{
                       width: "100%",
                       height: "100%",
-                      objectFit: "cover",
+                      objectFit: "contain",
+                      background: "#fff",
+                      padding: "12px",
                     }}
                   />
 
