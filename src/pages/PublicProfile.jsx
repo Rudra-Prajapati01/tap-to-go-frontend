@@ -1316,9 +1316,13 @@ const PublicProfile = () => {
                         user[key] ? (
                           <a
                             key={key}
-                            href={key === "whatsapp"
-                              ? `https://wa.me/${user[key].replace(/\s+/g, "")}`
-                              : user[key]}
+                            href={
+                              key === "whatsapp"
+                                ? `https://wa.me/${user[key].replace(/\s+/g, "")}`
+                                : (user[key].startsWith("http://") || user[key].startsWith("https://"))
+                                  ? user[key]
+                                  : `https://${user[key]}`
+                            }
                             target="_blank"
                             rel="noreferrer"
                             className="pp-social-btn"

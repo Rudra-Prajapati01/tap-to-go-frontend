@@ -66,12 +66,12 @@ const Analytics = () => {
         { title: "Leads", value: analytics?.leads || 0, icon: Users, color: "#22C55E" },
         {
             title: "Link Clicks",
-            value:
-                (analytics?.linkClicks?.linkedin || 0) +
-                (analytics?.linkClicks?.instagram || 0) +
-                (analytics?.linkClicks?.website || 0) +
-                (analytics?.linkClicks?.whatsapp || 0) +
-                (analytics?.linkClicks?.email || 0),
+            value: Object.values(
+                analytics?.linkClicks || {}
+            ).reduce(
+                (sum, val) => sum + (val || 0),
+                0
+            ),
             icon: MousePointerClick,
             color: "#F97316",
         },
@@ -83,29 +83,34 @@ const Analytics = () => {
         { name: "Instagram", value: analytics?.linkClicks?.instagram || 0 },
         { name: "WhatsApp", value: analytics?.linkClicks?.whatsapp || 0 },
         { name: "Website", value: analytics?.linkClicks?.website || 0 },
-        { name: "Email", value: analytics?.linkClicks?.email || 0 },
-    ].filter((item) => item.value > 0);
+        { name: "YouTube", value: analytics?.linkClicks?.youtube || 0 },
+        { name: "GitHub", value: analytics?.linkClicks?.github || 0 },
+        { name: "Twitter", value: analytics?.linkClicks?.twitter || 0 },
+        { name: "Facebook", value: analytics?.linkClicks?.facebook || 0 },
+    ].filter(item => item.value > 0);
 
-    const areaData = [
-        { month: "Jan", taps: 5 },
-        { month: "Feb", taps: 12 },
-        { month: "Mar", taps: 18 },
-        { month: "Apr", taps: 28 },
-        { month: "May", taps: 42 },
-        { month: "Jun", taps: 50 },
+    const areaData =
+        analytics?.dailyStats?.slice(-30).map(day => ({
+            month: day.date.slice(5),
+            taps: day.profileViews,
+        })) || [];
+
+    const barData =
+        analytics?.dailyStats?.slice(-7).map(day => ({
+            name: day.date.slice(5),
+            clicks: day.linkClicks,
+        })) || [];
+
+    const COLORS = [
+        "#0B4DBB",
+        "#4CAF1D",
+        "#EC4899",
+        "#3B82F6",
+        "#22C55E",
+        "#FF0000",
+        "#24292E",
+        "#1877F2"
     ];
-
-    const barData = [
-        { name: "Mon", clicks: 4 },
-        { name: "Tue", clicks: 7 },
-        { name: "Wed", clicks: 10 },
-        { name: "Thu", clicks: 6 },
-        { name: "Fri", clicks: 13 },
-        { name: "Sat", clicks: 9 },
-        { name: "Sun", clicks: 15 },
-    ];
-
-    const COLORS = ["#0B4DBB", " #4CAF1D", "#EC4899", "#3B82F6", "#22C55E"];
 
     return (
         <>

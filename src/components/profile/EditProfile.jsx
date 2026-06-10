@@ -108,6 +108,8 @@ export default function EditProfile() {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [cropType, setCropType] = useState("cover");
+  const [cropAspect, setCropAspect] = useState(16 / 5);
 
   const onCropComplete = (croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
@@ -115,9 +117,27 @@ export default function EditProfile() {
 
   const saveCroppedCover = async () => {
     const cropped = await getCroppedImg(cropImage, croppedAreaPixels);
+
     const blob = await (await fetch(cropped)).blob();
-    const file = new File([blob], "cover.jpg", { type: "image/jpeg" });
-    await handleImageField(file, "coverImage");
+
+    const file = new File(
+      [blob],
+      `${cropType}.jpg`,
+      { type: "image/jpeg" }
+    );
+
+    if (cropType === "cover") {
+      await handleImageField(file, "coverImage");
+    }
+
+    if (cropType === "profile") {
+      await handleImageField(file, "profileImage");
+    }
+
+    if (cropType === "logo") {
+      await handleImageField(file, "logoImage");
+    }
+
     setShowCropper(false);
   };
 
@@ -384,6 +404,8 @@ export default function EditProfile() {
               const reader = new FileReader();
               reader.onload = () => {
                 setCropImage(reader.result);
+                setCropType("cover");
+                setCropAspect(16 / 5);
                 setShowCropper(true);
               };
               reader.readAsDataURL(file);
@@ -399,7 +421,7 @@ export default function EditProfile() {
           <label style={labelStyle}>Profile Photo</label>
           <div
             onClick={() => fileRef.current?.click()}
-            style={{ width: "82px", height: "82px", borderRadius: "16px", overflow: "hidden", cursor: "pointer", position: "relative", flexShrink: 0, border: "3px solid #fff", boxShadow: "0 4px 16px rgba(99,102,241,0.15)", background: "#f3f4f6" }}
+            style={{ width: "82px", height: "82px", borderRadius: "50%", overflow: "hidden", cursor: "pointer", position: "relative", flexShrink: 0, border: "3px solid #fff", boxShadow: "0 4px 16px rgba(99,102,241,0.15)", background: "#f3f4f6" }}
           >
             {form.profileImage
               ? <img src={form.profileImage} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
@@ -407,7 +429,21 @@ export default function EditProfile() {
             }
             <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.18)", display: "flex", alignItems: "center", justifyContent: "center" }}>{Icons.camera}</div>
             <input ref={fileRef} type="file" hidden accept="image/*"
-              onChange={e => handleImageField(e.target.files?.[0], "profileImage")} />
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+
+                reader.onload = () => {
+                  setCropImage(reader.result);
+                  setCropType("profile");
+                  setCropAspect(1);
+                  setShowCropper(true);
+                };
+
+                reader.readAsDataURL(file);
+              }} />
           </div>
         </div>
 
@@ -428,7 +464,21 @@ export default function EditProfile() {
               </>
             }
             <input ref={logoRef} type="file" hidden accept="image/*"
-              onChange={e => handleImageField(e.target.files?.[0], "logoImage")} />
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+
+                reader.onload = () => {
+                  setCropImage(reader.result);
+                  setCropType("logo");
+                  setCropAspect(1);
+                  setShowCropper(true);
+                };
+
+                reader.readAsDataURL(file);
+              }} />
           </div>
         </div>
 
@@ -1127,7 +1177,7 @@ export default function EditProfile() {
                 image={cropImage}
                 crop={crop}
                 zoom={zoom}
-                aspect={16 / 5}
+                aspect={cropAspect}
                 onCropChange={setCrop}
                 onZoomChange={setZoom}
                 onCropComplete={onCropComplete}
