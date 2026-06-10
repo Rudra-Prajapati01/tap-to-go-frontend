@@ -430,7 +430,7 @@ const ProductAndServices = () => {
                 height: "42px",
                 borderRadius: "12px",
                 background:
-                  "linear-gradient(135deg#0B4DBB,#4CAF1D)",
+                  "linear-gradient(135deg, #0B4DBB, #4CAF1D)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -697,7 +697,7 @@ const ProductAndServices = () => {
                 border: "none",
                 borderRadius: "14px",
                 background:
-                  "linear-gradient(135deg#0B4DBB,#4CAF1D)",
+                  "linear-gradient(135deg,#0B4DBB,#4CAF1D)",
                 color: "#fff",
                 fontWeight: "800",
                 fontSize: "15px",
@@ -1026,11 +1026,17 @@ const ProductAndServices = () => {
 
                         <button
                           className="ps-btn"
-                          onClick={() =>
-                            setDeleteConfirm(
-                              product._id
-                            )
-                          }
+                          onClick={() => {
+                            if (
+                              window.confirm(
+                                "Delete this product?"
+                              )
+                            ) {
+                              handleDelete(
+                                product._id
+                              );
+                            }
+                          }}
                           style={{
                             width: "42px",
                             height: "42px",

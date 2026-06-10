@@ -103,229 +103,79 @@ export default function EditProfile() {
   const [error, setError] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
 
-  const [cropImage, setCropImage] =
-    useState(null);
+  const [cropImage, setCropImage] = useState(null);
+  const [showCropper, setShowCropper] = useState(false);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
 
-  const [showCropper, setShowCropper] =
-    useState(false);
-
-  const [crop, setCrop] = useState({
-    x: 0,
-    y: 0,
-  });
-
-  const [zoom, setZoom] =
-    useState(1);
-
-  const [croppedAreaPixels,
-    setCroppedAreaPixels] =
-    useState(null);
-
-
-  const onCropComplete = (
-    croppedArea,
-    croppedAreaPixels
-  ) => {
-    setCroppedAreaPixels(
-      croppedAreaPixels
-    );
+  const onCropComplete = (croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
   };
 
-  const saveCroppedCover =
-
-    async () => {
-
-
-
-      const cropped =
-
-        await getCroppedImg(
-
-          cropImage,
-
-          croppedAreaPixels
-
-        );
-
-
-
-      const blob =
-
-        await (
-
-          await fetch(cropped)
-
-        ).blob();
-
-
-
-      const file =
-
-        new File(
-
-          [blob],
-
-          "cover.jpg",
-
-          {
-
-            type:
-
-              "image/jpeg",
-
-          }
-
-        );
-
-
-
-      await handleImageField(
-
-        file,
-
-        "coverImage"
-
-      );
-
-
-
-      setShowCropper(false);
-
-    };
-
+  const saveCroppedCover = async () => {
+    const cropped = await getCroppedImg(cropImage, croppedAreaPixels);
+    const blob = await (await fetch(cropped)).blob();
+    const file = new File([blob], "cover.jpg", { type: "image/jpeg" });
+    await handleImageField(file, "coverImage");
+    setShowCropper(false);
+  };
 
   const storedUser = (() => {
     try { return JSON.parse(localStorage.getItem("user")) || {}; }
     catch { return {}; }
   })();
+
   useEffect(() => {
-
     const fetchLatestUser = async () => {
-
       try {
-
         if (!storedUser?._id) return;
-
         const response = await fetch(
           `${import.meta.env.VITE_API_URL}/api/auth/user/${storedUser._id}`
         );
-
         const data = await response.json();
-
         if (!data) return;
-
-        localStorage.setItem(
-          "user",
-          JSON.stringify(data)
-        );
-
+        localStorage.setItem("user", JSON.stringify(data));
         setForm((prev) => ({
-
           ...prev,
-
-          profileImage:
-            data.profileImage || "",
-
-          coverImage:
-            data.coverImage || "",
-
-          logoImage:
-            data.logoImage || "",
-
-          coverTheme:
-            data.coverTheme || "",
-
-          firstName:
-            data.name?.split(" ")[0] || "",
-
-          lastName:
-            data.name?.split(" ").slice(1).join(" ") || "",
-
-          username:
-            data.username || "",
-
-          email:
-            data.email || "",
-
-          jobTitle:
-            data.jobTitle || "",
-
-          companyName:
-            data.companyName || "",
-
-          companyContact:
-            data.companyContact || "",
-
-          streetAddress:
-            data.streetAddress || "",
-
-          city:
-            data.city || "",
-
-          state:
-            data.state || "",
-
-          country:
-            data.country || "",
-
-          postcode:
-            data.postcode || "",
-
-          phone:
-            data.phone || "",
-
-          website:
-            data.website || "",
-
-          location:
-            data.location || "",
-
-          bio:
-            data.bio || "",
-
-          instagram:
-            data.instagram || "",
-
-          linkedin:
-            data.linkedin || "",
-
-          github:
-            data.github || "",
-
-          youtube:
-            data.youtube || "",
-
-          facebook:
-            data.facebook || "",
-
-          twitter:
-            data.twitter || "",
-
-          whatsapp:
-            data.whatsapp || "",
-
-          uniqueId:
-            data.uniqueId || "",
-
-          leadCapture:
-            data.leadCapture || prev.leadCapture,
-
-          theme:
-            data.theme || prev.theme,
-
+          profileImage: data.profileImage || "",
+          coverImage: data.coverImage || "",
+          logoImage: data.logoImage || "",
+          coverTheme: data.coverTheme || "",
+          firstName: data.name?.split(" ")[0] || "",
+          lastName: data.name?.split(" ").slice(1).join(" ") || "",
+          username: data.username || "",
+          email: data.email || "",
+          jobTitle: data.jobTitle || "",
+          companyName: data.companyName || "",
+          companyContact: data.companyContact || "",
+          streetAddress: data.streetAddress || "",
+          city: data.city || "",
+          state: data.state || "",
+          country: data.country || "",
+          postcode: data.postcode || "",
+          phone: data.phone || "",
+          website: data.website || "",
+          location: data.location || "",
+          bio: data.bio || "",
+          instagram: data.instagram || "",
+          linkedin: data.linkedin || "",
+          github: data.github || "",
+          youtube: data.youtube || "",
+          facebook: data.facebook || "",
+          twitter: data.twitter || "",
+          whatsapp: data.whatsapp || "",
+          uniqueId: data.uniqueId || "",
+          leadCapture: data.leadCapture || prev.leadCapture,
+          theme: data.theme || prev.theme,
         }));
-
       } catch (error) {
-
         console.log(error);
-
       }
-
     };
-
     fetchLatestUser();
-
   }, []);
+
   const [form, setForm] = useState({
     profileImage: storedUser.profileImage || "",
     coverImage: storedUser.coverImage || "",
@@ -381,62 +231,37 @@ export default function EditProfile() {
     setForm(f => ({ ...f, theme: { ...f.theme, [k]: v } })), []);
 
   const uploadImage = useCallback(async (file) => {
-
     try {
-
       const formData = new FormData();
       formData.append("image", file);
-
       const res = await fetch(
         `${import.meta.env.VITE_API_URL}/api/upload/profile`,
-        {
-          method: "POST",
-          body: formData,
-        }
+        { method: "POST", body: formData }
       );
-
       const data = await res.json();
-
       console.log("UPLOAD RESPONSE:", data);
-
       return data?.imageUrl || "";
-
     } catch (err) {
-
       console.error("UPLOAD ERROR:", err);
-
       return "";
     }
-
   }, []);
 
   const handleImageField = useCallback(
     async (file, fieldName) => {
-
       if (!file) return;
-
       try {
-
         const realUrl = await uploadImage(file);
-
         if (realUrl) {
-
-          setForm((f) => ({
-            ...f,
-            [fieldName]: realUrl,
-          }));
-
+          setForm((f) => ({ ...f, [fieldName]: realUrl }));
         }
-
       } catch (error) {
-
         console.log(error);
-
       }
-
     },
     [uploadImage]
   );
+
   const handleSave = useCallback(async () => {
     console.log("PROFILE IMAGE:", form.profileImage);
     console.log("COVER IMAGE:", form.coverImage);
@@ -452,16 +277,9 @@ export default function EditProfile() {
       if (!user?._id) { setError("User not found. Please log in again."); return; }
       const sanitised = {
         ...form,
-
-        uniqueId:
-          form.uniqueId ||
-          storedUser.uniqueId ||
-          "",
-
-        name:
-          `${form.firstName || ""} ${form.lastName || ""}`.trim(),
+        uniqueId: form.uniqueId || storedUser.uniqueId || "",
+        name: `${form.firstName || ""} ${form.lastName || ""}`.trim(),
       };
-
       console.log("SAVING USER", sanitised);
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/auth/update-profile/${user._id}`,
@@ -534,7 +352,10 @@ export default function EditProfile() {
         <div
           onClick={() => coverRef.current?.click()}
           style={{
-            height: "140px",
+            /* Match the 16:5 ratio CoverImageCropper enforces.
+               Preview looks identical to the PublicProfile banner. */
+            aspectRatio: "16 / 5",
+            minHeight: "80px",
             borderRadius: "16px",
             cursor: "pointer",
             background: coverBg,
@@ -558,21 +379,13 @@ export default function EditProfile() {
           </div>
           <input ref={coverRef} type="file" hidden accept="image/*"
             onChange={(e) => {
-              const file =
-                e.target.files?.[0];
-
+              const file = e.target.files?.[0];
               if (!file) return;
-
-              const reader =
-                new FileReader();
-
+              const reader = new FileReader();
               reader.onload = () => {
-                setCropImage(
-                  reader.result
-                );
+                setCropImage(reader.result);
                 setShowCropper(true);
               };
-
               reader.readAsDataURL(file);
             }} />
         </div>
@@ -913,8 +726,8 @@ export default function EditProfile() {
   // ── Card Preview ─────────────────────────────────────────────────────────────
   const cardPreview = (
     <div style={{ borderRadius: "16px", overflow: "hidden", boxShadow: "0 8px 32px rgba(99,102,241,0.1)", border: "1px solid #f1f5f9" }}>
-      {/* Cover */}
-      <div style={{ height: isPortrait ? "130px" : "100px", background: coverBg, position: "relative", transition: "height 0.3s ease" }}>
+      {/* Cover — aspect-ratio matches the 16:5 cropper output */}
+      <div style={{ aspectRatio: "16 / 5", minHeight: "60px", background: coverBg, position: "relative", overflow: "hidden" }}>
         {form.logoImage && (
           <div style={{ position: "absolute", top: "10px", right: "10px", width: "38px", height: "38px", borderRadius: "10px", background: "rgba(255,255,255,0.92)", padding: "4px", boxShadow: "0 2px 8px rgba(0,0,0,0.12)", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <img src={form.logoImage} alt="logo" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
@@ -1277,6 +1090,8 @@ export default function EditProfile() {
           </div>
         </div>
       )}
+
+      {/* ── Cover Cropper Modal (uses CoverImageCropper inline for legacy fallback) ── */}
       {showCropper && (
         <div
           style={{
@@ -1312,30 +1127,22 @@ export default function EditProfile() {
                 image={cropImage}
                 crop={crop}
                 zoom={zoom}
-                aspect={1584 / 396}
+                aspect={16 / 5}
                 onCropChange={setCrop}
                 onZoomChange={setZoom}
                 onCropComplete={onCropComplete}
               />
             </div>
 
-            <div
-              style={{
-                marginTop: "20px",
-              }}
-            >
+            <div style={{ marginTop: "20px" }}>
               <input
                 type="range"
                 min={1}
                 max={3}
                 step={0.1}
                 value={zoom}
-                onChange={(e) =>
-                  setZoom(Number(e.target.value))
-                }
-                style={{
-                  width: "100%",
-                }}
+                onChange={(e) => setZoom(Number(e.target.value))}
+                style={{ width: "100%" }}
               />
             </div>
 
@@ -1351,13 +1158,8 @@ export default function EditProfile() {
             >
               <button
                 type="button"
-                onClick={() =>
-                  setShowCropper(false)
-                }
-                style={{
-                  padding: "12px 24px",
-                  cursor: "pointer",
-                }}
+                onClick={() => setShowCropper(false)}
+                style={{ padding: "12px 24px", cursor: "pointer" }}
               >
                 Cancel
               </button>

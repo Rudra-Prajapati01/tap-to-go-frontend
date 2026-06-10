@@ -158,23 +158,6 @@ const Hero = () => {
           >
             Get Started →
           </button>
-
-          <button
-            style={{
-              padding: isMobile ? "14px 28px" : "18px 34px",
-              borderRadius: "16px",
-              border: "2px solid #0B4DBB",
-              background: "#fff",
-              color: "#0B4DBB",
-              fontWeight: "700",
-              fontSize: isMobile ? "15px" : "16px",
-              cursor: "pointer",
-              flex: isMobile ? "1" : "initial",
-              minWidth: "150px",
-            }}
-          >
-            Watch Demo
-          </button>
         </div>
       </div>
 

@@ -12,79 +12,25 @@ const LotusIcon = ({ size = 36 }) => (
     xmlns="http://www.w3.org/2000/svg"
   >
     <defs>
-
-      <linearGradient
-        id="dlp1"
-        x1="0"
-        y1="0"
-        x2="1"
-        y2="1"
-      >
-        <stop
-          offset="0%"
-          stopColor="#FFAED6"
-        />
-
-        <stop
-          offset="100%"
-          stopColor="#D4A8FF"
-        />
+      <linearGradient id="dlp1" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#FFAED6" />
+        <stop offset="100%" stopColor="#D4A8FF" />
       </linearGradient>
 
-      <linearGradient
-        id="dlp2"
-        x1="0"
-        y1="0"
-        x2="1"
-        y2="1"
-      >
-        <stop
-          offset="0%"
-          stopColor="#C9B8FF"
-        />
-
-        <stop
-          offset="100%"
-          stopColor="#7B68CC"
-        />
+      <linearGradient id="dlp2" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#C9B8FF" />
+        <stop offset="100%" stopColor="#7B68CC" />
       </linearGradient>
 
-      <linearGradient
-        id="dlp3"
-        x1="0"
-        y1="1"
-        x2="0.5"
-        y2="0"
-      >
-        <stop
-          offset="0%"
-          stopColor="#9B85E0"
-        />
-
-        <stop
-          offset="100%"
-          stopColor="#D4A8FF"
-        />
+      <linearGradient id="dlp3" x1="0" y1="1" x2="0.5" y2="0">
+        <stop offset="0%" stopColor="#9B85E0" />
+        <stop offset="100%" stopColor="#D4A8FF" />
       </linearGradient>
 
-      <linearGradient
-        id="dlp4"
-        x1="1"
-        y1="1"
-        x2="0"
-        y2="0"
-      >
-        <stop
-          offset="0%"
-          stopColor="#FFC0D8"
-        />
-
-        <stop
-          offset="100%"
-          stopColor="#F0A0C8"
-        />
+      <linearGradient id="dlp4" x1="1" y1="1" x2="0" y2="0">
+        <stop offset="0%" stopColor="#FFC0D8" />
+        <stop offset="100%" stopColor="#F0A0C8" />
       </linearGradient>
-
     </defs>
 
     <ellipse
@@ -127,13 +73,7 @@ const LotusIcon = ({ size = 36 }) => (
       opacity="0.9"
     />
 
-    <ellipse
-      cx="45"
-      cy="46"
-      rx="10"
-      ry="28"
-      fill="url(#dlp1)"
-    />
+    <ellipse cx="45" cy="46" rx="10" ry="28" fill="url(#dlp1)" />
   </svg>
 );
 
@@ -150,7 +90,6 @@ const navItems = [
       </svg>
     ),
   },
-
   {
     label: "Profile",
     path: "/dashboard/profile",
@@ -161,7 +100,6 @@ const navItems = [
       </svg>
     ),
   },
-
   {
     label: "Products",
     path: "/dashboard/products-services",
@@ -173,26 +111,16 @@ const navItems = [
       </svg>
     ),
   },
-
-
   {
     label: "Add Videos",
     path: "/dashboard/videos",
     icon: (
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-      >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
         <path d="M23 7l-7 5 7 5V7z" />
         <rect x="1" y="5" width="15" height="14" rx="2" />
       </svg>
     ),
   },
-
   {
     label: "Leads",
     path: "/dashboard/leads",
@@ -203,8 +131,6 @@ const navItems = [
       </svg>
     ),
   },
-
-
   {
     label: "Analytics",
     path: "/dashboard/analytics",
@@ -219,60 +145,35 @@ const navItems = [
 ];
 
 const DashboardLayout = ({ children }) => {
-
   const navigate = useNavigate();
-
   const location = useLocation();
 
-  const { setUser } =
-    useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
+  const currentUser = user || JSON.parse(localStorage.getItem("user"));
 
-  const [sidebarOpen, setSidebarOpen] =
-    useState(false);
-
-  const [isMobile, setIsMobile] =
-    useState(window.innerWidth < 900);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 900);
 
   useEffect(() => {
-
     const handleResize = () => {
-
-      setIsMobile(
-        window.innerWidth < 900
-      );
+      setIsMobile(window.innerWidth < 900);
     };
 
-    window.addEventListener(
-      "resize",
-      handleResize
-    );
-
-    return () =>
-      window.removeEventListener(
-        "resize",
-        handleResize
-      );
-
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const handleLogout = () => {
-
     localStorage.removeItem("token");
-
     localStorage.removeItem("user");
-
     localStorage.removeItem("googleUser");
-
     setUser(null);
-
     navigate("/login");
   };
 
   return (
-
     <>
       <style>{`
-
         *{
           box-sizing:border-box;
         }
@@ -320,7 +221,7 @@ const DashboardLayout = ({ children }) => {
           padding:0 28px;
           display:flex;
           align-items:center;
-          gap:14px;
+          justify-content: flex-end; /* content ko end me push karega flawlessly */
           background:rgba(255,255,255,0.8);
           backdrop-filter:blur(18px);
           border-bottom:1px solid rgba(220,210,255,0.5);
@@ -341,14 +242,6 @@ const DashboardLayout = ({ children }) => {
           align-items:center;
           margin-bottom:32px;
           padding:10px 0;
-        }
-
-        .brand-name{
-          font-size:22px;
-          font-weight:800;
-          background:linear-gradient(135deg,#0B4DBB,#4CAF1D);
-          -webkit-background-clip:text;
-          -webkit-text-fill-color:transparent;
         }
 
         .nav-list{
@@ -414,53 +307,7 @@ const DashboardLayout = ({ children }) => {
           align-items:center;
           justify-content:center;
           border:1px solid #E8DCFF;
-        }
-
-        .search-box{
-          position:relative;
-          width:220px;
-        }
-
-        .search-input{
-          width:100%;
-          height:40px;
-          border-radius:12px;
-          border:1.5px solid #E8DCFF;
-          background:#fff;
-          padding:0 14px 0 40px;
-          outline:none;
-          font-size:13px;
-        }
-
-        .topbar-actions{
-          display:flex;
-          align-items:center;
-          gap:12px;
-        }
-
-        .icon-btn{
-          width:40px;
-          height:40px;
-          border-radius:12px;
-          border:1px solid #E8DCFF;
-          background:#fff;
-          display:flex;
-          align-items:center;
-          justify-content:center;
-          cursor:pointer;
-        }
-
-        .avatar{
-          width:40px;
-          height:40px;
-          border-radius:12px;
-          background:linear-gradient(135deg,#0B4DBB,#4CAF1D);
-          display:flex;
-          align-items:center;
-          justify-content:center;
-          color:#fff;
-          font-weight:700;
-          font-size:15px;
+          margin-right: auto; /* Hamburger ko hamesha left side rakhega */
         }
 
         .overlay{
@@ -471,7 +318,6 @@ const DashboardLayout = ({ children }) => {
         }
 
         @media (max-width: 900px){
-
           .dashboard-sidebar{
             left:-260px;
           }
@@ -495,58 +341,28 @@ const DashboardLayout = ({ children }) => {
           .dashboard-content{
             padding:20px 16px;
           }
-
         }
 
         @media (max-width: 600px){
-
           .dashboard-topbar{
             height:64px;
             padding:0 12px;
-            gap:10px;
           }
 
           .dashboard-content{
             padding:16px 12px;
           }
 
-          .search-box{
-            display:none;
-          }
-
-          .icon-btn{
-            width:36px;
-            height:36px;
-            border-radius:10px;
-          }
-
-          .avatar{
-            width:36px;
-            height:36px;
-            border-radius:10px;
-            font-size:14px;
-          }
-
           .dashboard-sidebar{
             width:240px;
             min-width:240px;
           }
-
         }
-
       `}</style>
 
       <div className="dashboard-root">
-
         {/* Sidebar */}
-
-        <aside
-          className={`dashboard-sidebar ${sidebarOpen
-            ? "open"
-            : ""
-            }`}
-        >
-
+        <aside className={`dashboard-sidebar ${sidebarOpen ? "open" : ""}`}>
           <div className="sidebar-logo">
             <img
               src={logo}
@@ -560,24 +376,15 @@ const DashboardLayout = ({ children }) => {
           </div>
 
           <div className="nav-list">
-
             {navItems.map((item) => {
-
-              const active =
-                location.pathname === item.path;
+              const active = location.pathname === item.path;
 
               return (
-
                 <button
                   key={item.path}
-                  className={`nav-item ${active
-                    ? "active"
-                    : ""
-                    }`}
+                  className={`nav-item ${active ? "active" : ""}`}
                   onClick={() => {
-
                     navigate(item.path);
-
                     setSidebarOpen(false);
                   }}
                 >
@@ -597,117 +404,104 @@ const DashboardLayout = ({ children }) => {
                     >
                       {item.icon}
                     </span>
-
-                    <span>
-                      {item.label}
-                    </span>
+                    <span>{item.label}</span>
                   </div>
                 </button>
-
               );
             })}
-
           </div>
 
-          <button
-            className="logout-btn"
-            onClick={handleLogout}
-          >
+          <button className="logout-btn" onClick={handleLogout}>
             Logout
           </button>
-
         </aside>
 
         {/* Overlay */}
-
         {sidebarOpen && isMobile && (
-
-          <div
-            className="overlay"
-            onClick={() =>
-              setSidebarOpen(false)
-            }
-          />
-
+          <div className="overlay" onClick={() => setSidebarOpen(false)} />
         )}
 
-        {/* Main */}
-
+        {/* Main Content */}
         <main className="dashboard-main">
-
           {/* Topbar */}
-
           <div className="dashboard-topbar">
-
-            <button
-              className="hamburger"
-              onClick={() =>
-                setSidebarOpen(true)
-              }
-            >
+            <button className="hamburger" onClick={() => setSidebarOpen(true)}>
               ☰
             </button>
 
-            <div style={{ flex: 1 }} />
-
-            {/* Search */}
-
-            <div className="search-box">
-
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#aaa"
-                strokeWidth="2"
+            {/* Profile Element - Pure single structural layout wrapper */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "12px",
+                background: "transparent", // Ab alag se box jaisa background nahi dikhega
+                padding: "4px 0px",
+                minWidth: "max-content",
+                flexShrink: 0,
+              }}
+            >
+              <div
                 style={{
-                  position: "absolute",
-                  left: "12px",
-                  top: "50%",
-                  transform:
-                    "translateY(-50%)",
+                  width: "44px",
+                  height: "44px",
+                  borderRadius: "50%",
+                  background: "#EAEAEA",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "20px",
+                  overflow: "hidden",
+                  flexShrink: 0,
                 }}
               >
-                <circle
-                  cx="11"
-                  cy="11"
-                  r="8"
-                />
-              </svg>
-
-              <input
-                type="text"
-                placeholder="Search..."
-                className="search-input"
-              />
-
-            </div>
-
-            {/* Actions */}
-
-            <div className="topbar-actions">
-
-              <button className="icon-btn">
-                🔔
-              </button>
-
-              <div className="avatar">
-                J
+                {currentUser?.profileImage ? (
+                  <img
+                    src={currentUser?.profileImage}
+                    alt="Profile"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      borderRadius: "50%",
+                      objectFit: "cover"
+                    }}
+                  />
+                ) : (
+                  "👤"
+                )}
               </div>
 
-            </div>
+              <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                <div
+                  style={{
+                    fontWeight: "700",
+                    color: "#222",
+                    fontSize: "15px",
+                    lineHeight: "1.2",
+                    whiteSpace: "nowrap"
+                  }}
+                >
+                  {currentUser?.name || "User"}
+                </div>
 
+                <div
+                  style={{
+                    color: "#888",
+                    fontSize: "13px",
+                    lineHeight: "1.2",
+                    marginTop: "3px",
+                    whiteSpace: "nowrap"
+                  }}
+                >
+                  {currentUser?.email || "No Email"}
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Content */}
-
-          <div className="dashboard-content">
-            {children}
-          </div>
-
+          <div className="dashboard-content">{children}</div>
         </main>
-
       </div>
     </>
   );

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import PublicProducts from "./PublicProducts";
+import { FaWhatsapp } from "react-icons/fa";
 
 import {
   Zap,
@@ -71,6 +72,7 @@ const SOCIAL_META = {
   spotify: { Icon: FaSpotify, color: "#1DB954" },
   twitch: { Icon: FaTwitch, color: "#9146FF" },
   messenger: { Icon: FaFacebookMessenger, color: "#0084FF" },
+  whatsapp: { Icon: FaWhatsapp, color: "#25D366" },
 };
 
 
@@ -94,14 +96,6 @@ const PublicProfile = () => {
         `${import.meta.env.VITE_API_URL}/api/users/${uniqueId}`
       );
       setUser(res.data);
-
-      /* TRACK NFC TAP */
-      try {
-        await axios.post(
-          `${import.meta.env.VITE_API_URL}/api/analytics/nfc-tap`,
-          { userId: res.data._id }
-        );
-      } catch (error) { console.log(error); }
 
       /* TRACK PROFILE VIEW */
       try {
@@ -229,19 +223,41 @@ const PublicProfile = () => {
         }
 
         /* ─── COVER ─── */
+        /*
+         * The cropper outputs images at 16:5.
+         * Using aspect-ratio instead of a fixed height means the container
+         * always perfectly matches the cropped image — zero letterboxing,
+         * zero cropping, no grey bars regardless of viewport width.
+         */
         .pp-cover {
           width: 100%;
-          height: ${isPortrait ? "320px" : "360px"};
+          aspect-ratio: 16 / 5;
+          min-height: 160px;
           position: relative;
           overflow: hidden;
         }
-        .pp-cover-bg {
-          position: absolute;
-          inset: 0;
-          background: ${coverBg};
-          background-size: cover;
-          background-position: center;
-        }
+
+          .pp-cover-bg {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+          }
+
+          .pp-cover-image {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            /*
+             * The stored image was already cropped by CoverImageCropper to 16:5.
+             * The container is also 16:5 via aspect-ratio. object-fit:cover
+             * fills the box with zero waste — no letterbox bars, no grey bars.
+             */
+            object-fit: cover;
+            object-position: center;
+            display: block;
+          }
+
         .pp-cover-overlay {
           position: absolute;
           inset: 0;
@@ -253,21 +269,38 @@ const PublicProfile = () => {
             rgba(0,0,0,0.82) 100%
           );
         }
+
         .pp-cover-grain {
-          position: absolute; 
+          position: absolute;
           inset: 0;
           opacity: 0.035;
           background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
           background-size: 180px;
           pointer-events: none;
         }
+
         .pp-cover-glow {
           position: absolute;
-          bottom: -60px; left: -60px;
-          width: 400px; height: 300px;
-          background: radial-gradient(ellipse, ${isSolidButton ? buttonColor + "70" : "rgba(99,102,241,0.45)"} 0%, transparent 65%);
+          bottom: -60px;
+          left: -60px;
+          width: 400px;
+          height: 300px;
+
+          background: radial-gradient(
+            ellipse,
+            ${isSolidButton ? buttonColor + "70" : "rgba(99,102,241,0.45)"} 0%,
+            transparent 65%
+          );
+
           filter: blur(50px);
           pointer-events: none;
+        }
+
+        /* Small Mobile — enforce a minimum banner height on very narrow screens */
+        @media (max-width: 480px) {
+          .pp-cover {
+            min-height: 110px;
+          }
         }
 
         /* glass pill — top left */
@@ -456,7 +489,7 @@ const PublicProfile = () => {
           display: flex;
           justify-content: ${isCenter || isPortrait ? "center" : "space-between"};
           align-items: flex-end;
-          margin-top: ${isPortrait ? "-68px" : "-62px"};
+          margin-top: ${isPortrait ? "-90px" : "-80px"};
           margin-bottom: 28px;
           position: relative;
           z-index: 6;
@@ -465,7 +498,7 @@ const PublicProfile = () => {
           display: flex;
           flex-direction: column;
           align-items: center;
-          margin-top: -68px;
+          margin-top: -90px;
           margin-bottom: 28px;
           gap: 18px;
           position: relative;
@@ -481,14 +514,14 @@ const PublicProfile = () => {
           box-shadow: 0 0 0 4px ${theme.backgroundColor || "#ffffff"}, 0 12px 40px rgba(0,0,0,0.22);
         }
         .pp-avatar {
-          width: 120px; height: 120px;
+          width: 140px; height: 140px;
           border-radius: 50%;
           object-fit: cover;
           display: block;
           background: ${theme.backgroundColor || "#fff"};
         }
         .pp-avatar-placeholder {
-          width: 120px; height: 120px;
+          width: 140px; height: 140px;
           border-radius: 50%;
           background: ${buttonColor};
           display: flex; align-items: center; justify-content: center;
@@ -1128,13 +1161,13 @@ const PublicProfile = () => {
         @media (max-width: 720px) {
           .pp-page { padding: 0 0 56px; }
           .pp-card { border-radius: 0 0 32px 32px; }
-          .pp-cover { height: ${isPortrait ? "270px" : "295px"}; }
+          /* pp-cover height is fluid via aspect-ratio — no override needed */
           .pp-hero-bottom { padding: 0 20px 24px; }
           .pp-hero-title h2 { font-size: 28px; letter-spacing: -1.2px; }
           .pp-content { padding: 0 20px 28px; }
           .pp-split { grid-template-columns: 1fr; gap: 24px; }
           .pp-products-wrap { padding: 28px 20px 40px; }
-          .pp-top-row { margin-top: -56px; }
+          .pp-top-row { margin-top: -60px; }
           .pp-avatar { width: 100px; height: 100px; }
           .pp-avatar-placeholder { width: 100px; height: 100px; font-size: 36px; }
         }
@@ -1142,6 +1175,25 @@ const PublicProfile = () => {
           .pp-tagline-pill { display: none; }
           .pp-connect-float { padding: 12px 18px; font-size: 13px; }
           .pp-hero-sub { display: none; }
+
+          .pp-logo {
+            top: 14px;
+            right: 14px;
+            width: 44px;
+            height: 44px;
+            border-radius: 13px;
+            padding: 7px;
+          }
+
+          .pp-avail-badge {
+            top: 14px;
+            right: 14px;
+            font-size: 10.5px;
+            padding: 6px 13px;
+          }
+
+          .pp-top-row { margin-top: -50px; }
+          .pp-top-row-portrait { margin-top: -55px; }
         }
       `}</style>
 
@@ -1150,7 +1202,15 @@ const PublicProfile = () => {
 
           {/* ══ COVER ══ */}
           <div className="pp-cover">
-            <div className="pp-cover-bg" />
+            <div className="pp-cover-bg">
+              {user.coverImage && (
+                <img
+                  src={user.coverImage}
+                  alt="Cover"
+                  className="pp-cover-image"
+                />
+              )}
+            </div>
             <div className="pp-cover-overlay" />
             <div className="pp-cover-grain" />
             <div className="pp-cover-glow" />
@@ -1175,16 +1235,7 @@ const PublicProfile = () => {
               </div>
             )}
 
-            <div className="pp-hero-bottom">
-              <button
-                className="pp-connect-float"
-                style={buttonStyle}
-                onClick={() => setShowLeadForm(true)}
-              >
-                <Zap size={14} strokeWidth={2.5} />
-                Let's Connect
-              </button>
-            </div>
+
           </div>
 
           {/* ══ CONTENT ══ */}
@@ -1300,6 +1351,33 @@ const PublicProfile = () => {
                     </div>
                   </>
                 )}
+
+                <div
+                  style={{
+                    marginTop: "24px",
+                    marginBottom: "24px",
+                    display: "flex",
+                    justifyContent: isCenter || isPortrait ? "center" : "flex-start",
+                  }}
+                >
+                  <button
+                    className="pp-connect"
+                    style={{
+                      ...buttonStyle,
+                      minWidth: "220px",
+                      height: "54px",
+                      borderRadius: "16px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "8px",
+                    }}
+                    onClick={() => setShowLeadForm(true)}
+                  >
+                    <Zap size={16} />
+                    Let's Connect
+                  </button>
+                </div>
 
                 {/* contact block (center / portrait) */}
                 {(isCenter || isPortrait) && (

@@ -244,6 +244,12 @@ export default function Footer() {
   );
 }
 
+const handleFooterNavigation = () => {
+  setTimeout(() => {
+    window.scrollTo(0, 0);
+  }, 100);
+};
+
 /* ── Inline Pure CSS Styles ── */
 const styles = {
   footer: {
