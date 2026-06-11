@@ -18,6 +18,7 @@ import PrivacyPolicy from "../components/home/privacy-policy";
 import RefundPolicy from "../components/home/refund-policy";
 import ShippingPolicy from "../components/home/shipping-policy";
 import Faqs from "../components/home/Faqs";
+import ScrollToTop from "../components/common/ScrollToTop";
 // ─────────────────────────────────────────────────────────────────────────────
 
 import Dashboard from "../components/dashboard/Dashboard";
@@ -62,7 +63,7 @@ import ResetPassword from "../pages/auth/ResetPassword";
 const AppRoutes = () => {
   return (
     <BrowserRouter>
-
+      <ScrollToTop />
       <Routes>
 
         <Route
@@ -155,6 +156,7 @@ const AppRoutes = () => {
             </ProtectedRoute>
           }
         />
+
 
         {/* PROFILE */}
         <Route
