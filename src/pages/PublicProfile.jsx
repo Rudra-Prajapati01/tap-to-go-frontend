@@ -133,7 +133,7 @@ const PublicProfile = () => {
         alignItems: "center",
         justifyContent: "center",
         gap: 16,
-        background: "linear-gradient(135deg,#FFE6E6,#FFCBE8,#D4B8FF,#B8D4FF)",
+        background: "#FFFFFF",
         fontFamily: "'Plus Jakarta Sans', sans-serif",
         color: "#0B4DBB",
         fontSize: 15,
@@ -157,7 +157,7 @@ const PublicProfile = () => {
       <div style={{
         minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center",
         fontSize: 22, fontWeight: 800,
-        background: "linear-gradient(135deg,#FFE6E6,#FFCBE8,#D4B8FF)",
+        background: "#FFFFFF",
         color: "#0B4DBB", fontFamily: "'Plus Jakarta Sans', sans-serif",
       }}>
         User not found 🔍
