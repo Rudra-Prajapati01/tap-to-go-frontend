@@ -17,6 +17,7 @@ import TeamsBusiness from "../components/home/TeamsBusiness";
 import PrivacyPolicy from "../components/home/privacy-policy";
 import RefundPolicy from "../components/home/refund-policy";
 import ShippingPolicy from "../components/home/shipping-policy";
+import Faqs from "../components/home/Faqs";
 // ─────────────────────────────────────────────────────────────────────────────
 
 import Dashboard from "../components/dashboard/Dashboard";
@@ -100,7 +101,7 @@ const AppRoutes = () => {
           path="/shipping-policy"
           element={<ShippingPolicy />}
         />
-
+        <Route path="/faqs" element={<Faqs />} />
         {/* ─── DEDICATED PRODUCTS PUBLIC ROUTE ─── */}
         <Route
           path="/products"

@@ -101,7 +101,7 @@ export default function Footer() {
           <div>
             <h4 style={styles.linkHeader}>Company</h4>
             <ul style={styles.linkList}>
-              {[ {name: "Products", path: "/products"}, {name: "Features", path: "/features"}, {name: "Teams & Business", path: "/teams-business"}, {name: "About Us", path: "/about"}, {name: "Contact Us", path: "/contact"} ].map((link) => (
+              {[{ name: "Products", path: "/products" }, { name: "Features", path: "/features" }, { name: "Teams & Business", path: "/teams-business" }, { name: "About Us", path: "/about" }, { name: "Contact Us", path: "/contact" }].map((link) => (
                 <li key={link.name}>
                   <Link to={link.path} style={styles.link} onMouseEnter={(e) => (e.target.style.color = "#4CAF1D")} onMouseLeave={(e) => (e.target.style.color = "#94a3b8")}>
                     {link.name}
@@ -115,7 +115,14 @@ export default function Footer() {
           <div>
             <h4 style={styles.linkHeader}>Legal</h4>
             <ul style={styles.linkList}>
-              {[ {name: "Privacy Policy", path: "/privacy-policy"}, {name: "Refund Policy", path: "/refund-policy"}, {name: "Shipping Policy", path: "/shipping-policy"} ].map((link) => (
+              {[
+                { name: "FAQs", path: "/faqs" },
+                { name: "Privacy Policy", path: "/privacy-policy" },
+                { name: "Terms & Conditions", path: "/terms-and-conditions" },
+                { name: "Refund Policy", path: "/refund-policy" },
+                { name: "Shipping Policy", path: "/shipping-policy" },
+                { name: "Account Deletion", path: "/account-deletion" },
+              ].map((link) => (
                 <li key={link.name}>
                   <Link to={link.path} style={styles.link} onMouseEnter={(e) => (e.target.style.color = "#4CAF1D")} onMouseLeave={(e) => (e.target.style.color = "#94a3b8")}>
                     {link.name}

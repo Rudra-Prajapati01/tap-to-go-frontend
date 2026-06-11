@@ -41,7 +41,7 @@ const PrivacyPolicy = () => {
         <p>
           Welcome to JioTap. Your privacy is important to us. This Privacy Policy explains how JioTap ("we", "our", or "us") collects, uses, stores, and protects your information when you use our website, mobile applications, digital business card platform, NFC products, and related services.
         </p>
-        
+
         <p>
           By using JioTap, you agree to the practices described in this Privacy Policy.
         </p>
@@ -78,17 +78,6 @@ const PrivacyPolicy = () => {
           <li>Analytics and Performance Data</li>
         </ul>
 
-        <h3 style={styles.subHeading}>Optional Information</h3>
-        <p>You may voluntarily provide:</p>
-        <ul style={styles.list}>
-          <li>Social Media Profiles</li>
-          <li>Business Information</li>
-          <li>Product Information</li>
-          <li>Portfolio Links</li>
-          <li>Marketing Content</li>
-          <li>Custom Digital Card Details</li>
-        </ul>
-
         {/* ── SECTION 2 ── */}
         <h2 style={styles.heading}>How We Use Your Information</h2>
         <p>We use your information to:</p>
@@ -120,35 +109,16 @@ const PrivacyPolicy = () => {
         <p>
           We implement reasonable technical and organizational measures to protect your information from unauthorized access, misuse, disclosure, or loss.
         </p>
-        <p>
-          While we take appropriate security precautions, no internet-based system can be guaranteed to be completely secure.
-        </p>
 
         {/* ── SECTION 5 ── */}
         <h2 style={styles.heading}>Public Profile Information</h2>
         <p>
-          JioTap digital business cards are designed to be shared publicly.
-        </p>
-        <p>
-          Information that you choose to display on your public profile may be visible to anyone who accesses your digital card through NFC, QR Code, or direct link.
-        </p>
-        <p>
-          You are responsible for reviewing and managing the information you choose to make public.
+          JioTap digital business cards are designed to be shared publicly. Information that you choose to display on your public profile may be visible to anyone who accesses your digital card.
         </p>
 
         {/* ── SECTION 6 ── */}
         <h2 style={styles.heading}>Cookies and Analytics</h2>
-        <p>We may use cookies and similar technologies to:</p>
-        <ul style={styles.list}>
-          <li>Improve website performance</li>
-          <li>Remember user preferences</li>
-          <li>Analyze platform usage</li>
-          <li>Enhance user experience</li>
-          <li>Maintain account security</li>
-        </ul>
-        <p>
-          You may disable cookies through your browser settings, though some features may not function properly.
-        </p>
+        <p>We may use cookies and similar technologies to improve website performance, analyze usage, and enhance user experience.</p>
 
         {/* ── SECTION 7 ── */}
         <h2 style={styles.heading}>Third-Party Services</h2>
@@ -157,90 +127,47 @@ const PrivacyPolicy = () => {
         </p>
 
         {/* ── SECTION 8 ── */}
-        <h2 style={styles.heading}>Children's Privacy</h2>
-        <p>
-          JioTap services are intended for users who are at least 18 years of age. We do not knowingly collect personal information from children.
-        </p>
+        <h2 style={styles.heading}>Google Sign-In</h2>
+        <p>JioTap allows users to sign in using Google Sign-In for secure authentication.</p>
+        <p>When you sign in using Google, we may receive Name, Email Address, and Profile Picture.</p>
+        <p>This information is used solely for authentication, account creation, and profile personalization. We do not access your Google password and do not sell your Google account information.</p>
 
         {/* ── SECTION 9 ── */}
-        <h2 style={styles.heading}>Your Rights</h2>
-        <p>You may request to:</p>
-        <ul style={styles.list}>
-          <li>Access your personal information</li>
-          <li>Update your information</li>
-          <li>Correct inaccurate information</li>
-          <li>Delete your account</li>
-          <li>Request removal of certain information</li>
-        </ul>
-        <p>
-          Requests may be submitted through our contact channels.
-        </p>
+        <h2 style={styles.heading}>Account Deletion</h2>
+        <p>Users may permanently delete their JioTap account directly from within the application.</p>
+        <p>Upon deletion, all associated data (Profile, Digital Cards, Products, Leads, Analytics, Images) is permanently removed. Account deletion is permanent and cannot be reversed.</p>
 
         {/* ── SECTION 10 ── */}
-        <h2 style={styles.heading}>Changes to This Privacy Policy</h2>
-        <p>
-          We may update this Privacy Policy from time to time. Updated versions will be posted on this page with a revised effective date.
-        </p>
+        <h2 style={styles.heading}>Children's Privacy</h2>
+        <p>JioTap is not intended for children under the age of 13. We do not knowingly collect personal information from children.</p>
 
         {/* ── SECTION 11 ── */}
-        <h2 style={styles.heading}>Contact Us</h2>
-        <p>
-          If you have any questions regarding this Privacy Policy, please contact us:
-        </p>
+        <h2 style={styles.heading}>Your Rights</h2>
+        <p>Depending on your location, you may have the right to access, correct, or request deletion of your personal data.</p>
 
-        <div
-          style={{
-            background: "#F5FAFF",
-            border: "1px solid rgba(11,77,187,0.15)",
-            padding: "20px",
-            borderRadius: "16px",
-            marginTop: "15px",
-          }}
-        >
-          <strong>JioTap</strong>
-          <br />
-          Website:{" "}
-          <a
-            href="https://jiotap.com"
-            style={{ color: "#0B4DBB", textDecoration: "none" }}
-          >
-            https://jiotap.com
-          </a>
-          <br />
-          Email:{" "}
-          <a
-            href="mailto:info@jiotap.com"
-            style={{ color: "#0B4DBB", textDecoration: "none" }}
-          >
-            info@jiotap.com
-          </a>
+        {/* ── SECTION 12 ── */}
+        <h2 style={styles.heading}>Changes to This Privacy Policy</h2>
+        <p>We may update this Privacy Policy from time to time. Updated versions will be posted on this page.</p>
+
+        {/* ── SECTION 13 ── */}
+        <h2 style={styles.heading}>Contact Us</h2>
+        <p>If you have any questions regarding this Privacy Policy, please contact us:</p>
+        
+        <div style={{ background: "#F5FAFF", border: "1px solid rgba(11,77,187,0.15)", padding: "20px", borderRadius: "16px", marginTop: "15px" }}>
+          <strong>JioTap</strong><br />
+          Website: <a href="https://jiotap.com" style={{ color: "#0B4DBB", textDecoration: "none" }}>https://jiotap.com</a><br />
+          Email: <a href="mailto:info@jiotap.com" style={{ color: "#0B4DBB", textDecoration: "none" }}>info@jiotap.com</a>
         </div>
       </div>
-
       <Footer />
     </>
   );
 };
 
 const styles = {
-  heading: {
-    fontSize: "28px",
-    fontWeight: "700",
-    color: "#0B4DBB",
-    marginTop: "40px",
-    marginBottom: "15px",
-  },
-  subHeading: {
-    fontSize: "20px",
-    fontWeight: "700",
-    color: "#111827",
-    marginTop: "20px",
-    marginBottom: "10px",
-  },
-  list: {
-    paddingLeft: "20px",
-    marginBottom: "20px",
-  },
+  heading: { fontSize: "28px", fontWeight: "700", color: "#0B4DBB", marginTop: "40px", marginBottom: "15px" },
+  subHeading: { fontSize: "20px", fontWeight: "700", color: "#111827", marginTop: "20px", marginBottom: "10px" },
+  list: { paddingLeft: "20px", marginBottom: "20px" },
 };
 
 export default PrivacyPolicy;
