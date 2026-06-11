@@ -332,60 +332,6 @@ export default function TeamsBusiness() {
             </div>
           </div>
         </section>
-
-        {/* CALL TO ACTION BOTTTOM BANNER */}
-        <section
-          style={{
-            padding: "80px 20px",
-            textAlign: "center",
-            background: "linear-gradient(135deg, #0B4DBB 0%, #4CAF1D 100%)",
-            color: "#FFFFFF",
-          }}
-        >
-          <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-            <h2 style={{ fontSize: "2.6rem", fontWeight: "800", letterSpacing: "-0.01em" }}>
-              Ready to Upgrade Your Team Networking?
-            </h2>
-
-            <p style={{ margin: "15px auto 30px", fontSize: "1.1rem", opacity: 0.9, lineHeight: "1.6" }}>
-              Empower your employees with smart NFC business cards and centralized management workspace room.
-            </p>
-
-            <div style={{ display: "flex", gap: "15px", justifyContent: "center", flexWrap: "wrap" }}>
-              <button
-                onClick={() => navigate("/register")}
-                style={{
-                  background: "#FFFFFF",
-                  color: "#0B4DBB",
-                  border: "none",
-                  padding: "15px 35px",
-                  borderRadius: "10px",
-                  fontWeight: "700",
-                  fontSize: "1rem",
-                  cursor: "pointer",
-                  boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
-                }}
-              >
-                Start Free Trial
-              </button>
-              <button
-                style={{
-                  background: "transparent",
-                  color: "#FFFFFF",
-                  border: "1px solid #FFFFFF",
-                  padding: "15px 35px",
-                  borderRadius: "10px",
-                  fontWeight: "700",
-                  fontSize: "1rem",
-                  cursor: "pointer",
-                }}
-              >
-                Schedule Demo
-              </button>
-            </div>
-          </div>
-        </section>
-
         <Footer />
       </div>
     </>
