@@ -225,7 +225,7 @@
               <button 
                 className="btn-hover"
                 onClick={() => navigate("/register")}
-                style={{ padding: "18px 44px", background: "linear-gradient(135deg, #0B4DBB, #4CAF1D)", color: "#4CAF1D", border: "none", borderRadius: "16px", fontSize: "16px", fontWeight: 700, cursor: "pointer", boxShadow: "0 10px 25px rgba(97,85,166,0.3)" }}
+                style={{ padding: "18px 44px", background: "linear-gradient(135deg, #0B4DBB, #4CAF1D)", color: "#ffffff", border: "none", borderRadius: "16px", fontSize: "16px", fontWeight: 700, cursor: "pointer", boxShadow: "0 10px 25px rgba(97,85,166,0.3)" }}
               >
                 Get Started Now →
               </button>
