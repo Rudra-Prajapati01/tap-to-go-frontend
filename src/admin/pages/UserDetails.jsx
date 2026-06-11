@@ -79,10 +79,22 @@ export default function UserDetails() {
             </p>
 
             <a
-                href={`${window.location.origin}/u/${user.uniqueId}`}
+                href={`/u/${user.uniqueId}`}
                 target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                    background: "#0B4DBB",
+                    color: "#fff",
+                    textDecoration: "none",
+                    padding: "12px 22px",
+                    borderRadius: "12px",
+                    fontWeight: "600",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "8px",
+                }}
             >
-                Open Profile
+                👁 View Live Profile
             </a>
 
             <div
@@ -90,23 +102,6 @@ export default function UserDetails() {
                     marginTop: "20px",
                 }}
             >
-                <button
-                    onClick={() =>
-                        navigate(
-                            `/admin/users/edit/${user._id}`
-                        )
-                    }
-                    style={{
-                        padding: "10px 20px",
-                        border: "none",
-                        borderRadius: "8px",
-                        background: "#6155A6",
-                        color: "#fff",
-                        cursor: "pointer",
-                    }}
-                >
-                    Edit User
-                </button>
             </div>
 
         </div>
