@@ -11,15 +11,77 @@ const VerifyOTP = () => {
   const verifyOTP = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     try {
-      const email = localStorage.getItem("resetEmail");
-      await API.post("/verify-otp", { email, otp });
-      localStorage.setItem("verifiedOTP", otp);
-      navigate("/reset-password");
+      const resetEmail =
+        localStorage.getItem("resetEmail");
+
+      const verificationEmail =
+        localStorage.getItem(
+          "verificationEmail"
+        );
+
+      // FORGOT PASSWORD FLOW
+      if (resetEmail) {
+
+        await API.post(
+          "/verify-otp",
+          {
+            email: resetEmail,
+            otp,
+          }
+        );
+
+        localStorage.setItem(
+          "verifiedOTP",
+          otp
+        );
+
+        navigate("/reset-password");
+      }
+
+      // REGISTRATION FLOW
+      else if (verificationEmail) {
+
+        await API.post(
+          "/verify-registration-otp",
+          {
+            email: verificationEmail,
+            otp,
+          }
+        );
+
+        localStorage.removeItem(
+          "verificationEmail"
+        );
+
+        alert(
+          "Email verified successfully"
+        );
+
+        navigate("/login");
+      }
+
+      else {
+
+        alert(
+          "Session expired. Please try again."
+        );
+
+        navigate("/register");
+      }
+
     } catch (error) {
-      alert(error?.response?.data?.message || "Invalid OTP");
+
+      alert(
+        error?.response?.data?.message ||
+        "Invalid OTP"
+      );
+
     } finally {
+
       setLoading(false);
+
     }
   };
 

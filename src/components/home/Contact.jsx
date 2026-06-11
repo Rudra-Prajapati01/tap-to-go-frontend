@@ -1,8 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "./Navbar"; 
 import Footer from "./Footer"; 
 
 export default function Contact() {
+  // Page load hote hi top pe smooth scroll karne ke liye
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -80,6 +88,31 @@ export default function Contact() {
             <p style={styles.subheading}>
               Have questions about JioTap features, enterprise white-label solutions, or custom bulk orders? Drop us a message below.
             </p>
+            
+            {/* JioTap Email Section added right below subheading */}
+            <div
+              style={{
+                marginTop: "20px",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <a
+                href="mailto:jiotapofficial@gmail.com"
+                style={{
+                  textDecoration: "none",
+                  color: "#0B4DBB",
+                  fontWeight: "700",
+                  fontSize: "16px",
+                  padding: "12px 20px",
+                  border: "1px solid rgba(11,77,187,0.15)",
+                  borderRadius: "12px",
+                  background: "#F8FBFF",
+                }}
+              >
+                📧 jiotapofficial@gmail.com
+              </a>
+            </div>
           </div>
 
           {/* ── CONTACT GRID ── */}
@@ -130,7 +163,7 @@ export default function Contact() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      placeholder="+91 xxx xxx xxx x"
+                      placeholder="xxx xxx xxx x"
                       style={styles.input}
                     />
                   </div>
@@ -198,7 +231,7 @@ const styles = {
     maxWidth: "1300px",
     margin: "0 auto",
     padding: "0 24px 120px",
-    boxSizing: "border-box", /* Extra padding handling safe rakhne ke liye */
+    boxSizing: "border-box",
   },
   header: {
     textAlign: "center",
@@ -251,7 +284,6 @@ const styles = {
   },
   grid: {
     display: "grid",
-    /* FIX: minmax ko 420px se badal kar 280px kiya taaki UI same rahe par mobile pe width auto-adjust ho jaye */
     gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", 
     gap: "48px",
     alignItems: "start",
@@ -263,7 +295,7 @@ const styles = {
     borderRadius: "28px",
     padding: "40px",
     boxShadow: "0 20px 40px -15px rgba(0,0,0,0.02)",
-    boxSizing: "border-box", /* Padding overflow issue fix */
+    boxSizing: "border-box",
     width: "100%",
   },
   cardTitle: {
@@ -305,7 +337,7 @@ const styles = {
     flexDirection: "column",
     gap: "8px",
     flex: 1,
-    minWidth: "260px", /* Mobile fields break correctly down */
+    minWidth: "260px",
     boxSizing: "border-box",
   },
   label: {

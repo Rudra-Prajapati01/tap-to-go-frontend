@@ -49,6 +49,7 @@ const RegisterForm = () => {
   const navigate = useNavigate();
   const { setUser } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     username: "",
@@ -62,13 +63,40 @@ const RegisterForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setLoading(true);
+
     try {
-      const res = await API.post("/register", formData);
-      alert("Registration Successful");
-      navigate("/login");
+
+      await API.post(
+        "/register",
+        formData
+      );
+
+      localStorage.setItem(
+        "verificationEmail",
+        formData.email
+      );
+
+      alert(
+        "OTP sent to your email"
+      );
+
+      navigate("/verify-otp");
+
     } catch (error) {
+
       console.log(error);
-      alert(error?.response?.data?.message || "Registration Failed");
+
+      alert(
+        error?.response?.data?.message ||
+        "Registration Failed"
+      );
+
+    } finally {
+
+      setLoading(false);
+
     }
   };
 
@@ -118,6 +146,8 @@ const RegisterForm = () => {
   };
 
   return (
+
+
     <div style={styles.page}>
       {/* Background blobs */}
       <div style={styles.blob1} />
@@ -258,20 +288,30 @@ const RegisterForm = () => {
           {/* Register Button */}
           <button
             type="submit"
-            style={styles.registerBtn}
-            // 3. Theme & 4. Hover effect values updated
+            disabled={loading}
+            style={{
+              ...styles.registerBtn,
+              opacity: loading ? 0.85 : 1,
+              cursor: loading ? "not-allowed" : "pointer",
+            }}
             onMouseEnter={e => {
-              e.target.style.transform = "translateY(-1px)";
-              e.target.style.boxShadow = "0 8px 28px rgba(11,77,187,0.35)";
+              if (!loading) {
+                e.currentTarget.style.transform = "translateY(-1px)";
+                e.currentTarget.style.boxShadow =
+                  "0 8px 28px rgba(11,77,187,0.35)";
+              }
             }}
             onMouseLeave={e => {
-              e.target.style.transform = "translateY(0)";
-              e.target.style.boxShadow = "0 6px 20px rgba(11,77,187,0.28)";
+              if (!loading) {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow =
+                  "0 6px 20px rgba(11,77,187,0.28)";
+              }
             }}
           >
-            Create Account
+            {loading ? "Sending OTP..." : "Create Account"}
           </button>
-
+          
           {/* Divider */}
           <div style={styles.divider}>
             <div style={styles.dividerLine} />
@@ -315,7 +355,10 @@ const RegisterForm = () => {
 
       </div>
     </div>
+
+
   );
+
 };
 
 const styles = {
@@ -372,7 +415,7 @@ const styles = {
   },
   starDot: {
     position: "absolute",
-    color: "#FFFFFF",
+    color: "#4CAF1D",
     fontSize: "20px",
     opacity: 0.8,
     pointerEvents: "none",
