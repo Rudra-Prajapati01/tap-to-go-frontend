@@ -75,6 +75,285 @@ const SOCIAL_META = {
   whatsapp: { Icon: FaWhatsapp, color: "#25D366" },
 };
 
+/* ─── GALLERY LIGHTBOX COMPONENT ─── */
+const GalleryLightbox = ({ gallery, mutedText }) => {
+  const [lightbox, setLightbox] = useState(null);
+
+  const closeLightbox = () => setLightbox(null);
+
+  const goPrev = (e) => {
+    e.stopPropagation();
+    setLightbox((l) => ({ index: (l.index - 1 + gallery.length) % gallery.length }));
+  };
+
+  const goNext = (e) => {
+    e.stopPropagation();
+    setLightbox((l) => ({ index: (l.index + 1) % gallery.length }));
+  };
+
+  useEffect(() => {
+    if (!lightbox) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") setLightbox((l) => ({ index: (l.index - 1 + gallery.length) % gallery.length }));
+      if (e.key === "ArrowRight") setLightbox((l) => ({ index: (l.index + 1) % gallery.length }));
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [lightbox]);
+
+  const activeImg = lightbox !== null ? gallery[lightbox.index] : null;
+
+  return (
+    <>
+      <div
+        style={{
+          padding: "32px 36px 40px",
+          borderTop: "1px solid rgba(0,0,0,.06)",
+          marginTop: "20px",
+        }}
+      >
+        <p
+          style={{
+            fontSize: "11px",
+            fontWeight: "600",
+            letterSpacing: "2px",
+            textTransform: "uppercase",
+            color: mutedText,
+            margin: "0 0 20px",
+          }}
+        >
+          Work Gallery
+        </p>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+            gap: "16px",
+          }}
+        >
+          {gallery.map((img, index) => (
+            <div
+              key={index}
+              onClick={() => setLightbox({ index })}
+              style={{
+                borderRadius: "16px",
+                overflow: "hidden",
+                background: "#fff",
+                border: "1px solid rgba(0,0,0,.07)",
+                cursor: "pointer",
+                transition: "transform 0.2s ease, box-shadow 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-3px)";
+                e.currentTarget.style.boxShadow = "0 12px 32px rgba(0,0,0,0.09)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
+            >
+              <div style={{ position: "relative", overflow: "hidden" }}>
+                <img
+                  src={img.url}
+                  alt={img.title || "Portfolio image"}
+                  style={{
+                    width: "100%",
+                    height: "180px",
+                    objectFit: "cover",
+                    display: "block",
+                    transition: "transform 0.3s ease",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    background: "rgba(10,22,56,0)",
+                    transition: "background 0.2s ease",
+                    pointerEvents: "none",
+                  }}
+                  className="gallery-overlay"
+                >
+                  <svg
+                    width="28" height="28"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#fff"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    style={{ opacity: 0, transition: "opacity 0.2s ease" }}
+                    className="gallery-expand-icon"
+                  >
+                    <polyline points="15 3 21 3 21 9" />
+                    <polyline points="9 21 3 21 3 15" />
+                    <line x1="21" y1="3" x2="14" y2="10" />
+                    <line x1="3" y1="21" x2="10" y2="14" />
+                  </svg>
+                </div>
+              </div>
+              <div style={{ padding: "12px 14px 14px" }}>
+                <p
+                  style={{
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    color: "#0A1628",
+                    margin: "0 0 3px",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {img.title || "Untitled"}
+                </p>
+                <p style={{ fontSize: "12px", color: mutedText, margin: 0 }}>
+                  Portfolio image
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Lightbox ── */}
+      {lightbox !== null && (
+        <div
+          onClick={closeLightbox}
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(5,10,25,0.92)",
+            zIndex: 9999,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "20px",
+            backdropFilter: "blur(6px)",
+          }}
+        >
+          {/* Close */}
+          <button
+            onClick={closeLightbox}
+            style={{
+              position: "fixed",
+              top: "20px", right: "20px",
+              width: "42px", height: "42px",
+              borderRadius: "50%",
+              background: "rgba(255,255,255,0.12)",
+              border: "1px solid rgba(255,255,255,0.2)",
+              color: "#fff", fontSize: "18px",
+              cursor: "pointer",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              zIndex: 10000,
+            }}
+          >✕</button>
+
+          {/* Counter */}
+          <div
+            style={{
+              position: "fixed",
+              top: "24px", left: "50%",
+              transform: "translateX(-50%)",
+              color: "rgba(255,255,255,0.6)",
+              fontSize: "13px", fontWeight: "500",
+              zIndex: 10000,
+              background: "rgba(0,0,0,0.4)",
+              padding: "6px 14px",
+              borderRadius: "100px",
+            }}
+          >
+            {lightbox.index + 1} / {gallery.length}
+          </div>
+
+          {/* Prev */}
+          {gallery.length > 1 && (
+            <button
+              onClick={goPrev}
+              style={{
+                position: "fixed",
+                left: "16px", top: "50%",
+                transform: "translateY(-50%)",
+                width: "46px", height: "46px",
+                borderRadius: "50%",
+                background: "rgba(255,255,255,0.12)",
+                border: "1px solid rgba(255,255,255,0.2)",
+                color: "#fff", fontSize: "24px",
+                cursor: "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                zIndex: 10000,
+              }}
+            >‹</button>
+          )}
+
+          {/* Image + title */}
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              maxWidth: "90vw",
+              maxHeight: "90vh",
+            }}
+          >
+            <img
+              src={activeImg.url}
+              alt={activeImg.title || "Portfolio image"}
+              style={{
+                maxWidth: "100%",
+                maxHeight: "80vh",
+                objectFit: "contain",
+                borderRadius: "12px",
+                display: "block",
+              }}
+            />
+            {activeImg.title && (
+              <p
+                style={{
+                  color: "#fff",
+                  fontSize: "15px",
+                  fontWeight: "600",
+                  marginTop: "16px",
+                  textAlign: "center",
+                }}
+              >
+                {activeImg.title}
+              </p>
+            )}
+          </div>
+
+          {/* Next */}
+          {gallery.length > 1 && (
+            <button
+              onClick={goNext}
+              style={{
+                position: "fixed",
+                right: "16px", top: "50%",
+                transform: "translateY(-50%)",
+                width: "46px", height: "46px",
+                borderRadius: "50%",
+                background: "rgba(255,255,255,0.12)",
+                border: "1px solid rgba(255,255,255,0.2)",
+                color: "#fff", fontSize: "24px",
+                cursor: "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                zIndex: 10000,
+              }}
+            >›</button>
+          )}
+        </div>
+      )}
+    </>
+  );
+};
+
 
 const PublicProfile = () => {
   const { uniqueId } = useParams();
@@ -97,7 +376,6 @@ const PublicProfile = () => {
       );
       setUser(res.data);
 
-      /* TRACK PROFILE VIEW */
       try {
         const alreadyViewed = sessionStorage.getItem(`profile_view_${res.data._id}`);
         if (!alreadyViewed) {
@@ -165,7 +443,6 @@ const PublicProfile = () => {
     );
   }
 
-  // ─── THEME ENGINE ──────────────────────────────────────────────────────────
   const theme = user?.theme || {};
   const isCenter = theme.cardView === "center";
   const isPortrait = theme.cardView === "portrait";
@@ -197,7 +474,6 @@ const PublicProfile = () => {
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { margin: 0; }
 
-        /* ─── PAGE ─── */
         .pp-page {
           min-height: 100vh;
           background: ${theme.backgroundColor || "#f4f6fb"};
@@ -208,7 +484,6 @@ const PublicProfile = () => {
           padding: 0 0 100px;
         }
 
-        /* ─── CARD ─── */
         .pp-card {
           width: 100%;
           max-width: ${isPortrait ? "520px" : "880px"};
@@ -222,13 +497,6 @@ const PublicProfile = () => {
           overflow: hidden;
         }
 
-        /* ─── COVER ─── */
-        /*
-         * The cropper outputs images at 16:5.
-         * Using aspect-ratio instead of a fixed height means the container
-         * always perfectly matches the cropped image — zero letterboxing,
-         * zero cropping, no grey bars regardless of viewport width.
-         */
         .pp-cover {
           width: 100%;
           aspect-ratio: 16 / 5;
@@ -237,26 +505,21 @@ const PublicProfile = () => {
           overflow: hidden;
         }
 
-          .pp-cover-bg {
-            position: absolute;
-            inset: 0;
-            overflow: hidden;
-          }
+        .pp-cover-bg {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+        }
 
-          .pp-cover-image {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            /*
-             * The stored image was already cropped by CoverImageCropper to 16:5.
-             * The container is also 16:5 via aspect-ratio. object-fit:cover
-             * fills the box with zero waste — no letterbox bars, no grey bars.
-             */
-            object-fit: cover;
-            object-position: center;
-            display: block;
-          }
+        .pp-cover-image {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+          display: block;
+        }
 
         .pp-cover-overlay {
           position: absolute;
@@ -285,25 +548,19 @@ const PublicProfile = () => {
           left: -60px;
           width: 400px;
           height: 300px;
-
           background: radial-gradient(
             ellipse,
             ${isSolidButton ? buttonColor + "70" : "rgba(99,102,241,0.45)"} 0%,
             transparent 65%
           );
-
           filter: blur(50px);
           pointer-events: none;
         }
 
-        /* Small Mobile — enforce a minimum banner height on very narrow screens */
         @media (max-width: 480px) {
-          .pp-cover {
-            min-height: 110px;
-          }
+          .pp-cover { min-height: 110px; }
         }
 
-        /* glass pill — top left */
         .pp-tagline-pill {
           position: absolute;
           top: 26px; left: 26px;
@@ -331,7 +588,6 @@ const PublicProfile = () => {
           flex-shrink: 0;
         }
 
-        /* availability badge — top right */
         .pp-avail-badge {
           position: absolute;
           top: 26px; right: 26px;
@@ -363,7 +619,6 @@ const PublicProfile = () => {
           50%      { box-shadow: 0 0 0 6px rgba(34,197,94,0.1); }
         }
 
-        /* logo badge */
         .pp-logo {
           position: absolute;
           top: 22px; right: 26px;
@@ -377,7 +632,6 @@ const PublicProfile = () => {
         }
         .pp-logo img { width:100%; height:100%; object-fit:contain; }
 
-        /* ─── HERO BOTTOM ─── */
         .pp-hero-bottom {
           position: absolute;
           bottom: 0; left: 0; right: 0;
@@ -405,7 +659,6 @@ const PublicProfile = () => {
           font-family: ${fontFamily};
         }
 
-        /* ─── BUTTONS ─── */
         .pp-connect-float {
           display: inline-flex;
           align-items: center;
@@ -479,12 +732,10 @@ const PublicProfile = () => {
         .pp-connect:hover::after { background: rgba(255,255,255,0.1); }
         .pp-connect:active { transform: scale(0.97); }
 
-        /* ─── CONTENT AREA ─── */
         .pp-content {
           padding: ${isPortrait ? "0 32px 36px" : "0 36px 32px"};
         }
 
-        /* ─── AVATAR ROW ─── */
         .pp-top-row {
           display: flex;
           justify-content: ${isCenter || isPortrait ? "center" : "space-between"};
@@ -539,7 +790,6 @@ const PublicProfile = () => {
           box-shadow: 0 0 12px rgba(34,197,94,0.6);
         }
 
-        /* ─── SPLIT GRID ─── */
         .pp-split {
           display: grid;
           grid-template-columns: ${isCenter || isPortrait ? "1fr" : "1fr 320px"};
@@ -548,7 +798,6 @@ const PublicProfile = () => {
           ${isCenter || isPortrait ? "text-align: center;" : ""}
         }
 
-        /* ─── NAME / ROLE ─── */
         .pp-name {
           font-size: ${isPortrait ? "28px" : "24px"};
           font-weight: 900;
@@ -563,55 +812,24 @@ const PublicProfile = () => {
           flex-wrap: wrap;
           ${isCenter || isPortrait ? "justify-content: center;" : ""}
         }
-        
+
         .meta-verified {
-            width: 24px;
-            height: 24px;
-
-            background: #1DA1F2;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            flex-shrink: 0;
-
-            clip-path: polygon(
-              50% 0%,
-              61% 8%,
-              75% 5%,
-              83% 17%,
-              95% 25%,
-              92% 39%,
-              100% 50%,
-              92% 61%,
-              95% 75%,
-              83% 83%,
-              75% 95%,
-              61% 92%,
-              50% 100%,
-              39% 92%,
-              25% 95%,
-              17% 83%,
-              5% 75%,
-              8% 61%,
-              0% 50%,
-              8% 39%,
-              5% 25%,
-              17% 17%,
-              25% 5%,
-              39% 8%
-            );
-
-            box-shadow:
-              0 2px 8px rgba(29,161,242,.35);
-          }
-
-          .meta-verified svg {
-            width: 12px;
-            height: 12px;
-          }
-
+          width: 24px;
+          height: 24px;
+          background: #1DA1F2;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          clip-path: polygon(
+            50% 0%, 61% 8%, 75% 5%, 83% 17%, 95% 25%, 92% 39%, 100% 50%,
+            92% 61%, 95% 75%, 83% 83%, 75% 95%, 61% 92%, 50% 100%,
+            39% 92%, 25% 95%, 17% 83%, 5% 75%, 8% 61%, 0% 50%,
+            8% 39%, 5% 25%, 17% 17%, 25% 5%, 39% 8%
+          );
+          box-shadow: 0 2px 8px rgba(29,161,242,.35);
+        }
+        .meta-verified svg { width: 12px; height: 12px; }
 
         .pp-job {
           font-size: 13px;
@@ -660,14 +878,12 @@ const PublicProfile = () => {
           max-width: 520px;
         }
 
-        /* ─── DIVIDER ─── */
         .pp-divider {
           height: 1px;
           background: ${subtleBorder};
           margin: 28px 0;
         }
 
-        /* ─── SOCIALS ─── */
         .pp-socials-label {
           font-size: 10px;
           font-weight: 700;
@@ -684,7 +900,6 @@ const PublicProfile = () => {
           ${isCenter || isPortrait ? "justify-content: center;" : ""}
         }
 
-        /* ── Premium social icon buttons ── */
         .pp-social-btn {
           position: relative;
           display: inline-flex;
@@ -696,9 +911,7 @@ const PublicProfile = () => {
           text-decoration: none;
           background: #ffffff;
           border: 1.5px solid rgba(0,0,0,0.07);
-          box-shadow:
-            0 2px 8px rgba(0,0,0,0.08),
-            0 1px 2px rgba(0,0,0,0.04);
+          box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
           transition:
             transform 0.28s cubic-bezier(0.34,1.56,0.64,1),
             box-shadow 0.28s ease,
@@ -713,19 +926,14 @@ const PublicProfile = () => {
           position: relative;
           z-index: 1;
         }
-        .pp-social-btn:hover {
-          transform: translateY(-5px) scale(1.1);
-        }
-        .pp-social-btn:active {
-          transform: translateY(-2px) scale(1.02);
-        }
+        .pp-social-btn:hover { transform: translateY(-5px) scale(1.1); }
+        .pp-social-btn:active { transform: translateY(-2px) scale(1.02); }
 
         @media (max-width: 480px) {
           .pp-social-btn { width: 46px; height: 46px; }
           .pp-social-btn svg { width: 20px; height: 20px; }
         }
 
-        /* ─── CONTACT SECTION ─── */
         .pp-section-header {
           font-size: 10px;
           font-weight: 700;
@@ -746,11 +954,7 @@ const PublicProfile = () => {
           ${isCenter || isPortrait ? "display: none;" : "display: block;"}
         }
 
-        .pp-contact-cards {
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-        }
+        .pp-contact-cards { display: flex; flex-direction: column; gap: 10px; }
         .pp-contact-item {
           display: flex;
           align-items: center;
@@ -770,10 +974,7 @@ const PublicProfile = () => {
           box-shadow: 0 8px 28px rgba(0,0,0,0.08);
         }
         .pp-contact-item.no-pointer { cursor: default; }
-        .pp-contact-item.no-pointer:hover {
-          transform: none;
-          box-shadow: none;
-        }
+        .pp-contact-item.no-pointer:hover { transform: none; box-shadow: none; }
         .pp-contact-icon-wrap {
           width: 44px; height: 44px;
           border-radius: 14px;
@@ -814,11 +1015,7 @@ const PublicProfile = () => {
           white-space: nowrap;
           flex-shrink: 0;
         }
-        .pp-copy-hint {
-          font-size: 11px;
-          color: ${mutedText};
-          flex-shrink: 0;
-        }
+        .pp-copy-hint { font-size: 11px; color: ${mutedText}; flex-shrink: 0; }
 
         .pp-contact-card-shell {
           background: ${subtleBg};
@@ -835,7 +1032,6 @@ const PublicProfile = () => {
           font-family: ${fontFamily};
         }
 
-        /* ─── WEBSITE CTA ─── */
         .pp-website-cta {
           display: flex;
           align-items: center;
@@ -872,11 +1068,7 @@ const PublicProfile = () => {
           letter-spacing: 1.2px;
           opacity: 0.7;
         }
-        .pp-website-main {
-          font-size: 14px;
-          font-weight: 800;
-          letter-spacing: -0.2px;
-        }
+        .pp-website-main { font-size: 14px; font-weight: 800; letter-spacing: -0.2px; }
         .pp-website-arrow {
           width: 34px; height: 34px;
           border-radius: 50%;
@@ -885,7 +1077,6 @@ const PublicProfile = () => {
           flex-shrink: 0;
         }
 
-        /* ─── PRODUCTS WRAP ─── */
         .pp-products-wrap {
           padding: 0 36px 48px;
           margin-top: 8px;
@@ -901,7 +1092,6 @@ const PublicProfile = () => {
           margin-bottom: 20px;
         }
 
-        /* ─── LEAD MODAL ─── */
         .lead-modal {
           position: fixed;
           inset: 0;
@@ -934,103 +1124,6 @@ const PublicProfile = () => {
           position: relative;
           overflow: hidden;
         }
-
-        /* youtube video */
-
-
-        .video-thumb-wrapper {
-          position: relative;
-        }
-
-        .video-play-overlay {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%) scale(0.8);
-          width: 70px;
-          height: 70px;
-          border-radius: 50%;
-          background: rgba(255, 0, 0, 0.92);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: white;
-          font-size: 28px;
-          opacity: 0;
-          transition: all .25s ease;
-          pointer-events: none;
-        }
-
-        .pp-video-card:hover .video-play-overlay {
-          opacity: 1;
-          transform: translate(-50%, -50%) scale(1);
-        }
-
-        .pp-video-card:hover .pp-video-thumb {
-          transform: scale(1.05);
-        }
-
-        .pp-video-thumb {
-          transition: transform .3s ease;
-        }
-
-        .pp-video-grid{
-          display:grid;
-          grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-          gap:20px;
-          margin-top:24px;
-        }
-
-        .pp-video-card{
-          background:#fff;
-          border-radius:20px;
-          overflow:hidden;
-          border:1px solid rgba(0,0,0,.06);
-          cursor:pointer;
-          transition:.25s;
-        }
-
-        .pp-video-card:hover{
-          transform:translateY(-6px);
-          box-shadow:0 20px 40px rgba(0,0,0,.12);
-        }
-
-        .pp-video-thumb{
-          width:100%;
-          aspect-ratio:16/9;
-          object-fit:contain;
-          background:#000;
-        }
-
-        .pp-video-body{
-          padding:14px;
-        }
-
-        .pp-video-title{
-          font-size:14px;
-          font-weight:700;
-        }
-
-        .pp-video-modal{
-          position:fixed;
-          inset:0;
-          background:rgba(0,0,0,.85);
-          display:flex;
-          align-items:center;
-          justify-content:center;
-          z-index:99999;
-          padding:20px;
-        }
-
-        .pp-video-frame{
-          width:min(100%,1000px);
-          aspect-ratio:16/9;
-          border-radius:20px;
-          overflow:hidden;
-        }
-
-
-        /* subtle shimmer line at top */
         .lead-box::before {
           content: "";
           position: absolute;
@@ -1047,7 +1140,7 @@ const PublicProfile = () => {
         }
         @keyframes pp-rise {
           from { opacity: 0; transform: translateY(32px) scale(0.94); }
-          to   { opacity: 1; transform: translateY(0)   scale(1);    }
+          to   { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .lead-header {
@@ -1091,11 +1184,7 @@ const PublicProfile = () => {
           color: ${textColor};
           transform: scale(1.08);
         }
-        .lead-close-btn:disabled {
-          opacity: 0.45;
-          cursor: not-allowed;
-          transform: none;
-        }
+        .lead-close-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
 
         .lead-box input,
         .lead-box textarea {
@@ -1112,9 +1201,7 @@ const PublicProfile = () => {
           -webkit-appearance: none;
         }
         .lead-box input::placeholder,
-        .lead-box textarea::placeholder {
-          color: ${mutedText};
-        }
+        .lead-box textarea::placeholder { color: ${mutedText}; }
         .lead-box input:focus,
         .lead-box textarea:focus {
           border-color: ${isSolidButton ? buttonColor : "#6366f1"};
@@ -1122,14 +1209,8 @@ const PublicProfile = () => {
           background: ${theme.backgroundColor || "#ffffff"};
         }
         .lead-box input:disabled,
-        .lead-box textarea:disabled {
-          opacity: 0.6;
-          cursor: not-allowed;
-        }
-        .lead-box textarea {
-          min-height: 108px;
-          resize: none;
-        }
+        .lead-box textarea:disabled { opacity: 0.6; cursor: not-allowed; }
+        .lead-box textarea { min-height: 108px; resize: none; }
 
         .lead-submit {
           padding: 16px;
@@ -1141,10 +1222,7 @@ const PublicProfile = () => {
           font-family: ${fontFamily};
           letter-spacing: 0.1px;
           margin-top: 4px;
-          transition:
-            opacity 0.18s,
-            transform 0.22s cubic-bezier(0.34,1.56,0.64,1),
-            box-shadow 0.22s;
+          transition: opacity 0.18s, transform 0.22s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.22s;
           box-shadow: 0 6px 20px rgba(0,0,0,0.16);
         }
         .lead-submit:not(:disabled):hover {
@@ -1154,14 +1232,83 @@ const PublicProfile = () => {
         }
         .lead-submit:not(:disabled):active { transform: scale(0.98); }
 
-        /* spinner keyframe (reuse existing spin) */
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* ─── RESPONSIVE ─── */
+        /* ── Gallery hover effects ── */
+        .gallery-card:hover .gallery-overlay {
+          background: rgba(10,22,56,0.35) !important;
+        }
+        .gallery-card:hover .gallery-expand-icon {
+          opacity: 1 !important;
+        }
+
+        /* ── Video ── */
+        .video-thumb-wrapper { position: relative; }
+        .video-play-overlay {
+          position: absolute;
+          top: 50%; left: 50%;
+          transform: translate(-50%, -50%) scale(0.8);
+          width: 70px; height: 70px;
+          border-radius: 50%;
+          background: rgba(255, 0, 0, 0.92);
+          display: flex; align-items: center; justify-content: center;
+          color: white; font-size: 28px;
+          opacity: 0;
+          transition: all .25s ease;
+          pointer-events: none;
+        }
+        .pp-video-card:hover .video-play-overlay {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1);
+        }
+        .pp-video-card:hover .pp-video-thumb { transform: scale(1.05); }
+        .pp-video-thumb { transition: transform .3s ease; }
+        .pp-video-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+          gap: 20px;
+          margin-top: 24px;
+        }
+        .pp-video-card {
+          background: #fff;
+          border-radius: 20px;
+          overflow: hidden;
+          border: 1px solid rgba(0,0,0,.06);
+          cursor: pointer;
+          transition: .25s;
+        }
+        .pp-video-card:hover {
+          transform: translateY(-6px);
+          box-shadow: 0 20px 40px rgba(0,0,0,.12);
+        }
+        .pp-video-thumb {
+          width: 100%;
+          aspect-ratio: 16/9;
+          object-fit: contain;
+          background: #000;
+        }
+        .pp-video-body { padding: 14px; }
+        .pp-video-title { font-size: 14px; font-weight: 700; }
+        .pp-video-modal {
+          position: fixed;
+          inset: 0;
+          background: rgba(0,0,0,.85);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 99999;
+          padding: 20px;
+        }
+        .pp-video-frame {
+          width: min(100%, 1000px);
+          aspect-ratio: 16/9;
+          border-radius: 20px;
+          overflow: hidden;
+        }
+
         @media (max-width: 720px) {
           .pp-page { padding: 0 0 56px; }
           .pp-card { border-radius: 0 0 32px 32px; }
-          /* pp-cover height is fluid via aspect-ratio — no override needed */
           .pp-hero-bottom { padding: 0 20px 24px; }
           .pp-hero-title h2 { font-size: 28px; letter-spacing: -1.2px; }
           .pp-content { padding: 0 20px 28px; }
@@ -1175,23 +1322,8 @@ const PublicProfile = () => {
           .pp-tagline-pill { display: none; }
           .pp-connect-float { padding: 12px 18px; font-size: 13px; }
           .pp-hero-sub { display: none; }
-
-          .pp-logo {
-            top: 14px;
-            right: 14px;
-            width: 44px;
-            height: 44px;
-            border-radius: 13px;
-            padding: 7px;
-          }
-
-          .pp-avail-badge {
-            top: 14px;
-            right: 14px;
-            font-size: 10.5px;
-            padding: 6px 13px;
-          }
-
+          .pp-logo { top: 14px; right: 14px; width: 44px; height: 44px; border-radius: 13px; padding: 7px; }
+          .pp-avail-badge { top: 14px; right: 14px; font-size: 10.5px; padding: 6px 13px; }
           .pp-top-row { margin-top: -50px; }
           .pp-top-row-portrait { margin-top: -55px; }
         }
@@ -1204,11 +1336,7 @@ const PublicProfile = () => {
           <div className="pp-cover">
             <div className="pp-cover-bg">
               {user.coverImage && (
-                <img
-                  src={user.coverImage}
-                  alt="Cover"
-                  className="pp-cover-image"
-                />
+                <img src={user.coverImage} alt="Cover" className="pp-cover-image" />
               )}
             </div>
             <div className="pp-cover-overlay" />
@@ -1234,8 +1362,6 @@ const PublicProfile = () => {
                 <img src={user.logoImage} alt="logo" />
               </div>
             )}
-
-
           </div>
 
           {/* ══ CONTENT ══ */}
@@ -1279,13 +1405,7 @@ const PublicProfile = () => {
                   {user.name}
                   <span className="meta-verified">
                     <svg viewBox="0 0 24 24" fill="none">
-                      <path
-                        d="M20 6L9.5 16.5L4 11"
-                        stroke="white"
-                        strokeWidth="3"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
+                      <path d="M20 6L9.5 16.5L4 11" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </span>
                 </div>
@@ -1383,7 +1503,6 @@ const PublicProfile = () => {
                   </button>
                 </div>
 
-                {/* contact block (center / portrait) */}
                 {(isCenter || isPortrait) && (
                   <div style={{ marginTop: 32 }}>
                     <ContactBlock
@@ -1426,6 +1545,7 @@ const PublicProfile = () => {
             </div>
           </div>
 
+          {/* ══ VIDEOS ══ */}
           {user.youtubeVideos?.length > 0 && (
             <div
               style={{
@@ -1454,56 +1574,21 @@ const PublicProfile = () => {
                     key={video._id || index}
                     className="pp-video-card"
                     onClick={() => setSelectedVideo(video)}
-                    style={{
-                      cursor: "pointer",
-                      overflow: "hidden",
-                      borderRadius: "20px",
-                      background: "#fff",
-                    }}
                   >
-                    <div
-                      style={{
-                        position: "relative",
-                        overflow: "hidden",
-                      }}
-                      className="video-thumb-wrapper"
-                    >
+                    <div style={{ position: "relative", overflow: "hidden" }} className="video-thumb-wrapper">
                       <img
                         src={video.thumbnail}
                         alt="YouTube Thumbnail"
                         className="pp-video-thumb"
-                        style={{
-                          width: "100%",
-                          aspectRatio: "16/9",
-                          objectFit: "cover",
-                          display: "block",
-                        }}
+                        style={{ width: "100%", aspectRatio: "16/9", objectFit: "cover", display: "block" }}
                       />
-
-                      <div className="video-play-overlay">
-                        ▶
-                      </div>
+                      <div className="video-play-overlay">▶</div>
                     </div>
-
                     <div className="pp-video-body">
-                      <div
-                        className="pp-video-title"
-                        style={{
-                          fontWeight: "700",
-                          fontSize: "15px",
-                        }}
-                      >
+                      <div className="pp-video-title" style={{ fontWeight: "700", fontSize: "15px" }}>
                         {video.title || "YouTube Video"}
                       </div>
-
-                      <div
-                        style={{
-                          marginTop: "12px",
-                          color: "#ef4444",
-                          fontWeight: "600",
-                          fontSize: "13px",
-                        }}
-                      >
+                      <div style={{ marginTop: "12px", color: "#ef4444", fontWeight: "600", fontSize: "13px" }}>
                         Click to Watch
                       </div>
                     </div>
@@ -1512,6 +1597,12 @@ const PublicProfile = () => {
               </div>
             </div>
           )}
+
+          {/* ══ GALLERY ══ */}
+          {user.gallery?.length > 0 && (
+            <GalleryLightbox gallery={user.gallery} mutedText={mutedText} />
+          )}
+
           {/* ══ PRODUCTS ══ */}
           <div className="pp-products-wrap">
             <PublicProducts userId={user._id} theme={theme.buttonColor} />
@@ -1523,7 +1614,6 @@ const PublicProfile = () => {
         {showLeadForm && (
           <div className="lead-modal" onClick={() => !leadLoading && setShowLeadForm(false)}>
             <div className="lead-box" onClick={(e) => e.stopPropagation()}>
-
               <div className="lead-header">
                 <div>
                   <div className="lead-title">Let's Connect</div>
@@ -1533,54 +1623,28 @@ const PublicProfile = () => {
                   className="lead-close-btn"
                   onClick={() => !leadLoading && setShowLeadForm(false)}
                   disabled={leadLoading}
-                >
-                  ×
-                </button>
+                >×</button>
               </div>
 
               {(user?.leadCapture?.fields?.name ?? true) && (
-                <input
-                  type="text"
-                  placeholder="Your Name"
-                  value={leadForm.name}
-                  disabled={leadLoading}
-                  onChange={(e) => setLeadForm({ ...leadForm, name: e.target.value })}
-                />
+                <input type="text" placeholder="Your Name" value={leadForm.name} disabled={leadLoading}
+                  onChange={(e) => setLeadForm({ ...leadForm, name: e.target.value })} />
               )}
               {(user?.leadCapture?.fields?.email ?? true) && (
-                <input
-                  type="email"
-                  placeholder="Your Email"
-                  value={leadForm.email}
-                  disabled={leadLoading}
-                  onChange={(e) => setLeadForm({ ...leadForm, email: e.target.value })}
-                />
+                <input type="email" placeholder="Your Email" value={leadForm.email} disabled={leadLoading}
+                  onChange={(e) => setLeadForm({ ...leadForm, email: e.target.value })} />
               )}
               {(user?.leadCapture?.fields?.phone ?? true) && (
-                <input
-                  type="text"
-                  placeholder="Phone Number"
-                  value={leadForm.phone}
-                  disabled={leadLoading}
-                  onChange={(e) => setLeadForm({ ...leadForm, phone: e.target.value })}
-                />
+                <input type="text" placeholder="Phone Number" value={leadForm.phone} disabled={leadLoading}
+                  onChange={(e) => setLeadForm({ ...leadForm, phone: e.target.value })} />
               )}
               {(user?.leadCapture?.fields?.company ?? true) && (
-                <input
-                  type="text"
-                  placeholder="Company Name"
-                  value={leadForm.company}
-                  disabled={leadLoading}
-                  onChange={(e) => setLeadForm({ ...leadForm, company: e.target.value })}
-                />
+                <input type="text" placeholder="Company Name" value={leadForm.company} disabled={leadLoading}
+                  onChange={(e) => setLeadForm({ ...leadForm, company: e.target.value })} />
               )}
               {(user?.leadCapture?.fields?.message ?? true) && (
-                <textarea
-                  placeholder="Message"
-                  value={leadForm.message}
-                  disabled={leadLoading}
-                  onChange={(e) => setLeadForm({ ...leadForm, message: e.target.value })}
-                />
+                <textarea placeholder="Message" value={leadForm.message} disabled={leadLoading}
+                  onChange={(e) => setLeadForm({ ...leadForm, message: e.target.value })} />
               )}
 
               <button
@@ -1589,10 +1653,7 @@ const PublicProfile = () => {
                   ...buttonStyle,
                   opacity: leadLoading ? 0.75 : 1,
                   cursor: leadLoading ? "not-allowed" : "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 10,
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
                 }}
                 disabled={leadLoading}
                 onClick={async () => {
@@ -1631,24 +1692,16 @@ const PublicProfile = () => {
                     }} />
                     Sending…
                   </>
-                ) : (
-                  "Submit →"
-                )}
+                ) : "Submit →"}
               </button>
-
             </div>
           </div>
         )}
 
+        {/* ══ VIDEO MODAL ══ */}
         {selectedVideo && (
-          <div
-            className="pp-video-modal"
-            onClick={() => setSelectedVideo(null)}
-          >
-            <div
-              className="pp-video-frame"
-              onClick={(e) => e.stopPropagation()}
-            >
+          <div className="pp-video-modal" onClick={() => setSelectedVideo(null)}>
+            <div className="pp-video-frame" onClick={(e) => e.stopPropagation()}>
               <iframe
                 width="100%"
                 height="100%"
@@ -1657,17 +1710,13 @@ const PublicProfile = () => {
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
-                style={{
-                  border: "none",
-                  width: "100%",
-                  height: "100%",
-                }}
+                style={{ border: "none", width: "100%", height: "100%" }}
               />
             </div>
           </div>
         )}
 
-      </div >
+      </div>
     </>
   );
 };
@@ -1698,10 +1747,7 @@ const ContactBlock = ({
           isSolidButton={isSolidButton}
         />
         {user.website && (
-          <WebsiteCTA
-            user={user} buttonColor={buttonColor} buttonTextColor={buttonTextColor}
-            fontFamily={fontFamily}
-          />
+          <WebsiteCTA user={user} buttonColor={buttonColor} buttonTextColor={buttonTextColor} fontFamily={fontFamily} />
         )}
       </div>
     )}
@@ -1722,10 +1768,7 @@ const ContactBlock = ({
           isSolidButton={isSolidButton}
         />
         {user.website && (
-          <WebsiteCTA
-            user={user} buttonColor={buttonColor} buttonTextColor={buttonTextColor}
-            fontFamily={fontFamily}
-          />
+          <WebsiteCTA user={user} buttonColor={buttonColor} buttonTextColor={buttonTextColor} fontFamily={fontFamily} />
         )}
       </>
     )}
@@ -1740,51 +1783,34 @@ const ContactItems = ({
 }) => (
   <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
     {user.phone && (
-      <div
-        className="pp-contact-item"
-        onClick={() => handleCopy(user.phone, "phone")}
-        style={{ background: subtleBg, border: `1px solid ${subtleBorder}` }}
-      >
-        <div className="pp-contact-icon-wrap phone">
-          <Phone size={18} strokeWidth={2} />
-        </div>
+      <div className="pp-contact-item" onClick={() => handleCopy(user.phone, "phone")}
+        style={{ background: subtleBg, border: `1px solid ${subtleBorder}` }}>
+        <div className="pp-contact-icon-wrap phone"><Phone size={18} strokeWidth={2} /></div>
         <div className="pp-contact-body">
           <div className="pp-contact-sublabel">Phone</div>
           <div className="pp-contact-value">{user.phone}</div>
         </div>
         {copied === "phone"
           ? <span className="pp-copy-badge"><CheckCheck size={12} strokeWidth={2.5} /> Copied</span>
-          : <span className="pp-copy-hint"><Copy size={13} strokeWidth={1.8} /></span>
-        }
+          : <span className="pp-copy-hint"><Copy size={13} strokeWidth={1.8} /></span>}
       </div>
     )}
     {user.email && (
-      <div
-        className="pp-contact-item"
-        onClick={() => handleCopy(user.email, "email")}
-        style={{ background: subtleBg, border: `1px solid ${subtleBorder}` }}
-      >
-        <div className="pp-contact-icon-wrap email">
-          <Mail size={18} strokeWidth={2} />
-        </div>
+      <div className="pp-contact-item" onClick={() => handleCopy(user.email, "email")}
+        style={{ background: subtleBg, border: `1px solid ${subtleBorder}` }}>
+        <div className="pp-contact-icon-wrap email"><Mail size={18} strokeWidth={2} /></div>
         <div className="pp-contact-body">
           <div className="pp-contact-sublabel">Email</div>
           <div className="pp-contact-value">{user.email}</div>
         </div>
         {copied === "email"
           ? <span className="pp-copy-badge"><CheckCheck size={12} strokeWidth={2.5} /> Copied</span>
-          : <span className="pp-copy-hint"><Copy size={13} strokeWidth={1.8} /></span>
-        }
+          : <span className="pp-copy-hint"><Copy size={13} strokeWidth={1.8} /></span>}
       </div>
     )}
     {(user.streetAddress || user.city || user.state || user.country) && (
-      <div
-        className="pp-contact-item no-pointer"
-        style={{ background: subtleBg, border: `1px solid ${subtleBorder}` }}
-      >
-        <div className="pp-contact-icon-wrap addr">
-          <MapPin size={18} strokeWidth={2} />
-        </div>
+      <div className="pp-contact-item no-pointer" style={{ background: subtleBg, border: `1px solid ${subtleBorder}` }}>
+        <div className="pp-contact-icon-wrap addr"><MapPin size={18} strokeWidth={2} /></div>
         <div className="pp-contact-body">
           <div className="pp-contact-sublabel">Location</div>
           <div className="pp-contact-value wrap">
@@ -1801,33 +1827,25 @@ const ContactItems = ({
 const WebsiteCTA = ({ user, buttonColor, buttonTextColor, fontFamily }) => (
   <a
     href={user.website.startsWith("http://") || user.website.startsWith("https://")
-      ? user.website
-      : `https://${user.website}`}
+      ? user.website : `https://${user.website}`}
     target="_blank"
     rel="noreferrer"
     className="pp-website-cta"
     style={{ background: buttonColor, color: buttonTextColor, boxShadow: `0 8px 28px rgba(0,0,0,0.18)` }}
     onClick={async () => {
       try {
-        await axios.post(
-          `${import.meta.env.VITE_API_URL}/api/analytics/link-click`,
-          { userId: user._id, platform: "website" }
-        );
+        await axios.post(`${import.meta.env.VITE_API_URL}/api/analytics/link-click`, { userId: user._id, platform: "website" });
       } catch (error) { console.log(error); }
     }}
   >
     <div className="pp-website-left">
-      <div className="pp-website-icon">
-        <Globe size={20} strokeWidth={2} color={buttonTextColor} />
-      </div>
+      <div className="pp-website-icon"><Globe size={20} strokeWidth={2} color={buttonTextColor} /></div>
       <div className="pp-website-texts">
         <span className="pp-website-eyebrow" style={{ color: buttonTextColor }}>Website</span>
         <span className="pp-website-main" style={{ color: buttonTextColor }}>Visit My Website</span>
       </div>
     </div>
-    <div className="pp-website-arrow">
-      <ArrowUpRight size={16} strokeWidth={2.5} color={buttonTextColor} />
-    </div>
+    <div className="pp-website-arrow"><ArrowUpRight size={16} strokeWidth={2.5} color={buttonTextColor} /></div>
   </a>
 );
 

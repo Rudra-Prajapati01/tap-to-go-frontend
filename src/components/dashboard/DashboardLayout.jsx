@@ -121,6 +121,27 @@ const navItems = [
       </svg>
     ),
   },
+  
+  {
+    label: "Gallery",
+    path: "/dashboard/gallery",
+    icon: (
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+      >
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <circle cx="8.5" cy="8.5" r="1.5" />
+        <path d="M21 15l-5-5L5 21" />
+      </svg>
+    ),
+  },
+
+
   {
     label: "Leads",
     path: "/dashboard/leads",

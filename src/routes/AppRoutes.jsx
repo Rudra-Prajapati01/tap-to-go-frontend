@@ -40,6 +40,7 @@ import Analytics from "../components/analytics/Analytics";
 
 import VideoShowcase from "../components/videos/VideoShowcase";
 
+import Gallery from "../components/gallery/Gallery";
 
 
 import AdminLogin from "../admin/pages/AdminLogin";
@@ -187,6 +188,17 @@ const AppRoutes = () => {
             <ProtectedRoute>
               <DashboardLayout>
                 <ProductAndServices />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/dashboard/gallery"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <Gallery />
               </DashboardLayout>
             </ProtectedRoute>
           }
